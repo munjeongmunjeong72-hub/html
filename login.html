@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login form</title>
+    <style>
+        
+        label{margin-right: 16px;}
+        li{list-style: none; margin-bottom: 24px;}
+        input[type="email"],input[type="password"]{
+            width: 410px; 
+            height: 56px;
+             font-size: 20px; 
+             padding-left:16px }
+        .laball1{margin-right: 28px;}
+    </style>
+</head>
+<body>
+    <h1>폼구성 요소 알아보기</h1>
+    <form action="">
+        <fieldset>
+            <legend>로그인 폼</legend>
+            <ul>
+                <li>
+                    <label for="em" class="laball1">이메일</label>
+                    <input type="email"laceholder="아이디또는이메일주소" maxlength="10" id="em">
+                </li>
+                <li>
+                    <label for="pw">메일주소</label>
+                    <input type="password" placeholder="비밀번호를 입력하세요" id="pw">
+                </li>
+            </ul>
+        </fieldset>
+        <input type="submit" value="로그인">
+        <input type="reset" value="취소" >
+    </form>
+
+    <form action="">
+        <fieldset>
+            <legend>개인정보</legend>
+            <ul>
+                <li>
+                    <input type="radio"> <label for="">남자</label>
+                    <input type=" radio"> <label for="">여자</label>
+                </li>
+            </ul>
+        </fieldset>
+    </form>
+</body>
+</html>
