@@ -3,18 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>비디오삽입</title>
+    <title>Document</title>
     <style>
-        h1 {text-align: center;}
-        iframe {width: 50%; float: left;}
+        ul {list-style: none;}
+        li {margin-bottom: 16px; padding: 8px 8px;}
+        .lll{background: #eeeeee;}
+        fieldset {margin-bottom: 10px; border: #e2a25a 2px solid; }
+        legend {color: #e2a25a;}
+        body {border: #ffbfc9 5px solid; }
+        .ll {background: #1d1d1d; color: #eeeeee;}
     </style>
 </head>
 <body>
-    <h1>프로젝트1 동영상삽입</h1>
-    <iframe width="555" height="823" src="https://www.youtube.com/embed/HHoCYI_xeNs" title="빵" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe width="555" height="823" src="https://www.youtube.com/embed/yDsrDZ0oPo8" title="홍보숏츠 응용" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe width="555" height="823" src="https://www.youtube.com/embed/_5-Qnj_1Zso" title="화장품광고 숏폼2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe width="555" height="823" src="https://www.youtube.com/embed/lIJTFcElv2Y" title="유튜브숏츠1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
+    <h1>상품 주문서</h1>
+<fieldset>
+    <legend>개인정보</legend>
+    <ul>
+        <li class="lll">
+            <label for="id" class="la">이름</label>
+                    <input type="text" id="id" placeholder="이름을 입력해주세요." required >
+        </li>
+        <li class="lll">
+             <label for="pw">비밀번호</label>
+                    <input type="password" id="pw" placeholder="비밀번호를 입력해주세요." required>
+        </li>
+    </ul>
+</fieldset>
+<fieldset>
+    <legend>배송지 정보</legend>
+    <ul>
+        <li class="lll">
+            <label for="">주소</label>
+            <input type="text" placeholder="주소를 입력해주세요." required>
+        </li>
+        <li class="lll">
+            
+                    <label for="mt">전화번호</label>
+                    <select name="" id=""><option value="">010</option>
+                    <option value="">010</option>
+                    <option value="">017</option>
+                    <option value="">011</option>
+                    <input type="text" name="" id="" maxlength="4" class="tel2">
+                    <input type="text"  maxlength="4" class="tel2">
+        </li>
+        <li class="lll">
+                    <label for="">메모</label>
+                    <textarea name="" id="" cols="20" rows="3"></textarea>
+                </li>
+    </ul>
+</fieldset>
+<fieldset>
+    <legend>주문 정보</legend>
+    <ul>
+        <li class="lll">
+            <label for="">과태말라 안티구아 (100g)</label>
+            <input type="number" min="1" max="30" value="1">개
+        </li>
+        <li class="lll">
+            <label for="">인도네시아 만델링 (100g)</label>
+            <input type="number" min="1" max="30" value="1">개
+        </li>
+        <li class="lll">
+            <label for="">탐라는 도다 (블랜딩) (100g)</label>
+            <input type="number" min="1" max="30" value="1">개
+        </li>
+        <li class="lll">
+            <label for="">01</label> <input type="checkbox">
+            <label for="">02</label> <input type="checkbox">
+            <label for="">03</label> <input type="checkbox">
+            <label for="">04</label> <input type="checkbox">
+        </li>
+        <li class="lll">
+            <label for="in">r01</label><input type="radio" name="pe" id="in" checked>
+            <label for="in1">r02</label><input type="radio" name="pe" id="in1" >
+            <label for="in2">r03</label><input type="radio" name="pe" id="in2" >
+            <label for="in3">r04</label><input type="radio" name="pe" id="in3" >
+        </li>
+    </ul>
+</fieldset>
+<fieldset>
+    <legend>버튼모음</legend>
+    <ul>
+        <li>
+            <input class="ll" type="submit" value="주문하기">
+        <input class="ll" type="reset" value="취소">
+        </li>
+    </ul>
+</fieldset>
 </body>
 </html>
