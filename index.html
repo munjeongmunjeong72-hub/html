@@ -3,26 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>아디다스 dlalwltkqdlq응용</title>
+    <title>html5 추가된 form요소</title>
     <style>
-        h3 {text-align: center; color: rgb(14, 16, 139);}
-        hr {text-align: center;}
-        .hr1 {width: 130px; height: 2px ;background-color: rgb(14, 16, 139);}
-        .hr2 {width: 550px;}
-        p {text-align: center;}
-        img {width: 100px;}
+        body {background: #000; color: #fff;}
+        ul {list-style: none;}
+        .la {margin-left: 12px;}
+        li {margin-bottom: 16px;}
+        fieldset {margin-bottom: 16px;}
+        .tel {width: 20px;}
+        .tel2 {width: 30px;}
     </style>
 </head>
 <body>
-    <h3>아디다스 쇼핑몰</h3>
-    <hr class="hr1">
-    <p><img src="./AD1_.jpg" alt="아디다스스타일1" title="아디다스스타일1"></p>
-    <p><img src="./AD2_.jpg" alt="아디다스스타일2" title="아디다스스타일2"></p>
-    <p><img src="./AD3_.jpg" alt="아디다스스타일3" title="아디다스스타일3"></p>
-    <p><img src="./AD4_.jpg" alt="아디다스스타일4" title="아디다스스타일4"></p>
-    <hr class="hr2">
-    <p>
-        Copywrite@이지연.com AII right reserved
-    </p>
+    <h1>입력 요소의 종류와 속성</h1>
+    <form action="">
+        <fieldset>
+            <legend>로그인</legend>
+            <ul>
+                <li>
+                    <label for="id" class="la">아이디:</label>
+                    <input type="text" id="id" placeholder="아이디를 입력해주세요." required autofocus> <input type="button" value="아이디확인">
+                </li>
+                <li>
+                    <label for="pw">패스워드:</label>
+                    <input type="password" id="pw" placeholder="패스워드를 입력해주세요." required>
+                </li>
+            </ul>
+        </fieldset>
+
+        <input type="submit" value="로그인">
+        <input type="reset" value="취소">
+        <fieldset>
+            <legend>나의 정보</legend>
+            <ul>
+                <li>
+                    <label for="">email:</label>
+                    <input type="email" placeholder="exam@naver.com" required>
+                </li>
+                <li>
+                    <label for="">국적:</label>
+                    <label for="in">내국인</label><input type="radio" name="pe" id="in" checked>
+                    <label for="out">외국인</label><input type="radio" name="pe" id="out">
+                </li>
+                <li>
+                    <label for="sh">search:</label>
+                    <input type="search" id="sh" placeholder="webdesign" disabled>
+                </li>
+                <li>
+                    <label for="">url:</label>
+                    <input type="url" placeholder="http://">
+                </li>
+            </ul>
+        </fieldset>
+        <fieldset>
+            <legend>나의 일정</legend>
+            <ul>
+                <li>
+                    <label for="">numder:</label>
+                    <input type="number" min="1" max="20" value="2">
+                </li>
+                <li>
+                    <label for="">tel:</label>
+                    <input type="tel" placeholder="전화번호를 입력해주세요." value="010" disabled class="tel">-
+                    <input type="text" name="" id="" maxlength="4" class="tel2">
+                    <input type="text"  maxlength="4" class="tel2">
+                </li>
+                <li>
+                    <label for="">범위(상중하):</label>
+                    <input type="range" min="1" max="3" value="2">
+                </li>
+            </ul>
+        </fieldset>
+        <fieldset>
+            <legend>예약관리</legend>
+            <ul>
+                <li>
+                    <label for="">datetime:</label>
+                    <input type="datetime-local">
+                </li>
+                
+            </ul>
+        </fieldset>
+        <fieldset>
+            <legend>그래프</legend>
+            <ul>
+                <li>
+                  <label for="">color:</label>
+                  <input type="color">
+                </li>
+                <li>
+                    <label for="">진행률 70%:</label>
+                    <progress max="100" value="70"></progress>
+                </li>
+                <li>
+                    <label for="">사용량(50%)</label>
+                    <meter value="50" max="100"></meter>
+                </li>
+            </ul>
+        </fieldset>
+    </form>
 </body>
 </html>
