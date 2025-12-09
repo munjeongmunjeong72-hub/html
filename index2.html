@@ -3,101 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>div</title>
     <style>
-        ul {list-style: none;}
-        li {margin-bottom: 16px; padding: 8px 8px;}
-        .lll{background: #eeeeee;}
-        fieldset {margin-bottom: 10px; border: #e2a25a 2px solid; }
-        legend {color: #e2a25a;}
-        body {border: #ffbfc9 5px solid; }
-        .ll {background: #1d1d1d; color: #eeeeee;}
+        *{margin: 0; padding: 0;}
+        div {
+            width: 540px;
+            border: solid 5px #808080;
+            padding: 43px 15px 30px 16px;
+        }
+        div p {
+            margin-top: 28px;
+        }
     </style>
 </head>
 <body>
-    <h1>상품 주문서</h1>
-    <form action="">
-        <fieldset>
-    <legend>개인정보</legend>
-    <ul>
-        <li class="lll">
-            <label for="id" class="la">이름</label>
-                    <input type="text" id="id" placeholder="이름을 입력해주세요." required >
-        </li>
-        <li class="lll">
-             <label for="pw">비밀번호</label>
-                    <input type="password" id="pw" placeholder="비밀번호를 입력해주세요." required>
-        </li>
-    </ul>
-</fieldset>
-<fieldset>
-    <legend>배송지 정보</legend>
-    <ul>
-        <li class="lll">
-            <label for="">주소</label>
-            <input type="text" placeholder="주소를 입력해주세요." required>
-        </li>
-        <li class="lll">
-            
-                    <label for="mt">전화번호</label>
-                    <select name="" id=""><option value="">010</option>
-                    <option value="">010</option>
-                    <option value="">017</option>
-                    <option value="">011</option>
-                    <input type="text" name="" id="" maxlength="4" class="tel2">
-                    <input type="text"  maxlength="4" class="tel2">
-        </li>
-        <li class="lll">
-                    <label for="">메모</label>
-                    <textarea name="" id="" cols="20" rows="3"></textarea>
-                </li>
-    </ul>
-</fieldset>
-<fieldset>
-    <legend>주문 정보</legend>
-    <ul>
-        <li class="lll">
-            <label for="">과태말라 안티구아 (100g)</label>
-            <input type="number" min="1" max="30" value="1">개
-        </li>
-        <li class="lll">
-            <label for="">인도네시아 만델링 (100g)</label>
-            <input type="number" min="1" max="30" value="1">개
-        </li>
-        <li class="lll">
-            <label for="">탐라는 도다 (블랜딩) (100g)</label>
-            <input type="number" min="1" max="30" value="1">개
-        </li>
-        <li class="lll">
-            <label for="">01</label> <input type="checkbox">
-            <label for="">02</label> <input type="checkbox">
-            <label for="">03</label> <input type="checkbox">
-            <label for="">04</label> <input type="checkbox">
-        </li>
-        <li class="lll">
-            <label for="in">r01</label><input type="radio" name="pe" id="in" checked>
-            <label for="in1">r02</label><input type="radio" name="pe" id="in1" >
-            <label for="in2">r03</label><input type="radio" name="pe" id="in2" >
-            <label for="in3">r04</label><input type="radio" name="pe" id="in3" >
-        </li>
-    </ul>
-</fieldset>
-<fieldset>
-    <legend>버튼모음</legend>
-    <ul>
-        <li>
-<input  type="submit" value="주문하기" class="ll">
-        <input type="reset" value="취소" class="ll">
-        </li>
-    </ul>
- 
-</fieldset>
-           
-        
-    
-
-    </form>
-    
-
+    <div>
+        <h1>Who am I?</h1>
+        <p>
+            프론트 앤드 웹 기술 (Front-end-web Thec)에 관심이 많습니다 <br>
+            현재 제주의 한 시골 마을에서 코딩중입니다
+        </p>
+    </div>
 </body>
 </html>
