@@ -1,0 +1,33 @@
+@charset "utf-8";
+body{
+
+}
+*{margin: 0;padding: 0;}
+.box{
+    width: 1470px;
+    height: 200px;
+    margin: 0 auto;
+}
+.box div{
+    width: 490px;
+    height: 200px;
+    background: gold;
+    float: left;
+    box-sizing: border-box;
+    padding: 36px;
+    
+}
+.box .one{
+    background: #907354;
+    padding: 36px;
+    box-sizing: border-box;
+}
+.box .two{
+    background: #434343;
+}
+.box .tr{
+    background: rgb(173, 29, 29);
+}
+.box div h2,.one.two.tr,p{
+    color: #fff;
+}
