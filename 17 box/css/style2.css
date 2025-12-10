@@ -24,3 +24,21 @@ ul li{
 }
 ul li.aa{background: #403ea8;
 color: #fff;}
+
+.box{
+    width: 1680px;
+    height: 500px;
+    border: 5pX solid #f1f1ff;
+    background: #f1f1ff;
+    margin: 20px auto 0;}
+    .box div.ss{background: #403ea8;
+color: #fff;}
+.box div{
+    width: 350px;
+    height: 380px;
+    border: solid 4px #ffffff;
+    background: #fff;
+    float: left;
+  margin: 40px 40px 40px 22px;
+   border-radius: 16px ;
+}
