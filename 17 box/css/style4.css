@@ -1,0 +1,24 @@
+@charset "utf-8";
+body{
+
+}
+*{margin: 0;padding: 0;}
+ul{
+    width: 1000px;
+    height: 300px;
+    border: 4px solid #ffffff;
+    margin: 0 auto;
+}
+
+ul li{
+    list-style: none;
+    width: 230px;
+    height: 300px;
+    background: #0400ff;
+    float: left;
+    margin-right: 20px;
+    list-style: none;
+}
+
+ul.rf{
+    margin-right: 0;}
