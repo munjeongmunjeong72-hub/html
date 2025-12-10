@@ -1,0 +1,26 @@
+@charset "utf-8";
+body{
+
+}
+*{margin: 0; padding: 0;}
+
+ul{
+    width: 1680px;
+    height: 500px;
+    border: solid 5px #f1f1ff;
+    background: #f1f1ff;
+    margin: 20px auto 0;
+}
+li{list-style: none;}
+ul li{
+    width: 350px;
+    height: 380px;
+    border: 4px solid #fff;
+    background: #fff;
+    float: left;
+    margin: 40px 40px 40px 22px;
+    border-radius: 16px;
+    text-align: center;
+}
+ul li.aa{background: #403ea8;
+color: #fff;}
