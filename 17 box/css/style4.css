@@ -6,7 +6,7 @@ body{
 ul{
     width: 1000px;
     height: 300px;
-    border: 4px solid #ffffff;
+    border: 2px solid #000000;
     margin: 0 auto;
 }
 
@@ -19,6 +19,19 @@ ul li{
     margin-right: 20px;
     list-style: none;
 }
+li.ee{ margin-right: 0;}
 
-ul.rf{
-    margin-right: 0;}
+.box{
+    width: 1000px;
+    height: 300px;
+    border: 4px solid rgb(0, 0, 0);
+    margin: 0 auto;
+}
+.box div{
+    width: 230px;
+    height: 300px;
+    background: rgb(138, 140, 255);
+    float: left;
+    margin-right: 20px;
+}
+.box.rs{margin-right: 0;}
