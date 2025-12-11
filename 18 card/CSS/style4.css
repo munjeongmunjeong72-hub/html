@@ -1,0 +1,64 @@
+@charset "utf-8";
+body{
+    font-family: "맑은 고딕","malgun gothic",sans-serif;
+}
+*{margin: 0;padding: 0;}
+li{list-style: none;}
+a{text-decoration: none;}
+h1{text-align: center;
+margin-bottom: 50px;}
+
+ul{
+    width: 1720px;
+    margin: 0 auto;
+    /* border: 3px solid red; */
+    overflow: hidden;
+}
+ul li{
+    width: 415px;
+    margin-right: 20px;
+    border: 1px solid #ffffff;
+     box-sizing: border-box;
+     float: left;
+}
+ul li a{
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+ul li a .imgbox{
+    width: 100%;
+    height: 480px;
+
+}
+ul li a .imgbox img{
+    width: 100%;
+    height: 100%;
+}
+ul li a .info{
+    box-sizing: border-box;
+    padding: 23px 16px;
+}
+ul li a .info h2{
+    font-size: 22px;
+    color: #222;
+    line-height: 29px;
+    margin-bottom: 26px;
+    text-align: center;
+    font-weight: 900;
+}
+ul li a .info p{
+    color: #555 ;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 35px;
+}
+ul li a .info .sm{
+font-size: 11px;
+color: #888888;
+}
+ul li a .info .ff{
+    color: rgb(150, 150, 150);
+}
+
+ul .rs {margin-right: 0;}
