@@ -1,0 +1,63 @@
+@charset "utf-8";
+body{
+
+}
+h1{width: 100%;
+    background: yellow;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 6;
+}
+div{
+    width: 200px;
+    height: 200px;
+    border: 1px solid #000;
+}
+.b1{
+    background: red;
+    position: absolute;
+    left: 100px;
+    top: 100px;
+    position: static;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    margin-left: -100px;
+    top: 50%;
+    margin-top: -100px;
+
+}
+.b2{
+    background: green;
+    position: relative;
+}
+.b2 div{
+    width: 80px;
+    height: 80px;
+    border: #000 solid 1px;
+}
+.b2 .c1{
+    background: rgb(255, 187, 0);
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    z-index: 4;
+}
+.b2 .c2{
+    background: pink;
+    position: absolute;
+    left: 90px;
+    top: 90px;
+    z-index: 5;
+}
+.b3{
+    background: blue;
+}
+.b4{
+    background: lightblue;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    position: static;
+}
