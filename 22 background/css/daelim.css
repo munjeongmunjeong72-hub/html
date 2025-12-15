@@ -1,0 +1,56 @@
+@charset "utf-8";
+body{
+    font-family: "맑은 고딕","malgun gothic",sans-serif;
+}
+*{margin: 0; padding: 0;}
+.header{
+    width: 100%;
+    height: 70px;
+    border-bottom: solid 1px #cecece;
+}
+.header .inner{
+    width: 1200px;
+    height: 70px;
+    background: rgb(255, 255, 255);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header .inner h1 a{
+    display: block;
+    width: 98px;
+    height: 28px;
+    background: url(../img/pic_mtopLogo.png) no-repeat;
+    text-indent: -99999px;
+}
+.header .inner .icon{
+    display: flex;
+    gap: 22px;
+}
+.header .inner .icon .search{
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: url(../img/ico_mTopetc01.png) no-repeat;
+    text-indent: -99999px;
+}
+.header .inner .icon .eng{
+    display: block;
+    width: 27px;
+    height: 10px;
+    background: url(../img/ico_mTopetc02.png) no-repeat;
+    text-indent: -99999px;}
+    .header .inner .icon .mune{
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: url(../img/ico_mTopetc04.png) no-repeat;
+    text-indent: -99999px;}
+a{text-decoration: none;}
+li{list-style: none;}
+.vs{
+    width: 100%;
+    height: 920px;
+    background: url(../img/main_01_01.jpg) no-repeat center top;
+}
