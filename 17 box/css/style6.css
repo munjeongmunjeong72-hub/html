@@ -19,6 +19,9 @@ a{text-decoration: none;}
 }
 .box div a{
     display: block;
+    padding: 36px;
+    width: 100%;
+    height: 100%;
 }
 .box .one{
     background: #907354;
