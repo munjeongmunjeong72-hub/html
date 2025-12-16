@@ -20,7 +20,7 @@ li{list-style: none;}
     flex-wrap: wrap;
 }
 .box ul li:hover a p{
-flex-direction: underline;
+text-decoration: underline;
 }
 .box ul li:hover a .imgbox img{
     transform: scale(1.2);
