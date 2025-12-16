@@ -1,0 +1,54 @@
+@charset "utr-8";
+@font-face {
+   font-family: "맑은 고딕";
+}
+body{
+font-family: 'NanumSquareRound';
+}
+*{margin: 0;padding: 0;}
+a{text-decoration: none;}
+li{list-style: none;}
+.box{
+    width: 660px;
+    border: 1px solid #ededed;
+    margin: 50px auto 0;
+    padding: 20px;
+}
+.box ul{
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.box ul li:hover a p{
+flex-direction: underline;
+}
+.box ul li:hover a .imgbox img{
+    transform: scale(1.2);
+}
+.box ul li{
+    width: 156px;
+    /* background: gold; */
+}
+.box ul li a{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.box ul li a .imgbox{
+    width: 100%;
+    height: 150px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.box ul li a .imgbox img{
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s;
+}
+.box ul li a p{
+    font-size: 14px;
+    color: #222;
+    margin-top: 14px;
+    line-height: 22px;
+    font-weight: 300;
+}
