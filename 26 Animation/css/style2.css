@@ -20,6 +20,7 @@ body{
     top: 0;
 animation: move-ani1 4s ease-in-out infinite forwards;
 }
+
 .b2{
     width: 1000px;
     height: 300px;
@@ -34,7 +35,7 @@ animation: move-ani1 4s ease-in-out infinite forwards;
     position: absolute;
     left: 0;
     top: 0;
-animation: move-ani2 4s ease-in-out 3 forwards 2s;
+animation: move-ani2 4s ease-in-out 2 forwards ;
 }
 @keyframes move-ani1 {
     0%{left: 0; top: 0;}
@@ -45,8 +46,9 @@ animation: move-ani2 4s ease-in-out 3 forwards 2s;
 }
 @keyframes move-ani2 {
     0%{left: 0; top: 0;}
-    25%{left: 900px; top: 0; background: rgb(153, 255, 94);}
-    50%{left: 900px; top: 200px; background: rgb(255, 30, 161);}
-    75%{left: 0; top: 200px; background: rgb(163, 103, 187);}
-    100%{left: 0; top: 0;}
+    20%{left: 900px; top: 0; background: rgb(153, 255, 94);}
+    40%{left: 900px; top: 200px; background: rgb(255, 30, 161);}
+    60%{left: 0; top: 200px; background: rgb(163, 103, 187);}
+    80%{left: 0; top: 0;}
+    100%{left: -100px; top: 0;}
 }
