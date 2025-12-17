@@ -1,0 +1,17 @@
+@charset "utf-8";
+body{
+
+}
+*{margin: 0;padding: 0;}
+div{
+    width: 100px;
+    height: 100px;
+    background: red;
+    animation-name: test-ani;
+    animation-duration: 2s;
+    animation-iteration-count: 10;
+}
+@keyframes test-ani {
+    from{background: red;}
+    to{background: blue;}
+}

@@ -1,0 +1,40 @@
+@charset "utf-8";
+body{
+
+}
+*{margin: 0;padding: 0;}
+div{
+    width: 100px;
+    height: 100px;
+    background: red;
+    border-radius: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    /* animation-name: rotate-ani;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-direction: reverse;
+    animation-duration: alternate;
+    animation-timing-function: ease-in-out;
+    animation-timing-function: linear;
+    animation-delay: 1s; */
+    animation: rotate-ani 4s ease-in-out infinite forwards 2s;
+    
+}
+@keyframes circle-ani2 {
+    from{left: 0;}
+    to{left: 1000px;}
+}
+@keyframes move-ani {
+    0%{left: 0;}
+    100%{left: 1500px;}
+}
+@keyframes rotate-ani {
+    0%{left: 0; top: 0;}
+    25%{left: 1000px; top:0; background: blue;}
+    50%{left: 1000px; top:300px; background: yellow;}
+    75%{left: 0; top: 300px; background: pink;}
+    100%{left: 0; top: 0; background: red;}
+}

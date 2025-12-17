@@ -1,0 +1,52 @@
+@charset "utf-8";
+body{
+
+}
+*{margin: 0;padding: 0;}
+.b1{
+    width: 1000px;
+    height: 300px;
+    border: 2px solid blue;
+    margin: 0 auto;
+    position: relative;
+    
+}
+.b1 .c1{
+    width: 100px;
+    height: 100px;
+    background: pink;
+      position: absolute;
+    left: 0;
+    top: 0;
+animation: move-ani1 4s ease-in-out infinite forwards;
+}
+.b2{
+    width: 1000px;
+    height: 300px;
+    border: 2px solid red;
+    margin: 200px auto 0;
+    position: relative;
+}
+.b2 .c2{
+    width: 100px;
+    height: 100px;
+    background: yellow;
+    position: absolute;
+    left: 0;
+    top: 0;
+animation: move-ani2 4s ease-in-out 3 forwards;
+}
+@keyframes move-ani1 {
+    0%{left: 0; top: 0;}
+    25%{left: 900px; top: 0; background: paleturquoise;}
+    50%{left: 900px; top: 200px; background: dodgerblue;}
+    75%{left: 0; top: 200px; background: palegreen;}
+    100%{left: 0; top: 0;}
+}
+@keyframes move-ani2 {
+    0%{left: 0; top: 0;}
+    25%{left: 900px; top: 0; background: rgb(153, 255, 94);}
+    50%{left: 900px; top: 200px; background: rgb(255, 30, 161);}
+    75%{left: 0; top: 200px; background: rgb(163, 103, 187);}
+    100%{left: 0; top: 0;}
+}
