@@ -1,0 +1,36 @@
+@charset "utf-8";
+body{
+
+}
+*{margin: 0;padding: 0;}
+.box{
+    width: 505px;
+    height: 303px;
+    border: 2px solid #000;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform:  translate(-50%,-50%);
+}
+.box .img{
+    position: absolute;
+    right: 0;
+    bottom: -99%;
+    margin-bottom: -5.5px;
+    
+    animation: img-ani 2s ease-in-out forwards 0.2s;
+}
+@keyframes img-ani {
+    0%{bottom: -99%;}
+    100%{bottom: 0;}
+}
+.box .tit{
+    position: absolute;
+    left: 8%;
+    top: 50%;
+    animation: tit-ani 2s ease-in-out forwards;
+}
+@keyframes tit-ani {
+    0%{top: 0;}
+    100%{top: 50%;}
+}
