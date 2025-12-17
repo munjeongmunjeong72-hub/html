@@ -19,7 +19,7 @@ body{
     bottom: -99%;
     margin-bottom: -5.5px;
     
-    animation: img-ani 2s ease-in-out forwards 1s;
+    animation: img-ani 2s ease-in-out forwards 2s;
 }
 @keyframes img-ani {
     0%{bottom: -99%;}
