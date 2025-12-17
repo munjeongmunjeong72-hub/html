@@ -34,7 +34,7 @@ animation: move-ani1 4s ease-in-out infinite forwards;
     position: absolute;
     left: 0;
     top: 0;
-animation: move-ani2 4s ease-in-out 3 forwards;
+animation: move-ani2 4s ease-in-out 3 forwards 2s;
 }
 @keyframes move-ani1 {
     0%{left: 0; top: 0;}
