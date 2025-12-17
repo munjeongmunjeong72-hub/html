@@ -19,7 +19,7 @@ body{
     bottom: -99%;
     margin-bottom: -5.5px;
     
-    animation: img-ani 2s ease-in-out forwards 0.2s;
+    animation: img-ani 2s ease-in-out forwards 1s;
 }
 @keyframes img-ani {
     0%{bottom: -99%;}
@@ -28,10 +28,10 @@ body{
 .box .tit{
     position: absolute;
     left: 8%;
-    top: 50%;
+    top: -99%;
     animation: tit-ani 2s ease-in-out forwards;
 }
 @keyframes tit-ani {
-    0%{top: 0;}
+    0%{top: -99%;}
     100%{top: 50%;}
 }
