@@ -1,0 +1,104 @@
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+body{
+font-family: "Noto Sans KR", sans-serif;
+}
+*{margin: 0;padding: 0;}
+a{text-decoration: none;}
+li{list-style: none;}
+button{border: none; background: none;}
+
+.header{
+    width: 100%;
+    height: 89px;
+    border-bottom: 1px solid #e8e8e8;
+}
+.header .inner{
+    width: 1400px;
+    height: 89px;
+    /* background: #a7d4ba; */
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header .inner h1 a{
+    display: block;
+    width: 162px;
+    height: 89px;
+    background: url(../img/logo.jpg) no-repeat;
+    text-indent: -9999px;
+}
+.header .inner .gnb{
+    display: flex;
+    /* gap: 49px; */
+}
+.header .inner .gnb>li{
+    background: rgb(82, 194, 106);
+    position: relative;
+}
+.header .inner .gnb>li:hover>a{
+    color: #c40f39;
+    position: relative;
+    
+}
+.header .inner .gnb>li:hover>a::after{
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: #c40f39;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+.header .inner .gnb>li>a{
+    display: block;
+    font-size: 18px;
+    color: #333;
+    font-weight: 400;
+    background: rgb(255, 255, 255);
+    height: 89px;
+    line-height: 89px;
+    padding: 0 45px;
+}
+.header .inner .icon{
+    display: flex;
+    gap: 28px;
+}
+.header .inner .icon li:first-child a{
+    display: block;
+    width: 19px;
+    height: 18px;
+    background: url(../img/btn_search.gif);
+    text-indent: -9999px;
+}
+.header .inner .icon li:last-child a{
+      display: block;
+    width: 19px;
+    height: 18px;
+    background: url(../img/Screenshot\ 2025-12-18\ at\ 16.44.43.JPG);
+    text-indent: -9999px;
+}
+/* 2차 */
+.header .inner .gnb>li>.depth2{
+    position: absolute;
+    left: 0;
+    top: 89px;
+    text-align: center;
+    background: #7edfa3;
+    width: 100%;
+
+}
+.header .inner .gnb>li>.depth2 li a{
+    display: block;
+    width: 100%;
+    height: 59px;
+    border-bottom: solid 1px #e1e1e1 ;
+    line-height: 59px;
+    font-size: 15px;
+    color: #7c7c7c;
+    background: rgba(255,255,255,0.7);
+}
+.header .inner .gnb>li>.depth2 li:hover a{
+    color: #c40f39;
+}
