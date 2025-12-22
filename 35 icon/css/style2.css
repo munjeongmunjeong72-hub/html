@@ -1,0 +1,53 @@
+@charset "utf-8";
+body{
+
+}
+*{margin: 0;padding: 0;}
+a{text-decoration: none}
+li{list-style: none;}
+.header{
+    width: 100%;
+    height: 80px;
+     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    box-sizing: border-box;
+    background: #000;
+    border-bottom: solid #6b6b6b 2px;
+}
+.header h1 a{
+    display: block;
+    width: 390px;
+    height: 59px;
+    background: url(../img/hv-logo.png);
+    text-indent: -9999px;
+}
+.header ul{
+    display: flex;
+    gap: 17px;
+}
+    .header ul li a{
+        font-size: 24px;
+        color: #fff;
+    }
+.menu{
+    width: 100%;
+    height: 80px;
+    background: #000;
+    
+}
+.menu ul{
+    display: flex;
+    align-items: center;
+justify-content: space-between;
+line-height: 80px;
+padding: 0 70px;
+    gap: 17px;
+
+}
+.menu ul li a{
+    font-size:17px ;
+    font-weight: 700;
+    color: #fff;
+}
