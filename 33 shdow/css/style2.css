@@ -11,8 +11,7 @@ body{
     margin: 35px auto 35px;
     padding: 35px;
     box-sizing: border-box;
-    border-radius: 12px;
-    box-shadow: 0 0 8px #000;
+    border-radius: 12px 48px 12px 48px;
 }
 .box5{
    width: 710px;
@@ -21,7 +20,7 @@ body{
    margin: 0 auto 35px; 
    padding: 35px;
    box-sizing: border-box;
-   border-radius: 12px 24px 36px 48px;
+   border-radius: 12px;
    box-shadow: 0 0 8px #000      ;
 }
 .box6{
@@ -34,6 +33,7 @@ body{
    font-weight: 800;
    text-align: center;
    font-size: 50px;
+   background: #f2f2f2;
    text-shadow: 3px 3px 0 red;
 }
 .box7{
