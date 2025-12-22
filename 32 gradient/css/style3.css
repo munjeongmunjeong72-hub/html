@@ -1,0 +1,13 @@
+@charset "utf-8";
+body{
+
+}
+*{margin: 0;padding: 0;}
+.gradient1{
+width: 100%;
+height: 300px;
+border: solid 1px #000;
+text-align: center;
+margin: 45px auto 0;
+background-image: linear-gradient(to right,#ff0000,#ff9100,#ffee00,#66ff00,#00ac5c,#00c3ff,#0400ff,#8400ff);
+}

@@ -1,0 +1,24 @@
+@charset "utf-8";
+body{
+
+}
+*{margin: 0;padding: 0;}
+.gradient1{
+width: 800px;
+height: 600px;
+border: solid 1px #000;
+text-align: center;
+margin: 45px auto 0;
+background-image: linear-gradient(to bottom,#079b07,#fff);
+}
+button{
+    width: 130px;
+    height: 40px;
+    border: 1px solid #000;
+    border-radius: 999px;
+    background-image: linear-gradient(to bottom,#c9edfd,#2050f0);
+    position: absolute;
+    left: 0;
+    top: 50px;
+    transform: translateX(100px);
+}
