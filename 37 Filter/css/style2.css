@@ -1,0 +1,40 @@
+@charset "utf-8";
+body{
+
+}
+*{margin: 0;padding: 0;}
+div{
+    width: 1143px;
+    height: 285px;
+    margin: 0 auto;
+    display: flex;
+    gap: 20px;
+}
+div img{
+    width: 270px;
+    height: 100%;
+}
+div .test{
+    filter: blur(10px);
+}
+div .test:hover{
+filter: blur(0) invert(100%);
+}
+div .test2{
+    filter: opacity(50%);
+}
+div .test2:hover{
+    filter: opacity(100%) brightness(120%);
+}
+div .test3{
+    filter: grayscale(100%);
+}
+div .test3:hover{
+     filter: sepia(100%) drop-shadow(8px 8px 10px blue);
+}
+div .test4{
+    filter: drop-shadow(6px 6px 8px black) saturate(80%) contrast(200%);
+}
+div .test4:hover{
+    filter: brightness(200%) grayscale(50%);
+}

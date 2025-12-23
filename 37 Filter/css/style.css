@@ -1,0 +1,48 @@
+@charset "uft-8";
+body{
+
+}
+*{margin: 0;padding: 0;}
+.test{
+    /* blur 효과 주는 명령 */
+    filter: blur(10px);
+}
+.test2{
+    /* brightness 효과 주는 명령-기본값 100% */
+    filter: brightness(150%);
+}
+.test3{
+    /*  contrast 효과 주는 명령*/
+    filter: contrast(100%);
+    filter: contrast(170%);
+}
+.test4{
+    /* drop-shadow 효과 주는 명령 */
+    filter: drop-shadow(10px 10px 10px gray);
+}
+.test5{
+    /* grayscale 효과 주는 명령 - 기본값 0*/
+    filter: grayscale(50%);
+}
+.test6{
+    /* hue-rotate 효과 주는 명령 0~360deg */
+    filter: hue-rotate(90deg);
+}
+.test7{
+    /* invert 효과 주는 명령*/
+    filter: invert(100%);
+    /* opacity 효과 주는 명령 */
+    filter: opacity(70%);
+}
+.test8{
+    /* saturate 효과 주는 명령 */
+    filter: saturate(200%);
+}
+.test9{
+    /* sepia 효과 주는 명령*/
+    filter: sepia(100%);
+}
+.testend{
+    /* 효과 여러개지정 */
+    filter: drop-shadow(8px 8px 10px red) grayscale(50%) brightness(150%);
+}
