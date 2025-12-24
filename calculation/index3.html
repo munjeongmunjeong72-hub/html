@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>논리연산자</title>
+</head>
+<body>
+    <script>
+        // 논리연산자>.and,or,not
+        // 결과값을 참.거로 리턴
+        // and-> && 두가지 조건이 모두 참이 되어야 참인것
+        // or-> || 하나라도 참이면 참이 됨
+        // not -> ! 참>거짓으로 바꿈/ 거짓>참으로 바꿈
+
+        let gender = true
+
+        let man = true
+        let women = false
+
+        let gen = man && women
+        let gen2 = man || women
+
+        document.write("gender변수=" + gender + "<br>");
+        document.write("gender변수=" + !gender + "<br>");
+        document.write("gen1변수=" + gen + "<br>");
+        document.write("gen2변수=" + gen2 + "<br>");
+    </script>
+</body>
+</html>

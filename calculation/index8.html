@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>달러환전</title>
+</head>
+<body>
+    <script>
+        // 외부로부터 달러 입력을 받고 국내원화로 바꿔주는 프로그램
+        // 고객이 입력한 00달러는 원화로 00원입니다
+        
+     let num =   prompt("환전할 달러를 숫자로 입력해주세요")
+     let won = 1461.92
+
+    //  달러를 원화로 환산
+     let atm =   num * won
+     alert("고객님이 입력하신" + num + "달러는 원화로" + atm + "입니다")
+    </script>
+</body>
+</html>
