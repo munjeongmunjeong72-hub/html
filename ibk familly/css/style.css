@@ -80,11 +80,11 @@ display: none;
     color: #575757;
     letter-spacing: -1px;
 }
-.footer .inner .leftbox ul.list li a:nth-child(1) a,
-.footer .inner .leftbox ul.list li a:nth-child(2) a,
-.footer .inner .leftbox ul.list li a:nth-child(3) a,
-.footer .inner .leftbox ul.list li a:nth-child(8) a,
-.footer .inner .leftbox ul.list li a:nth-child(9) a {
+.footer .inner .leftbox .list li:nth-child(1) a,
+.footer .inner .leftbox .list li:nth-child(2) a,
+.footer .inner .leftbox .list li:nth-child(3) a,
+.footer .inner .leftbox .list li:nth-child(8) a,
+.footer .inner .leftbox .list li:nth-child(9) a {
     color: #0f53a8;
 }
 .footer .inner .leftbox p.copy{
