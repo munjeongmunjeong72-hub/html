@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>if응용3</title>
+</head>
+<body>
+    <script>
+    let name = prompt("이름을 입력하세요")
+    let kor = prompt("a학점을 입력해주세요")
+    let eng = prompt("b학점을 입력해주세요")
+    let mat = prompt("c학점을 입력해주세요")
+
+    let tot = Number(kor) + Number(eng) + Number(mat)
+    let ayg = tot/3
+    let res = ''
+
+     if(avg>=95){
+        res = "A+"
+    }else if(avg>=90){
+        res = "A"
+    }else if(avg>=85){
+        res = "B+"
+    }else if(avg>=80){
+        res = "B"
+    }else if(avg>=75){
+        res = "C+"
+    }else if(avg>=70){
+        res = "C"
+    }else if(avg>=65){
+        res = "D+"
+    }else if(avg>=60){
+        res = "D"
+    }else{
+        res = "F"
+    }
+    document.write("이름:" + name + "님" + "<br>")
+    document.write("a학점:" + kor + "점" + "<br>")
+    document.write("b학점:" + eng + "점" + "<br>")
+    document.write("c학점:" + mat + "점" + "<br>")
+    document.write("총합:" + tot + "점" + "<br>")
+    document.write("평균:" + ayg + "점" + "<br>")
+    document.write("평가:" + res + "점" + "<br>")
+    </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>if3</title>
+</head>
+<body>
+    <pre>
+        if문 제3형식
+        if{
+            참일때 실행
+        }else if{
+            참일때 실행
+        }else if{
+            참일때 실행
+        }else{
+            거짓일때 실행
+        }
+    </pre>
+<hr>
+    <script>
+    let name =  prompt("이름을 입력해주세요")
+    let kor = prompt("국어점수를 입력해주세요")
+    let eng = prompt("영어점수를 입력해주세요")
+    let mat = prompt("수학점수를 입력해주세요")
+
+    let tot = Number(kor) + Number(eng) + Number(mat)
+    let ayg = tot/3
+    let res = ''
+
+    if(avg>=90){
+        res = "수"
+    }else if(avg>=80){
+        res = "우"
+    }else if(avg>=70){
+        res = "미"
+    }else if(avg>=60){
+        res = " 양"
+    }else{
+        res = "가"
+    }
+
+    // alert("총점:" + tot)
+    document.write("이름=" + name + "님<br>")
+    document.write("국어점수=" + kor + "점<br>")
+    document.write("영어점수=" + eng + "점<br>")
+    document.write("수학점수=" + mat + "점<br>")
+    document.write("총점=" + tot + "점<br>")
+    document.write("평균=" + avg + "점<br>")
+    document.write("평점=" + res)
+    </script>
+</body>
+</html>
