@@ -1,0 +1,171 @@
+@charset "utf-8";
+body{
+
+}
+*{margin: 0; padding: 0;}
+li{list-style: none;}
+a{text-decoration: none;}
+.header{
+    width: 100%;
+    height: 73px;
+    background: #fff;
+}
+.header .inner{
+    width: 940px;
+    height: 73px;
+    /* background: gold; */
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+.header .inner h1 a{
+    display: block;
+    width: 152px;
+    height: 35px;
+    background: url(../img/h1_logo_sub.gif) no-repeat;
+    text-indent: -9999px;
+}
+.line{
+    width: 100%;
+    height: 4px;
+    background: url(../img/bg_gnb.gif) no-repeat center top;
+}
+.main{
+    width: 100%;
+    height: 2230px;
+    background: #e9eef2;
+}
+.footer{
+    width: 100%;
+    height: 120px;
+    border-top: solid 1px #d6e0df;
+    background: #fff;
+}
+.footer .inner{
+    width: 940px;
+    height: 120px;
+    margin: 0 auto;
+    /* background: lawngreen; */
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 0;
+    box-sizing: border-box;
+}
+.footer .inner .leftbox .list {
+    display: flex;
+    flex-wrap: wrap;
+    width: 610px;
+    /* background: forestgreen; */
+    gap: 10px;
+}
+.footer .inner .leftbox .list li{
+    position: relative;
+}
+.footer .inner .leftbox .list li::after{
+    content: '';
+    width: 1px;
+    height: 10px;
+    background: #bbb;
+    position: absolute;
+    left: -5px;
+    top: 60%;
+    transform: translateY(-50%);
+}
+.footer .inner .leftbox .list li:nth-child(1)::after,
+.footer .inner .leftbox .list li:nth-child(7)::after{
+display: none;
+}
+.footer .inner .leftbox .list li a{
+    font-size: 12px;
+    color: #575757;
+    letter-spacing: -1px;
+}
+.footer .inner .leftbox ul.list li a:nth-child(1) a,
+.footer .inner .leftbox ul.list li a:nth-child(2) a,
+.footer .inner .leftbox ul.list li a:nth-child(3) a,
+.footer .inner .leftbox ul.list li a:nth-child(8) a,
+.footer .inner .leftbox ul.list li a:nth-child(9) a {
+    color: #0f53a8;
+}
+.footer .inner .leftbox p.copy{
+    color: #575757;
+    font-size: 12px;
+    margin-top: 10px;
+}
+.footer .inner .rightbox{
+    display: flex;
+    gap: 6px;
+}
+.footer .inner .rightbox button{
+    width: 140px;
+    height: 25px;
+    border: 1px solid #bbb;
+    background: #fff;
+    text-align: left;
+    text-indent: 8px;
+    position: relative;
+    box-sizing: border-box;
+    font-size: 12px;
+    color: #575757;
+}
+.footer .inner .rightbox button::after{
+    content: '';
+    width: 9px;
+    height: 5px;
+    background: url(../img/select_ico.png) no-repeat;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.footer .inner .rightbox .family{
+    position: relative;
+}
+.footer .inner .rightbox .family .familylist{ 
+    width: 140px;
+    height: 135px;
+    background: #fff;
+    border: solid 1px #bbb;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    bottom: 59px;
+    overflow: auto;
+}
+.footer .inner .rightbox .family .familylist li{
+    text-indent: 10px;
+    line-height: 19px;
+}
+.footer .inner .rightbox .family .familylist li:hover a{
+    color: #0f53a8;
+}
+.footer .inner .rightbox .family .familylist li a{
+    font-size: 12px;
+    color: #575757;
+    letter-spacing: -1px;
+    
+}
+/*  */
+.footer .inner .rightbox .family2{
+position: relative;
+}
+.footer .inner .rightbox .family2 .familylist{
+    position: absolute;
+    left: 0;
+    bottom: 59px;
+    width: 140px;
+    height: 135px;
+    border: 1px solid #bbb;
+    box-sizing: border-box;
+    background: #fff;
+    overflow: auto;
+}
+.footer .inner .rightbox .family2 .familylist li{
+    text-indent: 10px;
+    line-height: 19px;
+}
+.footer .inner .rightbox .family2 .familylist li a{
+    color: #575757;
+    font-size: 12px;
+    letter-spacing: -1px;
+}
