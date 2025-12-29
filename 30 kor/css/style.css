@@ -38,6 +38,7 @@ button{border: none; background: none;}
     align-items: center;
     gap: 70px;
     position: relative;
+    z-index: 10;
 }
 .gnb>li>a{
     font-size: 16px;
@@ -93,7 +94,7 @@ ul.slick-dots{
     display: flex;
     justify-content: center;
     position: absolute;
-    left: 90%;
+    right: 30px;
     transform: translateX(-50%);
     bottom: 20px;
         gap: 8px;}
