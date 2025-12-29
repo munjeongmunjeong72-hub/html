@@ -1,11 +1,13 @@
 const swiper = new Swiper('.swiper', {
   // Optional parameters
-  direction: 'vertical',
+  direction: 'horizontal',
   loop: true,
+
 autoplay:{
    delay:3000,
    disableOnInteraction:false,
    pauseOnMouseEnter:true,
+   stopOnLastSlide: true
 },
   // If we need pagination
   pagination:{
