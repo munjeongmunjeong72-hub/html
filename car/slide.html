@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Onboarding Swiper</title>
+
+  <!-- Swiper CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+  />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+        "Noto Sans KR", sans-serif;
+      background: #ffffff;
+      color: #333;
+    }
+
+    .swiper {
+      height: 100vh;
+    }
+
+    .slide-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 80px 20px 140px;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #4f6db8;
+      margin-bottom: 8px;
+    }
+
+    .desc {
+      font-size: 14px;
+      color: #9aa6d1;
+      line-height: 1.5;
+      margin-bottom: 40px;
+    }
+
+    .image-wrap {
+      width: 240px;
+      height: 240px;
+      /* border-radius: 50%;
+      background: #2f4f67; */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image-wrap img {
+      width: 80%;
+      height: auto;
+    }
+
+    /* pagination */
+    .swiper-pagination {
+      bottom: 90px !important;
+    }
+
+    .swiper-pagination-bullet {
+      background: #cfd6ee;
+      opacity: 1;
+    }
+
+    .swiper-pagination-bullet-active {
+      background: #4f6db8;
+    }
+
+    /* CTA button */
+    .cta {
+      position: fixed;
+      bottom: 30px;
+      left: 20px;
+      right: 20px;
+      height: 52px;
+      background: #4f6db8;
+      color: #fff;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="swiper">
+    <div class="swiper-wrapper">
+
+      <!-- Slide 1 -->
+      <div class="swiper-slide">
+        <div class="slide-inner">
+          <div class="title">차박<br />어디로 떠나야할지 모르겠나요?</div>
+          <div class="desc">
+            지도 기반 위치 및 키워드 검색후 원하는 장소를 한번에
+          </div>
+          <div class="image-wrap">
+            <img src="./img/Frame-2.gif" alt="지도 캐릭터" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="swiper-slide">
+        <div class="slide-inner">
+          <div class="title">차만 있다면<br />장비는 가격부담 적은 렌탈로</div>
+          <div class="desc">
+            차박에 필요한 물품들을 홈보드로 불러보세요
+          </div>
+          <div class="image-wrap">
+            <img src="./img/Frame 2.png" alt="렌탈 캐릭터" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="swiper-slide">
+        <div class="slide-inner">
+          <div class="title">일상이 바쁠땐<br />실시간 라이브로 대리만족하세요</div>
+          <div class="desc">
+            라이브로 다른 뷰너 시청자들과 소통하는 즐거움
+          </div>
+          <div class="image-wrap">
+            <img src="./img/Frame-3.gif" alt="캠프파이어 캐릭터" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="swiper-pagination"></div>
+  </div>
+
+  <button class="cta">시작하기</button>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    new Swiper(".swiper", {
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      
+    loop: true, // 무한 반복
+    autoplay: {
+      delay: 3000, // 3초마다 자동 슬라이드
+      disableOnInteraction: false, // 터치 후에도 자동 재생 유지
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+  });
+
+  </script>
+</body>
+</html>
