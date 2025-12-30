@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#2ea6a3" />
+  <title>Mobile Weather App</title>
+
+  <style>
+    :root{
+      --bg1:#E9F4F5;
+      --bg2:#F3F7FA;
+      --card:#ffffff;
+      --text:#0F172A;
+      --muted:#64748B;
+      --line:#E2E8F0;
+
+      --teal:#2EA6A3;
+      --teal2:#3DB6B2;
+      --chip:#F1F5F9;
+
+      --shadow: 0 14px 35px rgba(2, 6, 23, 0.10);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+    body{
+      margin:0;
+      background: radial-gradient(900px 700px at 20% -10%, rgba(46,166,163,0.22), transparent 55%),
+                  radial-gradient(900px 650px at 95% 25%, rgba(59,130,246,0.12), transparent 55%),
+                  linear-gradient(180deg, var(--bg1), var(--bg2));
+      font-family: -apple-system,BlinkMacSystemFont, "Noto Sans KR", Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+    }
+
+    /* 모바일 전용 */
+    .shell{
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: env(safe-area-inset-top) 16px calc(92px + env(safe-area-inset-bottom)) 16px;
+      position: relative;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 14px 6px 10px;
+    }
+
+    .hamburger{
+      width: 38px; height: 38px;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.55);
+      display:grid; place-items:center;
+      box-shadow: 0 8px 18px rgba(2, 6, 23, 0.05);
+      cursor:pointer;
+      user-select:none;
+    }
+    .hamburger span{
+      width: 16px; height: 2px; background:#0f172a; border-radius:2px;
+      position: relative; display:block;
+    }
+    .hamburger span::before,.hamburger span::after{
+      content:"";
+      position:absolute; left:0;
+      width:16px; height:2px; background:#0f172a; border-radius:2px;
+    }
+    .hamburger span::before{ top:-6px; }
+    .hamburger span::after{ top:6px; }
+
+    .lang{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .langBtn{
+      padding: 8px 10px;
+      font-size: 12px;
+      border:1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.7);
+      cursor:pointer;
+    }
+    .langBtn.active{
+      border-color: rgba(46,166,163,0.55);
+      background: rgba(46,166,163,0.12);
+      color: #0f766e;
+      font-weight: 700;
+    }
+
+    .hello{
+      padding: 4px 6px 12px;
+    }
+    .hello h1{
+      margin:0;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+    .hello p{
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+    .hello b{ color:#0f766e; }
+
+    .searchRow{
+      display:flex;
+      gap:10px;
+      padding: 0 6px 12px;
+      align-items:center;
+    }
+    .search{
+      flex:1;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding: 12px 12px;
+      background: rgba(255,255,255,0.85);
+      border:1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 8px 18px rgba(2, 6, 23, 0.05);
+    }
+    .search input{
+      border:none; outline:none;
+      background: transparent;
+      width: 100%;
+      font-size: 14px;
+    }
+    .search input::placeholder{ color:#94a3b8; }
+    .iconBtn{
+      width: 42px; height: 42px;
+      border:none;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--teal), var(--teal2));
+      box-shadow: 0 12px 24px rgba(46,166,163,0.30);
+      color:white;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      user-select:none;
+    }
+
+    .sectionTitle{
+      margin: 14px 6px 10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .sectionTitle h2{
+      margin:0;
+      font-size: 14px;
+      letter-spacing: -0.01em;
+      color:#0f172a;
+    }
+    .sectionTitle .hint{
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .weatherCard{
+      margin: 0 6px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--teal), #2fbbc0);
+      color:white;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .weatherCard::after{
+      content:"";
+      position:absolute;
+      width: 240px; height: 240px;
+      right:-110px; top:-120px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), transparent 60%);
+      transform: rotate(10deg);
+    }
+
+    .wcTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .place{
+      display:grid;
+      gap:6px;
+    }
+    .place .city{
+      font-size: 14px;
+      opacity: 0.95;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .place .date{
+      font-size: 12px;
+      opacity: 0.85;
+    }
+
+    .tempBig{
+      font-size: 46px;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      margin-top: 2px;
+      line-height: 1;
+    }
+    .desc{
+      font-size: 13px;
+      opacity: 0.95;
+      margin-top: 6px;
+    }
+
+    .miniStats{
+      margin-top: 12px;
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+    }
+    .pill{
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.26);
+      padding: 10px 12px;
+      border-radius: 16px;
+      min-width: 110px;
+    }
+    .pill .k{
+      font-size: 11px;
+      opacity: 0.88;
+    }
+    .pill .v{
+      font-size: 16px;
+      font-weight: 800;
+      margin-top: 4px;
+    }
+
+    .forecastRow{
+      margin-top: 14px;
+      display:flex;
+      gap:10px;
+      overflow:auto;
+      padding-bottom: 4px;
+      position: relative;
+      z-index: 2;
+      scrollbar-width: none;
+    }
+    .forecastRow::-webkit-scrollbar{ display:none; }
+    .fItem{
+      min-width: 72px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 16px;
+      padding: 10px 10px;
+      text-align:center;
+    }
+    .fTime{
+      font-size: 11px;
+      opacity: 0.9;
+    }
+    .fIcon{
+      width: 34px; height: 34px;
+      margin: 6px auto 4px;
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.15));
+    }
+    .fTemp{
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .chipsWrap{
+      margin: 0 6px;
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+    }
+
+    .chip{
+      padding: 10px 12px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,0.75);
+      color:#0f172a;
+      font-size: 13px;
+      cursor:pointer;
+      user-select:none;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .chip .star{
+      width: 16px; height:16px;
+      border-radius: 6px;
+      display:grid; place-items:center;
+      font-size: 12px;
+      background: rgba(15, 118, 110, 0.10);
+      color: #0f766e;
+    }
+
+    .locationsGrid{
+      margin: 8px 6px 0;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .locCard{
+      border-radius: 18px;
+      background: rgba(255,255,255,0.75);
+      border:1px solid var(--line);
+      box-shadow: 0 10px 22px rgba(2, 6, 23, 0.06);
+      overflow:hidden;
+      cursor:pointer;
+    }
+    .locCard .img{
+      height: 84px;
+      background: linear-gradient(135deg, rgba(46,166,163,0.25), rgba(59,130,246,0.18));
+    }
+    .locCard .meta{
+      padding: 10px 12px 12px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .locCard .meta .t{
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: -0.01em;
+    }
+    .locCard .meta .s{
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+    .badge{
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: rgba(46,166,163,0.12);
+      border: 1px solid rgba(46,166,163,0.22);
+      color: #0f766e;
+      font-weight: 800;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    /* 로딩 오버레이 */
+    .loading{
+      position: fixed;
+      inset: 0;
+      display:none;
+      place-items:center;
+      background: rgba(15, 23, 42, 0.28);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+    }
+    .loading.show{ display:grid; }
+    .spinner{
+      width: 46px; height: 46px;
+      border-radius: 999px;
+      border: 4px solid rgba(255,255,255,0.25);
+      border-top-color: rgba(255,255,255,0.95);
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg);} }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: calc(92px + env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.86);
+      color: white;
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-size: 13px;
+      display:none;
+      z-index: 1000;
+      max-width: 90%;
+      text-align: center;
+    }
+    .toast.show{ display:block; }
+
+    /* 하단 탭바 */
+    .tabbar{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 0;
+      width: min(430px, 100%);
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+      background: rgba(255,255,255,0.78);
+      border-top: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+      z-index: 50;
+    }
+    .tabs{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+    .tab{
+      flex:1;
+      display:grid;
+      place-items:center;
+      padding: 10px 10px;
+      border-radius: 16px;
+      color: #0f172a;
+      cursor:pointer;
+      user-select:none;
+      font-size: 12px;
+      gap:4px;
+    }
+    .tab.active{
+      background: rgba(46,166,163,0.12);
+      color: #0f766e;
+      font-weight: 800;
+    }
+    .tab .dot{
+      width: 6px; height: 6px;
+      border-radius:999px;
+      background: transparent;
+    }
+    .tab.active .dot{ background: #0f766e; }
+
+    /* 시안 느낌: 카드 위 아이콘 */
+    .topBadge{
+      width: 36px; height: 36px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.24);
+      display:grid; place-items:center;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="loading" id="loading">
+    <div class="spinner" aria-label="Loading"></div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <main class="shell">
+    <header class="topbar">
+      <div class="hamburger" id="btnMenu" aria-label="Menu">
+        <span></span>
+      </div>
+
+      <div class="lang" aria-label="Language toggle">
+        <button class="langBtn" id="langKO">KO</button>
+        <button class="langBtn" id="langEN">EN</button>
+      </div>
+    </header>
+
+    <section class="hello">
+      <h1 id="helloTitle">Hello 👋</h1>
+      <p id="helloSub">현재 위치 기반으로 <b>오늘의 날씨</b>를 알려드려요.</p>
+    </section>
+
+    <section class="searchRow">
+      <div class="search">
+        <span style="opacity:.55">🔎</span>
+        <input id="cityInput" type="text" placeholder="도시를 검색하세요 (예: Seoul)" />
+      </div>
+      <button class="iconBtn" id="btnSearch" aria-label="Search">➜</button>
+      <button class="iconBtn" id="btnMyLoc" aria-label="My location">📍</button>
+    </section>
+
+    <div class="sectionTitle">
+      <h2 id="todayTitle">오늘의 날씨</h2>
+      <span class="hint" id="timeHint">-</span>
+    </div>
+
+    <section class="weatherCard" aria-live="polite">
+      <div class="wcTop">
+        <div class="place">
+          <div class="city" id="placeText">
+            <span>Loading…</span>
+          </div>
+          <div class="date" id="coordText">-</div>
+          <div class="tempBig" id="tempText">--°</div>
+          <div class="desc" id="descText">-</div>
+        </div>
+
+        <div class="topBadge" title="weather icon">
+          <img id="iconImg" alt="" style="width:32px;height:32px; display:none;" />
+          <span id="iconFallback">☁️</span>
+        </div>
+      </div>
+
+      <div class="miniStats">
+        <div class="pill">
+          <div class="k" id="kHumidity">습도</div>
+          <div class="v" id="humidityText">--%</div>
+        </div>
+        <div class="pill">
+          <div class="k" id="kWind">풍속</div>
+          <div class="v" id="windText">-- m/s</div>
+        </div>
+        <div class="pill">
+          <div class="k" id="kFeels">체감</div>
+          <div class="v" id="feelsText">--°C</div>
+        </div>
+        <div class="pill">
+          <div class="k" id="kPressure">기압</div>
+          <div class="v" id="pressureText">-- hPa</div>
+        </div>
+      </div>
+
+      <div class="forecastRow" id="forecastRow" aria-label="Forecast row">
+        <!-- forecast items -->
+      </div>
+    </section>
+
+    <div class="sectionTitle" style="margin-top:16px;">
+      <h2 id="recommendTitle">추천 도시</h2>
+      <span class="hint" id="recommendHint">Quick Picks</span>
+    </div>
+
+    <section class="chipsWrap" id="chipsWrap">
+      <!-- 추천 도시 칩 -->
+    </section>
+
+    <div class="sectionTitle" style="margin-top:16px;">
+      <h2 id="favoritesTitle">즐겨찾기</h2>
+      <span class="hint" id="favoritesHint">Tap to open</span>
+    </div>
+
+    <section class="locationsGrid" id="favoritesGrid">
+      <!-- favorites cards -->
+    </section>
+  </main>
+
+  <nav class="tabbar" aria-label="Bottom navigation">
+    <div class="tabs">
+      <div class="tab active" data-tab="home">
+        <div class="dot"></div>
+        <div id="tabHome">Home</div>
+      </div>
+      <div class="tab" data-tab="search">
+        <div class="dot"></div>
+        <div id="tabSearch">Search</div>
+      </div>
+      <div class="tab" data-tab="fav">
+        <div class="dot"></div>
+        <div id="tabFav">Favorites</div>
+      </div>
+      <div class="tab" data-tab="map">
+        <div class="dot"></div>
+        <div id="tabMap">Map</div>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    // ================================
+    // OpenWeatherMap 설정
+    // ================================
+    const API_KEY = "27f9a5d9cb4bf1de045b10e70b30326f";
+    const CURRENT_URL = "https://api.openweathermap.org/data/2.5/weather";
+    const FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast";
+    const UNITS = "metric";
+
+    // ================================
+    // i18n (KR/EN)
+    // ================================
+    const dict = {
+      ko: {
+        helloTitle: "Hello 👋",
+        helloSub: "현재 위치 기반으로 <b>오늘의 날씨</b>를 알려드려요.",
+        placeholder: "도시를 검색하세요 (예: Seoul)",
+        todayTitle: "오늘의 날씨",
+        recommendTitle: "추천 도시",
+        favoritesTitle: "즐겨찾기",
+        recommendHint: "Quick Picks",
+        favoritesHint: "탭해서 열기",
+        kHumidity: "습도",
+        kWind: "풍속",
+        kFeels: "체감",
+        kPressure: "기압",
+        toastSaved: "즐겨찾기에 추가했어요",
+        toastRemoved: "즐겨찾기에서 제거했어요",
+        errEmpty: "도시명을 입력해 주세요.",
+        errNotFound: "도시를 찾을 수 없습니다. 영어 도시명으로 시도해 보세요. (예: Seoul)",
+        errGeoDenied: "위치 권한이 거부되었습니다. 도시 검색으로 이용해 주세요.",
+        errGeoUnsupported: "이 브라우저는 위치 정보를 지원하지 않습니다.",
+        errGeneric: "오류가 발생했습니다.",
+        tabHome: "Home",
+        tabSearch: "Search",
+        tabFav: "Favorites",
+        tabMap: "Map",
+        windUnit: "m/s",
+        pressureUnit: "hPa",
+      },
+      en: {
+        helloTitle: "Hello 👋",
+        helloSub: "We’ll show <b>today’s weather</b> using your current location.",
+        placeholder: "Search city (e.g., Seoul)",
+        todayTitle: "Today",
+        recommendTitle: "Recommended Cities",
+        favoritesTitle: "Favorites",
+        recommendHint: "Quick Picks",
+        favoritesHint: "Tap to open",
+        kHumidity: "Humidity",
+        kWind: "Wind",
+        kFeels: "Feels like",
+        kPressure: "Pressure",
+        toastSaved: "Added to favorites",
+        toastRemoved: "Removed from favorites",
+        errEmpty: "Please enter a city name.",
+        errNotFound: "City not found. Try English city name (e.g., Seoul).",
+        errGeoDenied: "Location permission denied. Please use city search.",
+        errGeoUnsupported: "Geolocation is not supported in this browser.",
+        errGeneric: "Something went wrong.",
+        tabHome: "Home",
+        tabSearch: "Search",
+        tabFav: "Favorites",
+        tabMap: "Map",
+        windUnit: "m/s",
+        pressureUnit: "hPa",
+      }
+    };
+
+    let lang = localStorage.getItem("lang") || "ko";
+
+    function t(key){
+      return dict[lang][key] ?? key;
+    }
+
+    function applyLang(){
+      document.documentElement.lang = lang;
+
+      document.getElementById("helloTitle").textContent = t("helloTitle");
+      document.getElementById("helloSub").innerHTML = t("helloSub");
+      document.getElementById("cityInput").placeholder = t("placeholder");
+      document.getElementById("todayTitle").textContent = t("todayTitle");
+      document.getElementById("recommendTitle").textContent = t("recommendTitle");
+      document.getElementById("favoritesTitle").textContent = t("favoritesTitle");
+      document.getElementById("recommendHint").textContent = t("recommendHint");
+      document.getElementById("favoritesHint").textContent = t("favoritesHint");
+      document.getElementById("kHumidity").textContent = t("kHumidity");
+      document.getElementById("kWind").textContent = t("kWind");
+      document.getElementById("kFeels").textContent = t("kFeels");
+      document.getElementById("kPressure").textContent = t("kPressure");
+
+      document.getElementById("tabHome").textContent = t("tabHome");
+      document.getElementById("tabSearch").textContent = t("tabSearch");
+      document.getElementById("tabFav").textContent = t("tabFav");
+      document.getElementById("tabMap").textContent = t("tabMap");
+
+      document.getElementById("langKO").classList.toggle("active", lang === "ko");
+      document.getElementById("langEN").classList.toggle("active", lang === "en");
+    }
+
+    // OpenWeather 설명은 API에서 lang 파라미터로 내려받도록 처리
+    function apiLang(){
+      return (lang === "ko") ? "kr" : "en";
+    }
+
+    // ================================
+    // 추천 도시 리스트 (원하면 더 추가 가능)
+    // ================================
+    const RECOMMENDED_CITIES = [
+      { name: "Seoul", label_ko: "서울", label_en: "Seoul" },
+      { name: "Tokyo", label_ko: "도쿄", label_en: "Tokyo" },
+      { name: "London", label_ko: "런던", label_en: "London" },
+      { name: "New York", label_ko: "뉴욕", label_en: "New York" },
+      { name: "Sydney", label_ko: "시드니", label_en: "Sydney" },
+      { name: "Paris", label_ko: "파리", label_en: "Paris" },
+    ];
+
+    // ================================
+    // DOM
+    // ================================
+    const loading = document.getElementById("loading");
+    const toast = document.getElementById("toast");
+
+    const cityInput = document.getElementById("cityInput");
+    const btnSearch = document.getElementById("btnSearch");
+    const btnMyLoc = document.getElementById("btnMyLoc");
+
+    const timeHint = document.getElementById("timeHint");
+
+    const placeText = document.getElementById("placeText");
+    const coordText = document.getElementById("coordText");
+    const tempText = document.getElementById("tempText");
+    const descText = document.getElementById("descText");
+
+    const humidityText = document.getElementById("humidityText");
+    const windText = document.getElementById("windText");
+    const feelsText = document.getElementById("feelsText");
+    const pressureText = document.getElementById("pressureText");
+
+    const iconImg = document.getElementById("iconImg");
+    const iconFallback = document.getElementById("iconFallback");
+
+    const forecastRow = document.getElementById("forecastRow");
+    const chipsWrap = document.getElementById("chipsWrap");
+    const favoritesGrid = document.getElementById("favoritesGrid");
+
+    // ================================
+    // Utils
+    // ================================
+    function showLoading(show){
+      loading.classList.toggle("show", show);
+    }
+
+    let toastTimer = null;
+    function showToast(message){
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 1400);
+    }
+
+    function formatLocalTime(unixUTCSeconds, timezoneOffsetSeconds){
+      const ms = (unixUTCSeconds + timezoneOffsetSeconds) * 1000;
+      const dt = new Date(ms);
+      const yyyy = dt.getUTCFullYear();
+      const mm = String(dt.getUTCMonth() + 1).padStart(2, "0");
+      const dd = String(dt.getUTCDate()).padStart(2, "0");
+      const hh = String(dt.getUTCHours()).padStart(2, "0");
+      const min = String(dt.getUTCMinutes()).padStart(2, "0");
+      return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+    }
+
+    function toFixed1(n){
+      return (typeof n === "number") ? (Math.round(n * 10) / 10) : null;
+    }
+
+    // ================================
+    // Favorites (LocalStorage)
+    // ================================
+    const FAV_KEY = "favoritesCities";
+
+    function loadFavorites(){
+      try{
+        const raw = localStorage.getItem(FAV_KEY);
+        return raw ? JSON.parse(raw) : [];
+      }catch{
+        return [];
+      }
+    }
+
+    function saveFavorites(list){
+      localStorage.setItem(FAV_KEY, JSON.stringify(list));
+    }
+
+    function isFavorite(cityName){
+      const favs = loadFavorites();
+      return favs.includes(cityName);
+    }
+
+    function toggleFavorite(cityName){
+      const favs = loadFavorites();
+      const idx = favs.indexOf(cityName);
+      if (idx >= 0){
+        favs.splice(idx, 1);
+        saveFavorites(favs);
+        showToast(t("toastRemoved"));
+      } else {
+        favs.unshift(cityName);
+        saveFavorites([...new Set(favs)].slice(0, 10));
+        showToast(t("toastSaved"));
+      }
+      renderFavorites();
+      renderRecommendedChips(); // 별표 상태 업데이트
+    }
+
+    // ================================
+    // API
+    // ================================
+    async function fetchCurrentByCoords(lat, lon){
+      const url = `${CURRENT_URL}?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&appid=${API_KEY}&units=${UNITS}&lang=${apiLang()}`;
+      const res = await fetch(url);
+      if(!res.ok) throw new Error(t("errGeneric"));
+      return res.json();
+    }
+
+    async function fetchCurrentByCity(city){
+      const url = `${CURRENT_URL}?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=${UNITS}&lang=${apiLang()}`;
+      const res = await fetch(url);
+      if(!res.ok){
+        if(res.status === 404) throw new Error(t("errNotFound"));
+        throw new Error(t("errGeneric"));
+      }
+      return res.json();
+    }
+
+    async function fetchForecastByCity(city){
+      const url = `${FORECAST_URL}?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=${UNITS}&lang=${apiLang()}`;
+      const res = await fetch(url);
+      if(!res.ok) return null; // forecast 실패해도 현재날씨는 보여주기
+      return res.json();
+    }
+
+    async function fetchForecastByCoords(lat, lon){
+      const url = `${FORECAST_URL}?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}&appid=${API_KEY}&units=${UNITS}&lang=${apiLang()}`;
+      const res = await fetch(url);
+      if(!res.ok) return null;
+      return res.json();
+    }
+
+    // ================================
+    // UI Render
+    // ================================
+    function renderCurrent(data){
+      const city = data?.name ?? "-";
+      const country = data?.sys?.country ?? "";
+      const lat = data?.coord?.lat;
+      const lon = data?.coord?.lon;
+
+      const temp = data?.main?.temp;
+      const humidity = data?.main?.humidity;
+      const wind = data?.wind?.speed;
+      const feels = data?.main?.feels_like;
+      const pressure = data?.main?.pressure;
+
+      const desc = data?.weather?.[0]?.description ?? "-";
+      const iconCode = data?.weather?.[0]?.icon;
+      const dt = data?.dt;
+      const tz = data?.timezone ?? 0;
+
+      placeText.innerHTML = `
+        <span>${city}${country ? ", " + country : ""}</span>
+        <span style="margin-left:8px; opacity:.9; cursor:pointer;" id="favStar" title="favorite"> ${isFavorite(city) ? "★" : "☆"} </span>
+      `;
+
+      const favStar = document.getElementById("favStar");
+      favStar.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleFavorite(city);
+      });
+
+      coordText.textContent = (lat != null && lon != null) ? `Lat ${toFixed1(lat)} / Lon ${toFixed1(lon)}` : "-";
+      timeHint.textContent = (typeof dt === "number") ? formatLocalTime(dt, tz) : "-";
+
+      tempText.textContent = (typeof temp === "number") ? `${Math.round(temp)}°` : "--°";
+      descText.textContent = desc;
+
+      humidityText.textContent = (typeof humidity === "number") ? `${humidity}%` : "--%";
+      windText.textContent = (typeof wind === "number") ? `${toFixed1(wind)} ${t("windUnit")}` : `-- ${t("windUnit")}`;
+      feelsText.textContent = (typeof feels === "number") ? `${Math.round(feels)}°C` : "--°C";
+      pressureText.textContent = (typeof pressure === "number") ? `${pressure} ${t("pressureUnit")}` : `-- ${t("pressureUnit")}`;
+
+      if (iconCode){
+        iconImg.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+        iconImg.style.display = "block";
+        iconFallback.style.display = "none";
+      } else {
+        iconImg.style.display = "none";
+        iconFallback.style.display = "block";
+      }
+    }
+
+    function renderForecast(forecastData){
+      forecastRow.innerHTML = "";
+      if (!forecastData?.list?.length) return;
+
+      // 3시간 단위 예보 중 다음 6개만 표시
+      const items = forecastData.list.slice(0, 6);
+
+      for (const it of items){
+        const dt = it?.dt; // UTC unix
+        const temp = it?.main?.temp;
+        const icon = it?.weather?.[0]?.icon;
+        const timeText = (typeof dt === "number")
+          ? new Date(dt * 1000).toLocaleTimeString(lang === "ko" ? "ko-KR" : "en-US", { hour: "2-digit", minute:"2-digit" })
+          : "--:--";
+
+        const el = document.createElement("div");
+        el.className = "fItem";
+        el.innerHTML = `
+          <div class="fTime">${timeText}</div>
+          <img class="fIcon" src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="" />
+          <div class="fTemp">${(typeof temp === "number") ? Math.round(temp) + "°" : "--°"}</div>
+        `;
+        forecastRow.appendChild(el);
+      }
+    }
+
+    function renderRecommendedChips(){
+      chipsWrap.innerHTML = "";
+      for (const c of RECOMMENDED_CITIES){
+        const chip = document.createElement("div");
+        chip.className = "chip";
+        const label = (lang === "ko") ? c.label_ko : c.label_en;
+        chip.innerHTML = `
+          <span class="star">${isFavorite(c.name) ? "★" : "☆"}</span>
+          <span>${label}</span>
+        `;
+        chip.addEventListener("click", () => loadByCity(c.name));
+        chip.addEventListener("contextmenu", (e) => {
+          // 모바일에선 길게 누르기/우클릭 같은 액션 대체용
+          e.preventDefault();
+          toggleFavorite(c.name);
+        });
+        chipsWrap.appendChild(chip);
+      }
+    }
+
+    async function renderFavorites(){
+      favoritesGrid.innerHTML = "";
+      const favs = loadFavorites();
+
+      if (favs.length === 0){
+        const empty = document.createElement("div");
+        empty.style.gridColumn = "1 / -1";
+        empty.style.padding = "12px 6px";
+        empty.style.color = "var(--muted)";
+        empty.style.fontSize = "13px";
+        empty.textContent = (lang === "ko")
+          ? "즐겨찾기가 비어 있어요. ★를 눌러 추가해보세요."
+          : "No favorites yet. Tap ★ to add.";
+        favoritesGrid.appendChild(empty);
+        return;
+      }
+
+      // 즐겨찾기 카드는 “간단 프리뷰”를 위해 현재날씨를 병렬 호출
+      const tasks = favs.slice(0, 6).map(async (city) => {
+        try{
+          const data = await fetchCurrentByCity(city);
+          return { ok: true, city, data };
+        } catch {
+          return { ok: false, city, data: null };
+        }
+      });
+
+      const results = await Promise.all(tasks);
+
+      for (const r of results){
+        const card = document.createElement("div");
+        card.className = "locCard";
+
+        if (!r.ok){
+          card.innerHTML = `
+            <div class="img"></div>
+            <div class="meta">
+              <div>
+                <div class="t">${r.city}</div>
+                <div class="s">${lang === "ko" ? "불러오기 실패" : "Failed to load"}</div>
+              </div>
+              <div class="badge">--°</div>
+            </div>
+          `;
+          card.addEventListener("click", () => loadByCity(r.city));
+          favoritesGrid.appendChild(card);
+          continue;
+        }
+
+        const temp = r.data?.main?.temp;
+        const desc = r.data?.weather?.[0]?.description ?? "-";
+
+        card.innerHTML = `
+          <div class="img"></div>
+          <div class="meta">
+            <div>
+              <div class="t">${r.city}</div>
+              <div class="s">${desc}</div>
+            </div>
+            <div class="badge">${(typeof temp === "number") ? Math.round(temp) + "°" : "--°"}</div>
+          </div>
+        `;
+
+        card.addEventListener("click", () => loadByCity(r.city));
+        favoritesGrid.appendChild(card);
+      }
+    }
+
+    // ================================
+    // Geolocation
+    // ================================
+    function getCurrentPosition(){
+      return new Promise((resolve, reject) => {
+        if (!navigator.geolocation){
+          reject(new Error(t("errGeoUnsupported")));
+          return;
+        }
+        navigator.geolocation.getCurrentPosition(resolve, (err) => {
+          if (err.code === err.PERMISSION_DENIED) reject(new Error(t("errGeoDenied")));
+          else reject(new Error(t("errGeneric")));
+        }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+      });
+    }
+
+    // ================================
+    // Loaders
+    // ================================
+    async function loadByCity(city){
+      if (!city || !city.trim()){
+        showToast(t("errEmpty"));
+        return;
+      }
+
+      showLoading(true);
+      try{
+        const current = await fetchCurrentByCity(city.trim());
+        renderCurrent(current);
+
+        // 예보는 실패해도 OK
+        const forecast = await fetchForecastByCity(current.name);
+        renderForecast(forecast);
+
+      } catch (e){
+        showToast(e.message || t("errGeneric"));
+      } finally{
+        showLoading(false);
+      }
+    }
+
+    async function loadByMyLocation(){
+      showLoading(true);
+      try{
+        const pos = await getCurrentPosition();
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+
+        const current = await fetchCurrentByCoords(lat, lon);
+        renderCurrent(current);
+
+        const forecast = await fetchForecastByCoords(lat, lon);
+        renderForecast(forecast);
+
+      } catch (e){
+        showToast(e.message || t("errGeneric"));
+      } finally{
+        showLoading(false);
+      }
+    }
+
+    // ================================
+    // Events
+    // ================================
+    btnSearch.addEventListener("click", () => loadByCity(cityInput.value));
+    cityInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") loadByCity(cityInput.value);
+    });
+    btnMyLoc.addEventListener("click", () => loadByMyLocation());
+
+    document.getElementById("langKO").addEventListener("click", async () => {
+      lang = "ko";
+      localStorage.setItem("lang", lang);
+      applyLang();
+      renderRecommendedChips();
+      // 현재 표시중 도시가 있으면 그 언어로 다시 조회
+      const city = extractCurrentCity();
+      if (city) await loadByCity(city);
+      else await loadByMyLocation();
+    });
+
+    document.getElementById("langEN").addEventListener("click", async () => {
+      lang = "en";
+      localStorage.setItem("lang", lang);
+      applyLang();
+      renderRecommendedChips();
+      const city = extractCurrentCity();
+      if (city) await loadByCity(city);
+      else await loadByMyLocation();
+    });
+
+    function extractCurrentCity(){
+      // placeText의 첫 span에 "City, CC"가 들어가므로 City만 추출
+      const firstSpan = placeText.querySelector("span");
+      if(!firstSpan) return null;
+      const raw = firstSpan.textContent || "";
+      const city = raw.split(",")[0]?.trim();
+      return city || null;
+    }
+
+    // 탭바 (UI만)
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", async () => {
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        const key = tab.dataset.tab;
+        if (key === "search"){
+          cityInput.focus();
+        }
+        if (key === "fav"){
+          showLoading(true);
+          try{ await renderFavorites(); } finally{ showLoading(false); }
+        }
+      });
+    });
+
+    // ================================
+    // Init
+    // ================================
+    (async function init(){
+      applyLang();
+      renderRecommendedChips();
+      await renderFavorites();
+      await loadByMyLocation();
+    })();
+  </script>
+</body>
+</html>
+
