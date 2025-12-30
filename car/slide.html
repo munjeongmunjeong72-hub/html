@@ -10,87 +10,7 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
   />
-
-  <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
-        "Noto Sans KR", sans-serif;
-      background: #ffffff;
-      color: #333;
-    }
-
-    .swiper {
-      height: 100vh;
-    }
-
-    .slide-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 80px 20px 140px;
-      box-sizing: border-box;
-      text-align: center;
-    }
-
-    .title {
-      font-size: 20px;
-      font-weight: 700;
-      color: #4f6db8;
-      margin-bottom: 8px;
-    }
-
-    .desc {
-      font-size: 14px;
-      color: #9aa6d1;
-      line-height: 1.5;
-      margin-bottom: 40px;
-    }
-
-    .image-wrap {
-      width: 240px;
-      height: 240px;
-      /* border-radius: 50%;
-      background: #2f4f67; */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .image-wrap img {
-      width: 80%;
-      height: auto;
-    }
-
-    /* pagination */
-    .swiper-pagination {
-      bottom: 170px !important;
-    }
-
-    .swiper-pagination-bullet {
-      background: #cfd6ee;
-      opacity: 1;
-    }
-
-    .swiper-pagination-bullet-active {
-      background: #4f6db8;
-    }
-
-    /* CTA button */
-    .cta {
-      position: fixed;
-      bottom: 30px;
-      left: 20px;
-      right: 20px;
-      height: 52px;
-      background: #4f6db8;
-      color: #fff;
-      border-radius: 10px;
-      border: none;
-      font-size: 16px;
-      font-weight: 600;
-    }
-  </style>
+  <link rel="stylesheet" href="./css/slide.css">
 </head>
 
 <body>
@@ -141,35 +61,46 @@
     <div class="swiper-pagination"></div>
   </div>
 
-  <button class="cta"
-  onclick="window.location.href='https://www.naver.com'">
-  시작하기
-</button>
+  <!-- 마지막 슬라이드에서만 보일 버튼 -->
+  <button class="cta" style="display:none;">시작하기</button>
 
   <!-- Swiper JS -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
-    new Swiper(".swiper", {
+    const ctaBtn = document.querySelector(".cta");
+
+    const swiper = new Swiper(".swiper", {
+      loop: false, // 마지막에서 멈춤
+      autoplay: {
+        delay: 3000,
+        stopOnLastSlide: true, // 마지막 슬라이드에서 자동재생 종료
+        disableOnInteraction: false,
+      },
       pagination: {
         el: ".swiper-pagination",
         clickable: true,
       },
-      
-    loop: true, // 무한 반복
-    autoplay: {
-      delay: 3000, // 3초마다 자동 슬라이드
-      disableOnInteraction: false, // 터치 후에도 자동 재생 유지
-    },
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
-    loop: false,
-autoplay: {
-  delay: 3000,
-  stopOnLastSlide: true,
-}
-  });
+      on: {
+        // 초기 진입 시 버튼 상태 반영
+        init() {
+          const isLast = this.activeIndex === this.slides.length - 1;
+          ctaBtn.style.display = isLast ? "block" : "none";
+        },
+        // 슬라이드 바뀔 때마다 마지막 여부 체크
+        slideChange() {
+          const isLast = this.activeIndex === this.slides.length - 1;
+          ctaBtn.style.display = isLast ? "block" : "none";
+        }
+      }
+    });
+
+    // init 이벤트가 확실히 실행되도록
+    swiper.init();
+
+    // 버튼 클릭 시 이동
+  ctaBtn.addEventListener("click", () => {
+  window.location.href = "https://www.naver.com";
+});
 
   </script>
 </body>
