@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>CHMBAK - 메인</title>
+  <link rel="stylesheet" href="./css/main.css" />
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- HERO (시안 이미지) -->
+    <header class="hero">
+      <img class="hero-img" src="./img/sea waves background.png" alt="메인 히어로 이미지" />
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+      <!-- 카테고리 카드 -->
+      <section class="card">
+        <h2 class="section-title">테마별 카테고리</h2>
+
+        <div class="category-grid">
+          <button class="cat">
+            <div class="cat-icon">🐕</div>
+            <div class="cat-text">반려견</div>
+          </button>
+          <button class="cat">
+            <div class="cat-icon">🔥</div>
+            <div class="cat-text">불멍</div>
+          </button>
+          <button class="cat">
+            <div class="cat-icon">🏙️</div>
+            <div class="cat-text">도시</div>
+          </button>
+          <button class="cat">
+            <div class="cat-icon">🍖</div>
+            <div class="cat-text">바비큐</div>
+          </button>
+
+          <button class="cat">
+            <div class="cat-icon">🌳</div>
+            <div class="cat-text">산책</div>
+          </button>
+          <button class="cat">
+            <div class="cat-icon">🏔️</div>
+            <div class="cat-text">오지</div>
+          </button>
+          <button class="cat">
+            <div class="cat-icon">🌠</div>
+            <div class="cat-text">별감상</div>
+          </button>
+          <button class="cat">
+            <div class="cat-icon">⛺</div>
+            <div class="cat-text">장비</div>
+          </button>
+        </div>
+
+        <div class="quick-row">
+          <button class="quick">
+            <span class="quick-ico">🎟️</span>
+            <span class="quick-txt">쿠폰</span>
+          </button>
+          <button class="quick">
+            <span class="quick-ico">🎉</span>
+            <span class="quick-txt">이벤트</span>
+          </button>
+          <button class="quick">
+            <span class="quick-ico">🎁</span>
+            <span class="quick-txt">혜택</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- TOP10 -->
+      <section class="section">
+        <h2 class="section-title">장소 랭킹 TOP10</h2>
+
+        <div class="top-grid">
+          <a class="top-item" href="#">
+            <img src="./img/Frame 15.png" alt="장소 랭킹 이미지 1" />
+          </a>
+          <a class="top-item" href="#">
+            <img src="./img/Frame 16.png" alt="장소 랭킹 이미지 2" />
+          </a>
+          <a class="top-item wide" href="#">
+            <img src="./img/Frame 17.png" alt="장소 랭킹 이미지 3" />
+          </a>
+        </div>
+      </section>
+
+      <!-- 하단 추천 카드 -->
+      <section class="place-card">
+        <div class="place-photo">
+          <img src="./img/unsplash_cncBX0Vt6fw.png" alt="추천 장소 이미지" />
+        </div>
+
+        <div class="place-body">
+          <div class="place-text">
+            <div class="place-title">테마별 카테고리</div>
+            <div class="place-sub">
+              경상도 원주시 지역연 지역산 1번지
+            </div>
+          </div>
+
+          <button class="bookmark" type="button" aria-label="북마크">
+            <svg width="18" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M6 3h12a1 1 0 0 1 1 1v18l-7-4-7 4V4a1 1 0 0 1 1-1z"
+                    stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="place-actions">
+          <button class="btn primary" type="button">길찾기</button>
+          <button class="btn outline" type="button">대체하기</button>
+        </div>
+      </section>
+
+      <!-- 탭바 때문에 하단 여백 -->
+      <div class="bottom-safe"></div>
+    </main>
+
+    <!-- BOTTOM TAB BAR -->
+    <nav class="tabbar" aria-label="하단 탭바">
+      <button class="tab active" type="button">
+        <span class="tab-ico">🏠</span>
+        <span class="tab-txt">홈</span>
+      </button>
+
+      <button class="tab" type="button">
+        <span class="tab-ico">🔍</span>
+        <span class="tab-txt">검색</span>
+      </button>
+
+      <button class="tab" type="button">
+        <span class="tab-ico">👥</span>
+        <span class="tab-txt">모임</span>
+      </button>
+
+      <button class="tab" type="button">
+        <span class="tab-ico">📺</span>
+        <span class="tab-txt">라이브</span>
+      </button>
+
+      <button class="tab" type="button">
+        <span class="tab-ico">👤</span>
+        <span class="tab-txt">마이홈</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <script>
+    // 탭 클릭 UI만 변경(예시)
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+      });
+    });
+
+    // 북마크 토글(예시)
+    const bookmark = document.querySelector(".bookmark");
+    let marked = false;
+    bookmark.addEventListener("click", () => {
+      marked = !marked;
+      bookmark.style.color = marked ? "#4F67B7" : "#B9C1D8";
+    });
+  </script>
+</body>
+</html>
