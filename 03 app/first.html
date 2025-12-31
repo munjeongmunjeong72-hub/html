@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>제주환상 자전거길</title>
+
+  <style>
+    :root{
+      --safe-top: env(safe-area-inset-top);
+      --safe-bottom: env(safe-area-inset-bottom);
+      --text-shadow: 0 10px 25px rgba(0,0,0,0.35);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", Roboto, sans-serif;
+      background: #000;
+    }
+
+    /* ✅ 타이틀 화면(스플래시) */
+    .splash {
+      position: relative;
+      width: 100%;
+      height: 100svh;
+      overflow: hidden;
+      background: #000;
+    }
+
+    /* ✅ 시안 이미지 풀스크린 */
+    .splash::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("./img/iPhone\ 13\ mini\ -\ 5.png") center / cover no-repeat; /* ⬅️ 시안 이미지 경로 */
+      transform: scale(1.02);
+      z-index: 0;
+    }
+
+    /* ✅ 텍스트 가독성을 위한 약한 그라데이션 (시안 느낌 유지하면서 방해 최소화) */
+    .splash::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(900px 520px at 50% 60%, rgba(0,0,0,0.05), rgba(0,0,0,0.28));
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ✅ 중앙 타이틀 (시안처럼 물 위쪽에 배치) */
+    .title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 60%;
+      transform: translateY(-50%);
+      text-align: center;
+      z-index: 2;
+      padding: 0 18px;
+      color: #fff;
+      text-shadow: var(--text-shadow);
+      user-select: none;
+    }
+
+    .title .kicker {
+      font-size: clamp(18px, 4.8vw, 22px);
+      font-weight: 900;
+      letter-spacing: -0.6px;
+      margin-bottom: 8px;
+      opacity: 0.98;
+    }
+
+    .title .main {
+      font-size: clamp(40px, 10vw, 52px);
+      font-weight: 1000;
+      letter-spacing: -1.4px;
+      line-height: 1.05;
+    }
+
+    /* ✅ 터치하면 다음 화면으로 넘어가는 느낌(옵션) */
+    .tap-hint {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: calc(24px + var(--safe-bottom));
+      text-align: center;
+      z-index: 2;
+      color: rgba(255,255,255,0.86);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      text-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      user-select: none;
+    }
+
+    .tap-hint span {
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.18);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+
+    /* ✅ 데스크탑에서 모바일 프레임처럼 보이게(옵션) */
+    @media (min-width: 720px) {
+      body {
+        display: grid;
+        place-items: center;
+        background: #0b0f13;
+      }
+      .splash {
+        width: 390px;
+        height: 844px;
+        border-radius: 28px;
+        box-shadow: 0 30px 90px rgba(0,0,0,0.6);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="splash" aria-label="타이틀 화면">
+    <section class="title">
+      <div class="kicker">제주환상</div>
+      <div class="main">자전거길</div>
+    </section>
+
+    <div class="tap-hint" aria-hidden="true">
+      <span>화면을 터치하면 시작합니다</span>
+    </div>
+  </main>
+  <script>
+    document.getElementById(".tap-hint").addEventListener("click", () => {
+  location.href = "./slide.html";
+});
+  </script>
+</body>
+</html>
+

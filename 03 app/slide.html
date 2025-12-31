@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>온보딩</title>
+
+  <style>
+    :root{
+      --safe-top: env(safe-area-inset-top);
+      --safe-bottom: env(safe-area-inset-bottom);
+
+      --brand: #10cbbf;         /* 민트 */
+      --brand-dark: #07b8ae;
+      --text: #0a0f14;
+      --muted: #7d8b95;
+      --bg: #ffffff;
+      --shadow: 0 10px 30px rgba(0,0,0,0.12);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font-family: system-ui, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", Roboto, sans-serif;
+      background: #0b0f13; /* 데스크탑에서 모바일 프레임이 돋보이게 */
+      display: grid;
+      place-items: center;
+    }
+
+    /* ✅ 모바일 화면 컨테이너 */
+    .app{
+      width: 100%;
+      height: 100svh;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 데스크탑에서 모바일처럼 보이도록 */
+    @media (min-width: 720px){
+      .app{
+        width: 375px;
+        height: 812px;
+        border-radius: 28px;
+        box-shadow: 0 30px 90px rgba(0,0,0,0.55);
+      }
+    }
+
+    /* ✅ 상단 노치 느낌 바 (시안처럼 민트 캡슐) */
+    .top-notch{
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: calc(10px + var(--safe-top));
+      width: 160px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--brand);
+      z-index: 10;
+      opacity: 0.95;
+    }
+
+    /* ✅ 슬라이더 */
+    .slider{
+      width: 100%;
+      height: 100%;
+      position: relative;
+      touch-action: pan-y; /* 세로 스크롤 방지, 가로 스와이프 원활 */
+      user-select: none;
+    }
+
+    .track{
+      height: 100%;
+      display: flex;
+      transition: transform 450ms ease;
+      will-change: transform;
+    }
+
+    .slide{
+      min-width: 100%;
+      height: 100%;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ✅ 상단 일러스트 영역 */
+    .hero{
+      width: 100%;
+      height: 58%;
+      position: relative;
+      overflow: hidden;
+      background: #eaf7f6; /* 이미지 로딩 전 배경 */
+    }
+    .hero img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;    /* 시안처럼 꽉 차게 */
+      object-position: center;
+      display: block;
+    }
+
+    /* ✅ 하단 텍스트 영역 */
+    .content{
+      flex: 1;
+      padding: 24px 22px 110px; /* 아래 UI 영역 공간 확보 */
+      background: #fff;
+    }
+
+    .title{
+      margin: 0 0 10px;
+      font-size: 20px;
+      line-height: 1.25;
+      font-weight: 900;
+      letter-spacing: -0.6px;
+      color: var(--brand-dark);
+    }
+
+    .desc{
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #94a2ab;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      max-width: 320px;
+    }
+
+    /* ✅ 하단 네비게이션(인디케이터 + 건너뛰기 + 버튼) */
+    .bottom-ui{
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 14px 18px calc(18px + var(--safe-bottom));
+      background: linear-gradient(to top, rgba(255,255,255,0.98), rgba(255,255,255,0.70), rgba(255,255,255,0));
+      z-index: 20;
+      display: grid;
+      gap: 14px;
+    }
+
+    .nav-row{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .dots{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.18);
+      transition: all 250ms ease;
+    }
+
+    .dot.active{
+      width: 44px;                 /* 시안처럼 길게 */
+      background: var(--brand);
+    }
+
+    .skip{
+      border: 0;
+      background: transparent;
+      color: #222;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      padding: 8px 10px;
+      border-radius: 10px;
+    }
+    .skip:active{
+      background: rgba(0,0,0,0.05);
+    }
+
+    /* ✅ 마지막 화면에서만 보이는 CTA */
+    .cta{
+      display: none;               /* 기본 숨김 */
+      width: 100%;
+      height: 54px;
+      border: 0;
+      border-radius: 14px;
+      background: var(--brand);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: -0.3px;
+      cursor: pointer;
+      box-shadow: 0 14px 30px rgba(16, 203, 191, 0.25);
+    }
+    .cta:active{
+      transform: translateY(1px);
+    }
+
+    /* 마지막 슬라이드일 때만 */
+    .bottom-ui.show-cta .cta{
+      display: block;
+    }
+
+    /* 마지막 슬라이드에서는 skip 숨겨도 좋으면 이걸 켜도 됨 */
+    .bottom-ui.show-cta .skip{
+      display: none;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="app" id="app">
+    
+
+    <main class="slider" id="slider" aria-label="온보딩 슬라이더">
+      <div class="track" id="track">
+
+        <!-- 슬라이드 1 -->
+        <section class="slide">
+          <div class="hero">
+            <img src="./img/Rectangle 2.png" alt="나만을 위한 최적의 라이딩 코스" />
+          </div>
+          <div class="content">
+            <h2 class="title">나만을 위한 최적의 라이딩 코스</h2>
+            <p class="desc">
+              나의 체력, 속도, 차량(해변/숲길)에 맞춰 난이도별 맞춤 코스를 추천받으세요
+            </p>
+          </div>
+        </section>
+
+        <!-- 슬라이드 2 -->
+        <section class="slide">
+          <div class="hero">
+            <img src="./img/Rectangle 3.png" alt="실시간 안전 가이드 & 긴급 지원" />
+          </div>
+          <div class="content">
+            <h2 class="title">실시간 안전 가이드 &amp; 긴급 지원</h2>
+            <p class="desc">
+              현재 위치 기반 날씨, 돌발 상황(낙석, 공사) 알림부터, 가장 가까운
+              수리점/짐 보관소 정보와 원터치 SOS 기능까지 지원합니다
+            </p>
+          </div>
+        </section>
+
+        <!-- 슬라이드 3 (마지막) -->
+        <section class="slide">
+          <div class="hero">
+            <img src="./img/Rectangle 4.png" alt="나의 라이딩 여정을 기록하고 공유하세요" />
+          </div>
+          <div class="content">
+            <h2 class="title">나의 라이딩 여정을 기록하고 공유하세요</h2>
+            <p class="desc">
+              주행 기록을 상세히 분석하고, 제주 환상 자전거길 완주 챌린지에 도전하세요.
+              함께 달릴 크루를 쉽게 찾을 수 있습니다
+            </p>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- 하단 UI -->
+    <footer class="bottom-ui" id="bottomUI">
+      <div class="nav-row">
+        <div class="dots" id="dots" aria-label="페이지 인디케이터"></div>
+        <button class="skip" id="skipBtn" type="button">건너뛰기</button>
+      </div>
+
+      <button class="cta" id="startBtn" type="button">지금 시작하기</button>
+    </footer>
+  </div>
+
+  <script>
+    (function(){
+      const track = document.getElementById("track");
+      const slider = document.getElementById("slider");
+      const bottomUI = document.getElementById("bottomUI");
+      const dotsEl = document.getElementById("dots");
+      const skipBtn = document.getElementById("skipBtn");
+      const startBtn = document.getElementById("startBtn");
+
+      const slides = Array.from(track.children);
+      const total = slides.length;
+
+      // 자동 슬라이드 설정
+      const AUTOPLAY_MS = 4000;
+      let autoplayTimer = null;
+      let index = 0;
+
+      // 도트 생성
+      const dots = [];
+      for(let i=0; i<total; i++){
+        const d = document.createElement("div");
+        d.className = "dot" + (i===0 ? " active" : "");
+        d.setAttribute("role", "button");
+        d.setAttribute("aria-label", `슬라이드 ${i+1}`);
+        d.addEventListener("click", () => goTo(i, true));
+        dotsEl.appendChild(d);
+        dots.push(d);
+      }
+
+      function setActiveDot(i){
+        dots.forEach((d, di) => d.classList.toggle("active", di === i));
+      }
+
+      function updateUI(){
+        setActiveDot(index);
+
+        // 마지막 화면에서만 CTA 노출 + 자동 슬라이드 정지
+        const isLast = index === total - 1;
+        bottomUI.classList.toggle("show-cta", isLast);
+
+        if (isLast) stopAutoplay();
+        else startAutoplay();
+      }
+
+      function goTo(i, userAction=false){
+        index = Math.max(0, Math.min(total - 1, i));
+        track.style.transform = `translateX(${-index * 100}%)`;
+        updateUI();
+        if (userAction) restartAutoplayIfNeeded();
+      }
+
+      function next(){
+        if (index >= total - 1) return;
+        goTo(index + 1);
+      }
+
+      function startAutoplay(){
+        if (autoplayTimer) return;
+        autoplayTimer = setInterval(() => {
+          if (index < total - 1) {
+            goTo(index + 1);
+          }
+        }, AUTOPLAY_MS);
+      }
+
+      function stopAutoplay(){
+        if (!autoplayTimer) return;
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
+
+      function restartAutoplayIfNeeded(){
+        // 마지막이면 자동재생 안함
+        if (index === total - 1) return;
+        stopAutoplay();
+        startAutoplay();
+      }
+
+      // ✅ 건너뛰기 → 마지막 슬라이드로
+      skipBtn.addEventListener("click", () => goTo(total - 1, true));
+
+      // ✅ 시작하기 버튼 클릭 (원하는 페이지로 이동)
+      startBtn.addEventListener("click", () => {
+        // 예시: 메인으로 이동
+        location.href = "./login.html";
+        alert("시작하기!");
+      });
+
+      // ✅ 스와이프(터치) 지원
+      let startX = 0;
+      let currentX = 0;
+      let isDragging = false;
+
+      function onStart(x){
+        isDragging = true;
+        startX = x;
+        currentX = x;
+        stopAutoplay();
+        track.style.transition = "none";
+      }
+
+      function onMove(x){
+        if (!isDragging) return;
+        currentX = x;
+        const dx = currentX - startX;
+        const percent = (dx / slider.clientWidth) * 100;
+        track.style.transform = `translateX(${(-index * 100) + percent}%)`;
+      }
+
+      function onEnd(){
+        if (!isDragging) return;
+        isDragging = false;
+
+        track.style.transition = "transform 450ms ease";
+
+        const dx = currentX - startX;
+        const threshold = slider.clientWidth * 0.18;
+
+        if (dx < -threshold && index < total - 1) index++;
+        else if (dx > threshold && index > 0) index--;
+
+        track.style.transform = `translateX(${-index * 100}%)`;
+        updateUI();
+      }
+
+      slider.addEventListener("touchstart", (e) => onStart(e.touches[0].clientX), { passive: true });
+      slider.addEventListener("touchmove", (e) => onMove(e.touches[0].clientX), { passive: true });
+      slider.addEventListener("touchend", onEnd);
+
+      // 마우스(데스크탑 테스트)
+      slider.addEventListener("mousedown", (e) => onStart(e.clientX));
+      window.addEventListener("mousemove", (e) => onMove(e.clientX));
+      window.addEventListener("mouseup", onEnd);
+
+      // 초기화
+      goTo(0);
+      startAutoplay();
+    })();
+  </script>
+</body>
+</html>

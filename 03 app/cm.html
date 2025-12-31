@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>커뮤니티</title>
+  <style>
+    :root{
+      --safe-top: env(safe-area-inset-top);
+      --safe-bottom: env(safe-area-inset-bottom);
+
+      --brand: #11cbbf;
+      --text: #0f1419;
+      --muted: #8c98a2;
+      --line: rgba(0,0,0,0.08);
+      --bg: #ffffff;
+
+      --shadow-soft: 0 8px 18px rgba(0,0,0,0.08);
+      --radius: 14px;
+    }
+
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", Roboto, sans-serif;
+      background:#0b0f13;
+      display:grid;
+      place-items:center;
+    }
+
+    .app{
+      width:100%;
+      height:100svh;
+      background:var(--bg);
+      position:relative;
+      overflow:hidden;
+    }
+    @media (min-width:720px){
+      .app{
+        width:375px;
+        height:812px;
+        border-radius:28px;
+        box-shadow:0 30px 90px rgba(0,0,0,0.55);
+      }
+    }
+
+    /* 상단 노치 느낌(시안 민트 캡슐) */
+    .top-pill{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      top: calc(10px + var(--safe-top));
+      width: 168px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--brand);
+      opacity: 0.95;
+      z-index: 30;
+      pointer-events:none;
+    }
+
+    /* 스크롤 영역(탭바 높이만큼 padding) */
+    .scroll{
+      height:100%;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: calc(84px + var(--safe-bottom));
+      background:#fff;
+    }
+
+    /* 상단 헤더 */
+    .header{
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+      padding: calc(18px + var(--safe-top)) 16px 12px;
+    }
+    .header-row{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      min-height: 32px;
+    }
+    .header-title{
+      font-size: 16px;
+      font-weight: 1000;
+      letter-spacing: -0.3px;
+      color: #222;
+    }
+    .header-right{
+      position:absolute;
+      right:0;
+      top:50%;
+      transform:translateY(-50%);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .profile{
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      overflow:hidden;
+      background:#d9e2e8;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .profile img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .section-title{
+      margin: 12px 16px 10px;
+      font-size: 14px;
+      font-weight: 1000;
+      letter-spacing: -0.3px;
+      color:#111;
+    }
+
+    /* 피드 카드 */
+    .feed{
+      display:grid;
+      gap: 14px;
+      padding: 0 16px 16px;
+    }
+
+    .post{
+      background:#fff;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+    }
+
+    .post-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+
+    .author{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .avatar{
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      overflow:hidden;
+      background:#d9e2e8;
+      flex: 0 0 auto;
+    }
+    .avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .meta{
+      min-width: 0;
+      display:flex;
+      flex-direction:column;
+      gap: 2px;
+    }
+    .name-row{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      min-width:0;
+    }
+    .name{
+      font-size: 14px;
+      font-weight: 1000;
+      letter-spacing: -0.2px;
+      color:#111;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 140px;
+    }
+    .level{
+      font-size: 11px;
+      font-weight: 1000;
+      color:#fff;
+      background: var(--brand);
+      padding: 4px 8px;
+      border-radius: 999px;
+      letter-spacing: -0.2px;
+      flex: 0 0 auto;
+    }
+    .time{
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+      letter-spacing: -0.2px;
+    }
+
+    .more{
+      width: 34px;
+      height: 34px;
+      border:0;
+      background: transparent;
+      border-radius: 10px;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      color:#7f8a93;
+    }
+    .more:active{ background: rgba(0,0,0,0.05); }
+    .more svg{ width:18px; height:18px; fill: currentColor; }
+
+    .post-img{
+      margin-top: 12px;
+      border-radius: 10px;
+      overflow:hidden;
+      background:#eef3f6;
+      box-shadow: var(--shadow-soft);
+    }
+    .post-img img{
+      width:100%;
+      height: 190px;
+      object-fit: cover;
+      display:block;
+    }
+
+    .post-foot{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      margin-top: 10px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stats{
+      display:flex;
+      align-items:center;
+      gap: 16px;
+      color:#7f8a93;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing:-0.2px;
+    }
+    .stat{
+      display:flex;
+      align-items:center;
+      gap: 6px;
+    }
+    .stat svg{
+      width: 18px;
+      height: 18px;
+      fill: var(--brand);
+    }
+
+    .cta{
+      border:0;
+      height: 30px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: var(--brand);
+      color:#fff;
+      font-size: 12px;
+      font-weight: 1000;
+      letter-spacing: -0.2px;
+      cursor:pointer;
+    }
+    .cta:active{ transform: translateY(1px); }
+
+    /* 하단 탭바 */
+    .tabbar{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      padding: 10px 10px calc(10px + var(--safe-bottom));
+      background:#fff;
+      border-top: 1px solid var(--line);
+      z-index: 50;
+    }
+    .tabs{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+    }
+    .tab{
+      width: 20%;
+      display:grid;
+      place-items:center;
+      gap: 6px;
+      text-decoration:none;
+      color:#9aa6af;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing:-0.2px;
+      padding: 6px 0;
+    }
+    .tab svg{ width: 22px; height: 22px; fill: currentColor; }
+    .tab.active{ color: var(--brand); }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+   
+
+    <div class="scroll" aria-label="커뮤니티 피드 스크롤">
+      <header class="header" aria-label="상단 헤더">
+        <div class="header-row">
+          <div class="header-title">커뮤니티</div>
+          <div class="header-right">
+            <div class="profile" aria-label="프로필">
+              <img src="./img/Frame 30.png" alt="" onerror="this.style.display='none'" />
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <h2 class="section-title">내가 추천하는 제주 자전거 길</h2>
+
+      <section class="feed" aria-label="게시글 목록">
+
+        <!-- POST 1 -->
+        <article class="post">
+          <div class="post-head">
+            <div class="author">
+              <div class="avatar"><img src="./img/Frame 30.png" alt="" onerror="this.style.display='none'" /></div>
+              <div class="meta">
+                <div class="name-row">
+                  <div class="name">김이나</div>
+                  <div class="level">Lv.30</div>
+                </div>
+                <div class="time">10min</div>
+              </div>
+            </div>
+            <button class="more" type="button" aria-label="더보기">
+              <svg viewBox="0 0 24 24"><path d="M12 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 8a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>
+            </button>
+          </div>
+
+          <div class="post-img">
+            <img src="./img/Frame 34.png" alt="게시글 이미지" onerror="this.style.opacity=0" />
+          </div>
+
+          <div class="post-foot">
+            <div class="stats">
+              <div class="stat" aria-label="좋아요">
+                <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.6-9.6-8.6C.6 9.4 2.2 6 5.9 6c2 0 3.3 1.1 4.1 2 0 0 1.6-2 4.1-2 3.7 0 5.3 3.4 3.5 6.4C19 16.4 12 21 12 21z"/></svg>
+                108
+              </div>
+              <div class="stat" aria-label="댓글">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16v12H7l-3 3V4z"/></svg>
+                5
+              </div>
+              <div class="stat" aria-label="조회">
+                <svg viewBox="0 0 24 24"><path d="M12 5c5.5 0 9.6 5.1 9.8 5.3.3.4.3 1 0 1.4C21.6 11.9 17.5 17 12 17S2.4 11.9 2.2 11.7a1.2 1.2 0 0 1 0-1.4C2.4 10.1 6.5 5 12 5zm0 3.2A3.8 3.8 0 1 0 15.8 12 3.8 3.8 0 0 0 12 8.2z"/></svg>
+                300
+              </div>
+            </div>
+            <button class="cta" type="button">Vew Active</button>
+          </div>
+        </article>
+
+        <!-- POST 2 -->
+        <article class="post">
+          <div class="post-head">
+            <div class="author">
+              <div class="avatar"><img src="./img/Frame 31.png" alt="" onerror="this.style.display='none'" /></div>
+              <div class="meta">
+                <div class="name-row">
+                  <div class="name">김이나</div>
+                  <div class="level">Lv.30</div>
+                </div>
+                <div class="time">11min</div>
+              </div>
+            </div>
+            <button class="more" type="button" aria-label="더보기">
+              <svg viewBox="0 0 24 24"><path d="M12 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 8a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>
+            </button>
+          </div>
+
+          <div class="post-img">
+            <img src="./img/Frame 35.png" alt="게시글 이미지" onerror="this.style.opacity=0" />
+          </div>
+
+          <div class="post-foot">
+            <div class="stats">
+              <div class="stat"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.6-9.6-8.6C.6 9.4 2.2 6 5.9 6c2 0 3.3 1.1 4.1 2 0 0 1.6-2 4.1-2 3.7 0 5.3 3.4 3.5 6.4C19 16.4 12 21 12 21z"/></svg>38</div>
+              <div class="stat"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H7l-3 3V4z"/></svg>2</div>
+              <div class="stat"><svg viewBox="0 0 24 24"><path d="M12 5c5.5 0 9.6 5.1 9.8 5.3.3.4.3 1 0 1.4C21.6 11.9 17.5 17 12 17S2.4 11.9 2.2 11.7a1.2 1.2 0 0 1 0-1.4C2.4 10.1 6.5 5 12 5zm0 3.2A3.8 3.8 0 1 0 15.8 12 3.8 3.8 0 0 0 12 8.2z"/></svg>340</div>
+            </div>
+            <button class="cta" type="button">Vew Active</button>
+          </div>
+        </article>
+
+        <!-- POST 3 -->
+        <article class="post">
+          <div class="post-head">
+            <div class="author">
+              <div class="avatar"><img src="./img/Frame 32.png" alt="" onerror="this.style.display='none'" /></div>
+              <div class="meta">
+                <div class="name-row">
+                  <div class="name">김이나</div>
+                  <div class="level">Lv.30</div>
+                </div>
+                <div class="time">12min</div>
+              </div>
+            </div>
+            <button class="more" type="button" aria-label="더보기">
+              <svg viewBox="0 0 24 24"><path d="M12 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 8a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>
+            </button>
+          </div>
+
+          <div class="post-img">
+            <img src="./img/Frame 36.png" alt="게시글 이미지" onerror="this.style.opacity=0" />
+          </div>
+
+          <div class="post-foot">
+            <div class="stats">
+              <div class="stat"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.6-9.6-8.6C.6 9.4 2.2 6 5.9 6c2 0 3.3 1.1 4.1 2 0 0 1.6-2 4.1-2 3.7 0 5.3 3.4 3.5 6.4C19 16.4 12 21 12 21z"/></svg>4.8k</div>
+              <div class="stat"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H7l-3 3V4z"/></svg>57</div>
+              <div class="stat"><svg viewBox="0 0 24 24"><path d="M12 5c5.5 0 9.6 5.1 9.8 5.3.3.4.3 1 0 1.4C21.6 11.9 17.5 17 12 17S2.4 11.9 2.2 11.7a1.2 1.2 0 0 1 0-1.4C2.4 10.1 6.5 5 12 5zm0 3.2A3.8 3.8 0 1 0 15.8 12 3.8 3.8 0 0 0 12 8.2z"/></svg>1.1k</div>
+            </div>
+            <button class="cta" type="button">Vew Active</button>
+          </div>
+        </article>
+
+        <!-- POST 4 -->
+        <article class="post">
+          <div class="post-head">
+            <div class="author">
+              <div class="avatar"><img src="./img/Frame 33.png" alt="" onerror="this.style.display='none'" /></div>
+              <div class="meta">
+                <div class="name-row">
+                  <div class="name">김이나</div>
+                  <div class="level">Lv.30</div>
+                </div>
+                <div class="time">13min</div>
+              </div>
+            </div>
+            <button class="more" type="button" aria-label="더보기">
+              <svg viewBox="0 0 24 24"><path d="M12 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 8a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>
+            </button>
+          </div>
+
+          <div class="post-img">
+            <img src="./img/Frame 37.png" alt="게시글 이미지" onerror="this.style.opacity=0" />
+          </div>
+
+          <div class="post-foot">
+            <div class="stats">
+              <div class="stat"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.6-9.6-8.6C.6 9.4 2.2 6 5.9 6c2 0 3.3 1.1 4.1 2 0 0 1.6-2 4.1-2 3.7 0 5.3 3.4 3.5 6.4C19 16.4 12 21 12 21z"/></svg>158</div>
+              <div class="stat"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H7l-3 3V4z"/></svg>9</div>
+              <div class="stat"><svg viewBox="0 0 24 24"><path d="M12 5c5.5 0 9.6 5.1 9.8 5.3.3.4.3 1 0 1.4C21.6 11.9 17.5 17 12 17S2.4 11.9 2.2 11.7a1.2 1.2 0 0 1 0-1.4C2.4 10.1 6.5 5 12 5zm0 3.2A3.8 3.8 0 1 0 15.8 12 3.8 3.8 0 0 0 12 8.2z"/></svg>500</div>
+            </div>
+            <button class="cta" type="button">Vew Active</button>
+          </div>
+        </article>
+
+      </section>
+    </div>
+
+    <!-- 하단 탭바 -->
+    <nav class="tabbar" aria-label="하단 탭">
+      <div class="tabs">
+        <a class="tab" href="#" onclick="return false;">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3 10v11h6v-7h6v7h6V10z"/></svg>
+          홈
+        </a>
+        <a class="tab active" href="#" onclick="return false;">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H7l-3 3V4zm3 16h14v-2H7v2z"/></svg>
+          커뮤니티
+        </a>
+        <a class="tab" href="#" onclick="return false;">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9h-2a7 7 0 1 1-7-7V3z"/></svg>
+          코스
+        </a>
+        <a class="tab" href="#" onclick="return false;">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v2H7V4zm-2 4h14v2H5V8zm2 4h10v2H7v-2zm-2 4h14v2H5v-2z"/></svg>
+          랭킹
+        </a>
+        <a class="tab" href="#" onclick="return false;">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-4.4 0-8 2.2-8 5v2h16v-2c0-2.8-3.6-5-8-5z"/></svg>
+          마이
+        </a>
+      </div>
+    </nav>
+  </div>
+</body>
+</html>

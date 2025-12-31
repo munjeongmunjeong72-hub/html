@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Home</title>
+  <style>
+    :root{
+      --safe-top: env(safe-area-inset-top);
+      --safe-bottom: env(safe-area-inset-bottom);
+
+      --brand: #11cbbf;
+      --text: #0f1419;
+      --muted: #7d8a94;
+      --card: #ffffff;
+      --bg: #ffffff;
+
+      --shadow: 0 10px 24px rgba(0,0,0,0.14);
+      --shadow-soft: 0 8px 20px rgba(0,0,0,0.10);
+
+      --radius: 14px;
+    }
+
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", Roboto, sans-serif;
+      background:#0b0f13;
+      display:grid;
+      place-items:center;
+    }
+
+    .app{
+      width:100%;
+      height:100svh;
+      background:var(--bg);
+      overflow:hidden;
+      position:relative;
+    }
+    @media (min-width: 720px){
+      .app{
+        width:375px;
+        height:812px;
+        border-radius:28px;
+        box-shadow:0 30px 90px rgba(0,0,0,0.55);
+      }
+    }
+
+    /* 스크롤 영역(탭바 높이만큼 패딩) */
+    .scroll{
+      height:100%;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: calc(84px + var(--safe-bottom));
+      background:#fff;
+    }
+
+    /* 상단 히어로 */
+    .hero{
+      position:relative;
+      height: 300px;
+      padding-top: calc(10px + var(--safe-top));
+      overflow:hidden;
+      background:#e9f4f4;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.18), rgba(0,0,0,0.08) 42%, rgba(255,255,255,0) 100%),
+        url("./img/Eco-friendly\ cycling\ in\ the\ park.png") center/cover no-repeat;
+      /* 시안 이미지로 바로 쓰려면 위 url을 home.png로 바꾸세요 */
+      z-index:0;
+      transform: scale(1.02);
+    }
+    .hero-inner{
+      position:relative;
+      z-index:1;
+      padding: 12px 16px 0;
+    }
+
+    /* 상단 상태바/노치 느낌(시안 상단 민트 캡슐) */
+    .top-pill{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      top: calc(10px + var(--safe-top));
+      width: 168px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--brand);
+      opacity: 0.95;
+      z-index: 5;
+    }
+
+    /* 헤더(프로필/알림) */
+    .header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+      margin-top: 32px;
+    }
+    .greet{
+      color:#fff;
+      text-shadow: 0 10px 22px rgba(0,0,0,0.28);
+      font-weight:900;
+      letter-spacing:-0.4px;
+      line-height:1.25;
+      font-size: 14px;
+      white-space: pre-line;
+    }
+    .actions{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .avatar{
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      overflow:hidden;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.22);
+      border: 2px solid rgba(255,255,255,0.85);
+      background:#ddd;
+      flex: 0 0 auto;
+    }
+    .avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    .bell{
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.22);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.25);
+      display:grid;
+      place-items:center;
+      position:relative;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.18);
+      flex: 0 0 auto;
+    }
+    .bell::after{
+      content:"";
+      position:absolute;
+      right: 6px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--brand);
+      border: 2px solid rgba(255,255,255,0.9);
+    }
+    .bell svg{ width:18px; height:18px; fill:#fff; opacity:0.95; }
+
+    /* 히어로 위 위젯 카드들 */
+    .widgets{
+      display:flex;
+      gap: 12px;
+      margin-top: 86px;
+      padding-bottom: 10px;
+    }
+    .card{
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .weather{
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 12px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .weather .left{
+      min-width: 0;
+    }
+    .weather .name{
+      font-size: 14px;
+      font-weight: 900;
+      color: #555;
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .weather .temp{
+      margin-top: 8px;
+      font-size: 20px;
+      font-weight: 1000;
+      color: #10a8a0;
+      letter-spacing: -0.6px;
+    }
+    .wx-icon{
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: #eaf7f6;
+      display:grid;
+      place-items:center;
+      flex: 0 0 auto;
+    }
+    .wx-icon .sun{
+      width: 26px; height: 26px; border-radius: 999px;
+      background: #f5b400;
+      position: relative;
+      box-shadow: 0 10px 18px rgba(245,180,0,0.25);
+    }
+    .wx-icon .cloud{
+      position:absolute;
+      width: 22px; height: 12px;
+      border-radius: 999px;
+      background: #4ec0c2;
+      right: 7px;
+      bottom: 12px;
+    }
+
+    .progress{
+      width: 132px;
+      padding: 10px 10px;
+      display:grid;
+      gap: 8px;
+    }
+    .progress .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 8px;
+    }
+    .progress .label{
+      font-size: 13px;
+      font-weight: 900;
+      color:#444;
+      letter-spacing:-0.2px;
+    }
+    .progress .value{
+      font-size: 16px;
+      font-weight: 1000;
+      color:#111;
+      letter-spacing:-0.4px;
+    }
+    .progress .unit{
+      font-size: 12px;
+      font-weight: 900;
+      color:#111;
+      opacity: 0.85;
+    }
+    .progress .divider{
+      height:1px;
+      background: rgba(0,0,0,0.08);
+    }
+
+    /* 본문 */
+    .content{
+      padding: 14px 16px 0;
+    }
+    .section-title{
+      margin: 8px 0 10px;
+      font-size: 14px;
+      font-weight: 1000;
+      letter-spacing: -0.4px;
+      color: #111;
+    }
+
+    /* 2열 카드 */
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .mini-card{
+      border-radius: 12px;
+      overflow:hidden;
+      box-shadow: var(--shadow-soft);
+      background:#fff;
+    }
+    .mini-card img{
+      width:100%;
+      height: 130px;
+      object-fit: cover;
+      display:block;
+    }
+    .mini-card .cap{
+      padding: 10px 10px;
+      font-size: 12px;
+      font-weight: 900;
+      color:#111;
+      letter-spacing: -0.2px;
+    }
+    .mini-card .more{
+      margin-left:auto;
+      font-size: 12px;
+      font-weight: 900;
+      color:#9aa6af;
+    }
+    .mini-card .cap-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+
+    /* 큰 리스트 카드 */
+    .big-list{
+      margin-top: 12px;
+      display:grid;
+      gap: 14px;
+    }
+    .big-card{
+      border-radius: 14px;
+      overflow:hidden;
+      background:#fff;
+      box-shadow: var(--shadow-soft);
+    }
+    .big-card .imgwrap{
+      position:relative;
+      height: 190px;
+      background:#eef3f6;
+    }
+    .big-card img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+    .big-card .tag{
+      position:absolute;
+      left: 12px;
+      top: 12px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.35);
+      color:#fff;
+      font-size: 12px;
+      font-weight: 1000;
+      letter-spacing:-0.2px;
+      backdrop-filter: blur(10px);
+    }
+    .big-card .bottom{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 12px 12px;
+    }
+    .big-card .bt-title{
+      font-size: 13px;
+      font-weight: 1000;
+      color:#111;
+      letter-spacing:-0.2px;
+    }
+    .big-card .bt-more{
+      font-size: 12px;
+      font-weight: 1000;
+      color:#9aa6af;
+    }
+
+    /* 하단 탭바 */
+    .tabbar{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      padding: 10px 10px calc(10px + var(--safe-bottom));
+      background:#fff;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      z-index: 50;
+    }
+    .tabs{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+    }
+    .tab{
+      width: 20%;
+      display:grid;
+      place-items:center;
+      gap: 6px;
+      text-decoration:none;
+      color:#9aa6af;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing:-0.2px;
+      padding: 6px 0;
+    }
+    .tab svg{ width: 22px; height: 22px; fill: currentColor; }
+    .tab.active{
+      color: var(--brand);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    
+
+    <div class="scroll">
+      <section class="hero" aria-label="상단 히어로">
+        <div class="hero-inner">
+          <div class="header">
+            <div class="greet">홍준표님 안녕하세요
+즐거운 자전거 여행이 되세요</div>
+
+            <div class="actions">
+              <div class="avatar" aria-label="프로필">
+                <img src="./img/Eco-friendly cycling in the park.png" alt="" onerror="this.style.display='none'; this.parentElement.style.background='#cfd8dc';" />
+              </div>
+              <button class="bell" type="button" aria-label="알림">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 22a2.2 2.2 0 0 0 2.1-1.6h-4.2A2.2 2.2 0 0 0 12 22zm7-6V11a7 7 0 1 0-14 0v5l-2 2v1h18v-1l-2-2z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="widgets" aria-label="요약 위젯">
+            <div class="card weather" role="group" aria-label="날씨">
+              <div class="left">
+                <div class="name">Monstily Sunny</div>
+                <div class="temp">20°</div>
+              </div>
+              <div class="wx-icon" aria-hidden="true">
+                <div class="sun">
+                  <div class="cloud"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card progress" role="group" aria-label="진행 정보">
+              <div class="row">
+                <div class="label">완주코스</div>
+                <div class="value">1/10</div>
+              </div>
+              <div class="divider"></div>
+              <div class="row">
+                <div class="label">이동거리</div>
+                <div class="value">15<span class="unit">km</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content" aria-label="메인 콘텐츠">
+        <div class="section-title">제주도 자전거 여행 정보 가이드</div>
+
+        <div class="grid2" aria-label="가이드 카드 2열">
+          <article class="mini-card">
+            <img src="./img/Frame 19.png" alt="제주도 자전거 여행 정보 가이드" onerror="this.style.opacity=0;" />
+            <div class="cap">
+              <div class="cap-row">
+                <span>제주도 자전거 여행 정보 가이드</span>
+                <span class="more">더보기</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="mini-card">
+            <img src="./img/Frame 18.png" alt="제주도 자전거 여행 정보 가이드" onerror="this.style.opacity=0;" />
+            <div class="cap">
+              <div class="cap-row">
+                <span>제주도 자전거 여행 정보 가이드</span>
+                <span class="more">더보기</span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <div class="big-list" aria-label="추천 리스트">
+          <article class="big-card">
+            <div class="imgwrap">
+              <img src="./img/Frame 17.png" alt="제주도 자전거 여행 패키지" onerror="this.style.opacity=0;" />
+              <div class="tag">제주도 자전거 여행 패키지<br/>완벽한 코스 이야기</div>
+            </div>
+            <div class="bottom">
+              <div class="bt-title">제주도 자전거 여행 정보 가이드</div>
+              <div class="bt-more">더보기</div>
+            </div>
+          </article>
+
+          <article class="big-card">
+            <div class="imgwrap">
+              <img src="./img/Frame 22.png" alt="제주도 자전거 여행 패키지" onerror="this.style.opacity=0;" />
+              <div class="tag">제주도 자전거 여행 패키지<br/>완벽한 코스 이야기</div>
+            </div>
+            <div class="bottom">
+              <div class="bt-title">제주도 자전거 여행 정보 가이드</div>
+              <div class="bt-more">더보기</div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <!-- 하단 탭바 -->
+    <nav class="tabbar" aria-label="하단 탭">
+      <div class="tabs">
+        <a class="tab active" href="#" onclick="return false;">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3 10v11h6v-7h6v7h6V10z"/></svg>
+          홈
+        </a>
+        <a class="tab" href="./cm.html" onclick="return false;">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H5.2L4 17.2V4zm3 16h14v-2H7v2z"/></svg>
+          커뮤니티
+        
+        </a>
+        <a class="tab" href="#" onclick="return false;">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9h-2a7 7 0 1 1-7-7V3z"/></svg>
+          코스
+        </a>
+        <a class="tab" href="#" onclick="return false;">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v2H7V4zm-2 4h14v2H5V8zm2 4h10v2H7v-2zm-2 4h14v2H5v-2z"/></svg>
+          랭킹
+        </a>
+        <a class="tab" href="#" onclick="return false;">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-4.4 0-8 2.2-8 5v2h16v-2c0-2.8-3.6-5-8-5z"/></svg>
+          마이
+        </a>
+      </div>
+    </nav>
+  </div>
+</body>
+</html>
