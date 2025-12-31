@@ -1,0 +1,1465 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StreamFlix — Netflix-style Responsive UI</title>
+  <meta name="description" content="Netflix 스타일의 반응형 스트리밍 UI 데모 (HTML/CSS/JS only)" />
+  <style>
+    :root {
+      --bg: #0b0b0f;
+      --panel: rgba(20, 20, 24, 0.75);
+      --panel-solid: #141418;
+      --text: #f4f4f5;
+      --muted: rgba(244, 244, 245, 0.72);
+      --muted2: rgba(244, 244, 245, 0.55);
+      --accent: #e50914;
+      --shadow: 0 16px 48px rgba(0,0,0,.55);
+      --shadow2: 0 8px 24px rgba(0,0,0,.45);
+      --radius: 16px;
+      --radius2: 12px;
+      --max: 1200px;
+      --safe: clamp(16px, 4vw, 28px);
+      --cardW: 180px;
+      --cardH: 252px;
+      --gap: 14px;
+      --ease: cubic-bezier(.2,.8,.2,1);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+
+    /* Backdrop / Hero */
+    .backdrop {
+      position: relative;
+      min-height: 100vh;
+      isolation: isolate;
+    }
+    .backdrop::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(1100px 800px at 70% 20%, rgba(229, 9, 20, 0.35), transparent 55%),
+        radial-gradient(900px 700px at 10% 10%, rgba(255, 255, 255, 0.12), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.85)),
+        url('https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?auto=format&fit=crop&w=2400&q=70');
+      background-size: cover;
+      background-position: center;
+      filter: saturate(1.05) contrast(1.05);
+      z-index: -2;
+    }
+    .backdrop::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.40), rgba(0,0,0,0.95) 75%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Top Nav */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.12));
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 14px var(--safe);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 120px;
+    }
+
+    .logo {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: var(--accent);
+      box-shadow: 0 10px 24px rgba(229, 9, 20, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .logo::before {
+      content: "";
+      position: absolute;
+      inset: -8px;
+      background: linear-gradient(120deg, rgba(255,255,255,0.0), rgba(255,255,255,0.22), rgba(255,255,255,0.0));
+      transform: translateX(-40%) rotate(20deg);
+      animation: shine 3.8s var(--ease) infinite;
+    }
+    @keyframes shine {
+      0%, 40% { transform: translateX(-60%) rotate(20deg); }
+      70%, 100% { transform: translateX(70%) rotate(20deg); }
+    }
+
+    .brand strong {
+      letter-spacing: 0.2px;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .nav-links {
+      display: none;
+      gap: 18px;
+      align-items: center;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .nav-links a {
+      padding: 8px 10px;
+      border-radius: 999px;
+      transition: background .2s var(--ease), color .2s var(--ease);
+    }
+    .nav-links a:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-btn {
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.35);
+      color: var(--text);
+      height: 38px;
+      width: 38px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: transform .16s var(--ease), background .16s var(--ease), border-color .16s var(--ease);
+    }
+    .icon-btn:hover { transform: translateY(-1px); background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.16); }
+
+    .btn {
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      height: 38px;
+      padding: 0 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: transform .16s var(--ease), background .16s var(--ease), border-color .16s var(--ease);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn:hover { transform: translateY(-1px); background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.18); }
+
+    .btn.primary {
+      background: var(--accent);
+      border-color: rgba(229, 9, 20, 0.6);
+      box-shadow: 0 12px 30px rgba(229, 9, 20, 0.35);
+    }
+    .btn.primary:hover { background: #ff0a16; }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+      user-select: none;
+    }
+
+    /* Hero Section */
+    .hero {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 56px var(--safe) 34px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      margin: 10px 0 12px;
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+    }
+
+    .hero p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: clamp(14px, 1.6vw, 18px);
+      line-height: 1.55;
+      max-width: 56ch;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .email {
+      flex: 1 1 240px;
+      min-width: 220px;
+      height: 44px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.35);
+      color: var(--text);
+      outline: none;
+      transition: border-color .16s var(--ease), background .16s var(--ease);
+    }
+    .email:focus { border-color: rgba(229, 9, 20, 0.55); background: rgba(0,0,0,0.45); }
+
+    .meta {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      color: var(--muted2);
+      font-size: 12px;
+    }
+
+    .hero-card {
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-card .top {
+      padding: 16px 16px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(229, 9, 20, 0.16);
+      border: 1px solid rgba(229, 9, 20, 0.38);
+      color: rgba(255,255,255,0.9);
+      font-weight: 750;
+    }
+
+    .hero-card .poster {
+      aspect-ratio: 16 / 10;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.7)),
+        url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=2000&q=70');
+      background-size: cover;
+      background-position: center;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .hero-card h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .desc {
+      margin: 0;
+      color: rgba(255,255,255,0.78);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .mini-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .mini {
+      height: 36px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.35);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      transition: transform .16s var(--ease), background .16s var(--ease);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mini:hover { transform: translateY(-1px); background: rgba(255,255,255,0.06); }
+
+    /* Rows */
+    main {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 10px var(--safe) 60px;
+    }
+
+    .row {
+      margin-top: 22px;
+    }
+
+    .row-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .row h3 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .row .sub {
+      margin: 0;
+      color: var(--muted2);
+      font-size: 12px;
+    }
+
+    .rail {
+      position: relative;
+      border-radius: var(--radius);
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      box-shadow: var(--shadow2);
+    }
+
+    .rail-inner {
+      display: flex;
+      gap: var(--gap);
+      padding: 14px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.25) rgba(0,0,0,0.0);
+    }
+
+    .rail-inner::-webkit-scrollbar { height: 10px; }
+    .rail-inner::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.18);
+      border-radius: 999px;
+      border: 2px solid rgba(0,0,0,0.35);
+    }
+    .rail-inner::-webkit-scrollbar-track { background: rgba(0,0,0,0.0); }
+
+    .card {
+      scroll-snap-align: start;
+      flex: 0 0 auto;
+      width: var(--cardW);
+      border-radius: var(--radius2);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: var(--panel);
+      position: relative;
+      cursor: pointer;
+      transition: transform .22s var(--ease), box-shadow .22s var(--ease), border-color .22s var(--ease);
+    }
+    .card:hover {
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255,255,255,0.20);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.55);
+    }
+
+    .thumb {
+      height: var(--cardH);
+      background-size: cover;
+      background-position: center;
+      filter: saturate(1.05) contrast(1.05);
+    }
+
+    .card .info {
+      padding: 10px 10px 12px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .card .t {
+      margin: 0;
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .card .m {
+      margin: 0;
+      color: var(--muted2);
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .tag {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.25);
+      color: rgba(255,255,255,0.78);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* Rail controls */
+    .rail-controls {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .arrow {
+      pointer-events: auto;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 44px;
+      width: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.55);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: transform .16s var(--ease), background .16s var(--ease), opacity .16s var(--ease);
+      opacity: 0;
+    }
+    .rail:hover .arrow { opacity: 1; }
+    .arrow:hover { transform: translateY(-50%) scale(1.04); background: rgba(0,0,0,0.70); }
+    .arrow.left { left: 10px; }
+    .arrow.right { right: 10px; }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s var(--ease);
+      z-index: 100;
+    }
+    .modal.open { opacity: 1; pointer-events: auto; }
+
+    .modal-card {
+      width: min(980px, 100%);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(20,20,24,0.84);
+      box-shadow: var(--shadow);
+      transform: translateY(8px);
+      transition: transform .18s var(--ease);
+    }
+    .modal.open .modal-card { transform: translateY(0); }
+
+    .modal-hero {
+      position: relative;
+      aspect-ratio: 16 / 8;
+      background: #111;
+      overflow: hidden;
+    }
+
+    .modal-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      filter: saturate(1.05) contrast(1.05);
+      transform: scale(1.02);
+    }
+
+    .modal-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.85));
+    }
+
+    .modal-bar {
+      position: absolute;
+      inset: 0;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      z-index: 1;
+    }
+
+    .close {
+      height: 40px;
+      width: 40px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.55);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: transform .16s var(--ease), background .16s var(--ease);
+    }
+    .close:hover { transform: scale(1.04); background: rgba(0,0,0,0.70); }
+
+    .modal-body {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .modal-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .modal-title h4 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .modal-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      color: rgba(255,255,255,0.75);
+      font-size: 12px;
+    }
+
+    .modal-desc {
+      margin: 0;
+      color: rgba(255,255,255,0.78);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .kbd {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.35);
+      color: rgba(255,255,255,0.82);
+    }
+
+    footer {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 30px var(--safe) 40px;
+      color: var(--muted2);
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* Search Drawer (mobile) */
+    .drawer {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s var(--ease);
+      z-index: 80;
+    }
+    .drawer.open { opacity: 1; pointer-events: auto; }
+
+    .drawer-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: min(420px, 92vw);
+      background: rgba(20,20,24,0.90);
+      border-left: 1px solid rgba(255,255,255,0.10);
+      box-shadow: var(--shadow);
+      transform: translateX(16px);
+      transition: transform .18s var(--ease);
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 10px;
+      padding: 14px;
+    }
+    .drawer.open .drawer-panel { transform: translateX(0); }
+
+    .drawer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .drawer-title { margin: 0; font-size: 14px; color: rgba(255,255,255,0.9); }
+
+    .search {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search input {
+      flex: 1;
+      height: 42px;
+      padding: 0 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.35);
+      color: var(--text);
+      outline: none;
+    }
+
+    .search input:focus { border-color: rgba(229, 9, 20, 0.55); }
+
+    .result {
+      display: grid;
+      gap: 10px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .result .item {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.28);
+      cursor: pointer;
+      transition: transform .16s var(--ease), border-color .16s var(--ease), background .16s var(--ease);
+    }
+
+    .result .item:hover { transform: translateY(-1px); border-color: rgba(255,255,255,0.16); background: rgba(255,255,255,0.05); }
+
+    .result .ph {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .result .name { margin: 0; font-weight: 850; font-size: 13px; }
+    .result .meta { margin: 0; color: var(--muted2); font-size: 12px; }
+
+    /* Responsive */
+    @media (min-width: 880px) {
+      .nav-links { display: flex; }
+    }
+
+    @media (max-width: 880px) {
+      .hero { grid-template-columns: 1fr; padding-top: 38px; }
+      .hero-card { order: -1; }
+      .meta { margin-bottom: 6px; }
+    }
+
+    @media (max-width: 520px) {
+      :root { --cardW: 150px; --cardH: 210px; }
+      .btn { padding: 0 12px; }
+      .hero { padding-top: 28px; }
+      .hero h1 { font-size: 34px; }
+    }
+
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce) {
+      * { scroll-behavior: auto !important; }
+      .logo::before { animation: none; }
+      .card, .btn, .icon-btn, .mini, .arrow, .modal, .modal-card, .drawer, .drawer-panel { transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="backdrop">
+    <header>
+      <div class="nav">
+        <a class="brand" href="#" aria-label="StreamFlix 홈">
+          <span class="logo" aria-hidden="true"></span>
+          <strong>StreamFlix</strong>
+        </a>
+
+        <nav class="nav-links" aria-label="주요 메뉴">
+          <a href="#trending">인기 콘텐츠</a>
+          <a href="#new">신작</a>
+          <a href="#top10">TOP 10</a>
+          <a href="#my">내 리스트</a>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="icon-btn" id="openSearch" aria-label="검색 열기" title="검색">
+            <!-- search icon -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <button class="btn" id="btnSignIn" aria-label="로그인">로그인</button>
+          <button class="btn primary" id="btnJoin" aria-label="가입하기">
+            <span>시작하기</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M9 18 15 12 9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero" aria-label="메인 소개">
+      <div>
+        <div class="pill">🔴 오늘의 추천 · 4K · 모바일 최적화</div>
+        <h1>오늘 밤, 당신의 취향을 
+          <span style="color: rgba(255,255,255,0.86)">정주행</span> 하세요.</h1>
+        <p>
+          Netflix 스타일의 반응형 UI 데모입니다. 
+          카드 레일(가로 스크롤), 모달 상세, 검색 드로어까지 <b>HTML/CSS/JS</b>만으로 구현했습니다.
+        </p>
+
+        <div class="cta-row">
+          <input class="email" id="email" type="email" placeholder="이메일 주소" autocomplete="email" />
+          <button class="btn primary" id="startBtn" style="height:44px; padding:0 18px;">
+            30일 무료로 시작
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M9 18 15 12 9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="meta">
+          <span>✔ 계정은 언제든 해지 가능</span>
+          <span>•</span>
+          <span>✔ 카드 레일은 마우스/터치 지원</span>
+          <span>•</span>
+          <span>✔ ESC로 모달 닫기</span>
+          <span class="kbd">/</span>
+          <span>검색 열기</span>
+        </div>
+      </div>
+
+      <aside class="hero-card" aria-label="추천 콘텐츠 카드">
+        <div class="top">
+          <span class="badge">🔥 트렌딩 1위</span>
+          <span class="pill" style="padding:7px 10px;">#스릴러 #미스터리</span>
+        </div>
+        <div class="poster" id="heroPoster">
+          <div class="title-row">
+            <h2 id="heroTitle">Night Shift</h2>
+            <span class="tag" id="heroTag">NEW</span>
+          </div>
+          <p class="desc" id="heroDesc">도시의 불빛 아래, 사라진 진실을 추적하는 한 형사의 이야기.</p>
+          <div class="mini-actions">
+            <button class="mini" id="playHero">
+              ▶ 재생
+            </button>
+            <button class="mini" id="addHero">
+              + 내 리스트
+            </button>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <main>
+      <section class="row" id="trending">
+        <div class="row-head">
+          <div>
+            <h3>지금 뜨는 콘텐츠</h3>
+            <p class="sub">좌우 버튼 또는 트랙패드/드래그로 탐색</p>
+          </div>
+          <span class="pill">오늘 업데이트</span>
+        </div>
+
+        <div class="rail" data-rail="trending">
+          <div class="rail-inner" id="railTrending"></div>
+          <div class="rail-controls" aria-hidden="true">
+            <button class="arrow left" data-dir="left" aria-label="왼쪽으로" title="왼쪽">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18 9 12l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="arrow right" data-dir="right" aria-label="오른쪽으로" title="오른쪽">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="row" id="new">
+        <div class="row-head">
+          <div>
+            <h3>신작 & 화제작</h3>
+            <p class="sub">모바일에서도 부드러운 가로 스크롤</p>
+          </div>
+          <span class="pill">새 시즌</span>
+        </div>
+
+        <div class="rail" data-rail="new">
+          <div class="rail-inner" id="railNew"></div>
+          <div class="rail-controls" aria-hidden="true">
+            <button class="arrow left" data-dir="left" aria-label="왼쪽으로" title="왼쪽">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18 9 12l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="arrow right" data-dir="right" aria-label="오른쪽으로" title="오른쪽">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="row" id="top10">
+        <div class="row-head">
+          <div>
+            <h3>TOP 10 · 시청 순위</h3>
+            <p class="sub">호버 시 카드가 살짝 확대</p>
+          </div>
+          <span class="pill">#정주행각</span>
+        </div>
+
+        <div class="rail" data-rail="top10">
+          <div class="rail-inner" id="railTop"></div>
+          <div class="rail-controls" aria-hidden="true">
+            <button class="arrow left" data-dir="left" aria-label="왼쪽으로" title="왼쪽">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18 9 12l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="arrow right" data-dir="right" aria-label="오른쪽으로" title="오른쪽">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="row" id="my">
+        <div class="row-head">
+          <div>
+            <h3>내 리스트</h3>
+            <p class="sub">+ 버튼으로 담고, 여기서 확인</p>
+          </div>
+          <span class="pill" id="myCount">0개</span>
+        </div>
+
+        <div class="rail">
+          <div class="rail-inner" id="railMy"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:space-between;">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span class="logo" aria-hidden="true" style="width:18px;height:18px;border-radius:6px;"></span>
+            <strong style="font-size:14px;">StreamFlix</strong>
+          </div>
+          <p style="margin:10px 0 0; max-width:72ch; line-height:1.6;">
+            교육용 데모 UI입니다. 실제 Netflix의 자산/브랜딩/콘텐츠를 사용하지 않았습니다.
+            (이미지는 Unsplash의 공개 이미지 사용)
+          </p>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <span class="pill">Tip: 카드 클릭 → 상세 모달</span>
+          <span class="pill">Tip: <span class="kbd">/</span> 검색</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="콘텐츠 상세" aria-hidden="true">
+    <div class="modal-card" role="document">
+      <div class="modal-hero" id="modalHero">
+        <div class="modal-bar">
+          <span class="badge" id="modalBadge">FEATURED</span>
+          <button class="close" id="closeModal" aria-label="닫기 (ESC)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-title">
+          <h4 id="modalTitle">Title</h4>
+          <div class="mini-actions">
+            <button class="mini" id="modalPlay">▶ 재생</button>
+            <button class="mini" id="modalAdd">+ 내 리스트</button>
+          </div>
+        </div>
+        <div class="modal-meta" id="modalMeta"></div>
+        <p class="modal-desc" id="modalDesc"></p>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <span class="pill">ESC 닫기</span>
+          <span class="pill">카드 클릭으로 열기</span>
+          <span class="pill">"+ 내 리스트"로 저장</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Drawer -->
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-panel" role="dialog" aria-modal="true" aria-label="검색">
+      <div class="drawer-top">
+        <h3 class="drawer-title">검색</h3>
+        <button class="close" id="closeDrawer" aria-label="검색 닫기">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="search">
+        <input id="searchInput" type="search" placeholder="제목, 장르, 태그로 검색" autocomplete="off" />
+        <button class="btn primary" id="searchBtn" aria-label="검색 실행" style="height:42px; border-radius: 12px;">검색</button>
+      </div>
+
+      <div class="result" id="searchResult" aria-label="검색 결과"></div>
+
+      <div style="color: rgba(255,255,255,0.62); font-size: 12px; line-height:1.5;">
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <span class="pill">단축키 <span class="kbd">/</span></span>
+          <span class="pill">모달 닫기 <span class="kbd">ESC</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // -------------------------------
+    // Demo data
+    // -------------------------------
+    const DATA = {
+      trending: [
+        mk("Night Shift", "Thriller", 2025, "16+", "4K", "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?auto=format&fit=crop&w=1000&q=70", "도시의 밤, 사라진 진실을 쫓는 형사의 이야기."),
+        mk("Orbit", "Sci-Fi", 2024, "12+", "HDR", "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=70", "우주 정거장에서 시작된 신호가 지구의 운명을 바꾼다."),
+        mk("Black Dahlia", "Mystery", 2023, "15+", "HD", "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1000&q=70", "예술과 범죄가 얽힌 미스터리, 마지막 퍼즐은 당신의 선택."),
+        mk("Neon Runner", "Action", 2025, "15+", "4K", "https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?auto=format&fit=crop&w=1000&q=70", "광고판의 빛 아래, 도망자의 질주가 시작된다."),
+        mk("The Last Byte", "Drama", 2022, "12+", "HD", "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1000&q=70", "사라진 데이터를 찾아 떠나는 개발자의 성장 드라마."),
+        mk("Crimson Lake", "Horror", 2021, "19+", "HDR", "https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=1000&q=70", "호수에 잠든 비밀이 깨어나는 순간, 모든 규칙이 무너진다."),
+        mk("Paper Crown", "Crime", 2020, "15+", "HD", "https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=1000&q=70", "권력과 배신, 한 장의 문서가 만든 왕관."),
+        mk("Pulse", "Romance", 2024, "12+", "4K", "https://images.unsplash.com/photo-1526948128573-703ee1aeb6fa?auto=format&fit=crop&w=1000&q=70", "심장 박동처럼 빠르게 다가온 사랑, 느리게 멀어진 진심."),
+        mk("Midnight Diner", "Slice", 2019, "12+", "HD", "https://images.unsplash.com/photo-1541542684-4bf98fbcbb84?auto=format&fit=crop&w=1000&q=70", "늦은 밤, 작은 식당에 모인 사연들이 따뜻하게 이어진다."),
+        mk("Eclipse", "Adventure", 2023, "12+", "HDR", "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1000&q=70", "빛이 사라진 세계에서, 마지막 태양을 찾아 떠나는 여정."),
+      ],
+      new: [
+        mk("City of Echoes", "Drama", 2025, "12+", "4K", "https://images.unsplash.com/photo-1520975958225-94b9d08b6d2c?auto=format&fit=crop&w=1000&q=70", "메아리처럼 남은 기억이 도시의 진실을 드러낸다."),
+        mk("Karma Code", "Thriller", 2025, "15+", "HDR", "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1000&q=70", "코드 한 줄이 인생을 바꾸는 순간, 되돌릴 수 없다."),
+        mk("Sunset Motel", "Mystery", 2024, "15+", "HD", "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1000&q=70", "모텔의 7번 방, 체크아웃은 불가능하다."),
+        mk("Blue Note", "Music", 2023, "12+", "4K", "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=1000&q=70", "한 곡의 재즈가 두 사람의 시간을 되돌린다."),
+        mk("Atlas", "Sci-Fi", 2025, "12+", "HDR", "https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?auto=format&fit=crop&w=1000&q=70", "새로운 지도는 지구가 아닌 곳을 가리킨다."),
+        mk("Hinterland", "Adventure", 2024, "12+", "HD", "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1000&q=70", "끝없는 숲, 그 안에서만 가능한 생존의 법칙."),
+        mk("Cold Glass", "Crime", 2022, "15+", "HD", "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1000&q=70", "유리처럼 차가운 도시, 따뜻한 증거는 없다."),
+        mk("Bloom", "Romance", 2021, "12+", "4K", "https://images.unsplash.com/photo-1520975680413-9bfb58014c1a?auto=format&fit=crop&w=1000&q=70", "피어나는 마음, 시들지 않는 약속."),
+      ],
+      top10: []
+    };
+
+    // Top10 is derived from trending + new
+    DATA.top10 = [...DATA.trending.slice(0, 6), ...DATA.new.slice(0, 6)]
+      .slice(0, 10)
+      .map((x, i) => ({ ...x, rank: i + 1 }));
+
+    // My list is persisted in localStorage
+    const STORAGE_KEY = "streamflix_my_list_v1";
+
+    function mk(title, genre, year, rating, quality, img, desc) {
+      return {
+        id: cryptoRandomId(),
+        title,
+        genre,
+        year,
+        rating,
+        quality,
+        img,
+        desc,
+        minutes: rand(90, 165),
+        match: rand(84, 99),
+      };
+    }
+
+    function rand(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function cryptoRandomId() {
+      // Crypto API가 없는 환경 대비
+      try {
+        const a = new Uint32Array(2);
+        crypto.getRandomValues(a);
+        return a[0].toString(16) + a[1].toString(16);
+      } catch {
+        return String(Date.now()) + String(Math.random()).slice(2);
+      }
+    }
+
+    // -------------------------------
+    // Render rails
+    // -------------------------------
+    const railTrending = document.getElementById('railTrending');
+    const railNew = document.getElementById('railNew');
+    const railTop = document.getElementById('railTop');
+    const railMy = document.getElementById('railMy');
+    const myCount = document.getElementById('myCount');
+
+    const modal = document.getElementById('modal');
+    const modalHero = document.getElementById('modalHero');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMeta = document.getElementById('modalMeta');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalBadge = document.getElementById('modalBadge');
+    const modalAdd = document.getElementById('modalAdd');
+    const modalPlay = document.getElementById('modalPlay');
+
+    const drawer = document.getElementById('drawer');
+    const openSearch = document.getElementById('openSearch');
+    const closeDrawer = document.getElementById('closeDrawer');
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const searchResult = document.getElementById('searchResult');
+
+    const startBtn = document.getElementById('startBtn');
+
+    let currentModalItem = null;
+
+    function renderRail(el, items, opts = {}) {
+      const { showRank = false } = opts;
+      el.innerHTML = items.map(item => {
+        const rank = showRank ? `<span class="badge" style="position:absolute; left:10px; top:10px; background: rgba(0,0,0,0.55); border-color: rgba(255,255,255,0.16);">TOP ${item.rank}</span>` : '';
+        return `
+          <article class="card" data-id="${item.id}" tabindex="0" role="button" aria-label="${escapeHtml(item.title)} 상세 보기">
+            ${rank}
+            <div class="thumb" style="background-image:url('${item.img}')"></div>
+            <div class="info">
+              <p class="t">${escapeHtml(item.title)}</p>
+              <p class="m">
+                <span>${escapeHtml(item.genre)} · ${item.year}</span>
+                <span class="tag">${item.quality}</span>
+              </p>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    renderRail(railTrending, DATA.trending);
+    renderRail(railNew, DATA.new);
+    renderRail(railTop, DATA.top10, { showRank: true });
+
+    // -------------------------------
+    // Rails: arrow scroll
+    // -------------------------------
+    document.querySelectorAll('.rail').forEach(rail => {
+      const inner = rail.querySelector('.rail-inner');
+      const controls = rail.querySelectorAll('.arrow');
+      controls.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const dir = btn.dataset.dir;
+          const amount = inner.clientWidth * 0.82;
+          inner.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' });
+        });
+      });
+    });
+
+    // -------------------------------
+    // Modal: open/close
+    // -------------------------------
+    const ALL = [...DATA.trending, ...DATA.new, ...DATA.top10];
+
+    function openModal(item) {
+      currentModalItem = item;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+
+      modalHero.style.setProperty('--img', `url('${item.img}')`);
+      modalHero.style.position = 'relative';
+      modalHero.style.overflow = 'hidden';
+      modalHero.style.background = '#111';
+      modalHero.style.setProperty('background', 'transparent');
+      modalHero.style.setProperty('isolation', 'isolate');
+      modalHero.style.setProperty('contain', 'paint');
+
+      // set hero background via ::before using inline style hook
+      modalHero.style.setProperty('--bg', item.img);
+      modalHero.style.setProperty('background', '#111');
+      modalHero.style.setProperty('borderBottom', '1px solid rgba(255,255,255,0.08)');
+      modalHero.style.setProperty('minHeight', '0');
+
+      // Update pseudo element background
+      modalHero.style.setProperty('--poster', item.img);
+      modalHero.style.setProperty('backgroundImage', 'none');
+      modalHero.style.setProperty('backgroundSize', 'cover');
+      modalHero.style.setProperty('backgroundPosition', 'center');
+      modalHero.style.setProperty('backgroundRepeat', 'no-repeat');
+
+      // hack: we cannot set ::before via JS directly, so we set a data attr and use CSS var through style tag.
+      modalHero.dataset.poster = item.img;
+
+      modalTitle.textContent = item.title;
+      modalBadge.textContent = item.rank ? `TOP ${item.rank}` : `${item.match}% Match`;
+      modalMeta.innerHTML = [
+        pill(`${item.year}`),
+        pill(`${item.rating}`),
+        pill(`${item.genre}`),
+        pill(`${item.quality}`),
+        pill(`${item.minutes}분`)
+      ].join('');
+      modalDesc.textContent = item.desc;
+
+      modalAdd.textContent = isInMyList(item.id) ? '✓ 내 리스트에 있음' : '+ 내 리스트';
+      modalAdd.dataset.id = item.id;
+      modalPlay.dataset.id = item.id;
+
+      // focus
+      setTimeout(() => document.getElementById('closeModal').focus(), 0);
+    }
+
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      currentModalItem = null;
+    }
+
+    function pill(text) {
+      return `<span class="pill" style="padding:7px 10px;">${escapeHtml(text)}</span>`;
+    }
+
+    // Dynamic CSS for modal hero background
+    const dynamicStyle = document.createElement('style');
+    dynamicStyle.innerHTML = `
+      #modalHero::before { background-image: var(--modalPoster, none); }
+    `;
+    document.head.appendChild(dynamicStyle);
+
+    function syncModalPoster() {
+      const url = modalHero?.dataset?.poster;
+      if (!url) return;
+      modalHero.style.setProperty('--modalPoster', `url('${url}')`);
+      // Also update style rule variable used by ::before
+      modalHero.style.setProperty('--modalPoster', `url('${url}')`);
+      dynamicStyle.innerHTML = `#modalHero::before{background-image:url('${url}');}`;
+    }
+
+    // Clicking any card opens modal
+    document.addEventListener('click', (e) => {
+      const card = e.target.closest('.card');
+      if (!card) return;
+      const id = card.dataset.id;
+      const item = ALL.find(x => x.id === id) || getMyList().find(x => x.id === id);
+      if (!item) return;
+      openModal(item);
+      syncModalPoster();
+    });
+
+    // keyboard open (Enter/Space)
+    document.addEventListener('keydown', (e) => {
+      const active = document.activeElement;
+      if (active?.classList?.contains('card') && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        const id = active.dataset.id;
+        const item = ALL.find(x => x.id === id) || getMyList().find(x => x.id === id);
+        if (item) { openModal(item); syncModalPoster(); }
+      }
+
+      // ESC closes modal/drawer
+      if (e.key === 'Escape') {
+        if (modal.classList.contains('open')) closeModal();
+        if (drawer.classList.contains('open')) closeDrawerFn();
+      }
+
+      // '/' opens search drawer (like many apps)
+      if (e.key === '/' && !isTypingInInput()) {
+        e.preventDefault();
+        openDrawerFn();
+      }
+    });
+
+    function isTypingInInput() {
+      const el = document.activeElement;
+      if (!el) return false;
+      const tag = el.tagName?.toLowerCase();
+      return tag === 'input' || tag === 'textarea' || el.isContentEditable;
+    }
+
+    // Modal close actions
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // -------------------------------
+    // My list: localStorage
+    // -------------------------------
+    function getMyList() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function setMyList(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function isInMyList(id) {
+      return getMyList().some(x => x.id === id);
+    }
+
+    function addToMyList(item) {
+      const list = getMyList();
+      if (list.some(x => x.id === item.id)) return;
+      list.unshift(item);
+      setMyList(list);
+      renderMy();
+    }
+
+    function removeFromMyList(id) {
+      const list = getMyList().filter(x => x.id !== id);
+      setMyList(list);
+      renderMy();
+    }
+
+    function renderMy() {
+      const list = getMyList();
+      myCount.textContent = `${list.length}개`;
+      if (!list.length) {
+        railMy.innerHTML = `
+          <div style="min-width: 280px; padding: 14px; color: rgba(255,255,255,0.72); line-height:1.6;">
+            아직 담긴 콘텐츠가 없어요. <b>카드를 클릭</b>해서 모달을 열고 <b>+ 내 리스트</b>를 눌러보세요.
+          </div>
+        `;
+        return;
+      }
+      renderRail(railMy, list);
+    }
+
+    renderMy();
+
+    // Add button in modal
+    modalAdd.addEventListener('click', () => {
+      const id = modalAdd.dataset.id;
+      if (!id) return;
+      const item = ALL.find(x => x.id === id) || getMyList().find(x => x.id === id);
+      if (!item) return;
+
+      if (isInMyList(id)) {
+        removeFromMyList(id);
+        modalAdd.textContent = '+ 내 리스트';
+      } else {
+        addToMyList(item);
+        modalAdd.textContent = '✓ 내 리스트에 있음';
+      }
+    });
+
+    // Simulated play
+    function toast(msg) {
+      const t = document.createElement('div');
+      t.textContent = msg;
+      t.style.position = 'fixed';
+      t.style.left = '50%';
+      t.style.bottom = '22px';
+      t.style.transform = 'translateX(-50%)';
+      t.style.padding = '10px 14px';
+      t.style.borderRadius = '999px';
+      t.style.border = '1px solid rgba(255,255,255,0.16)';
+      t.style.background = 'rgba(0,0,0,0.65)';
+      t.style.backdropFilter = 'blur(10px)';
+      t.style.webkitBackdropFilter = 'blur(10px)';
+      t.style.color = 'rgba(255,255,255,0.92)';
+      t.style.fontWeight = '750';
+      t.style.fontSize = '13px';
+      t.style.boxShadow = '0 16px 40px rgba(0,0,0,0.55)';
+      t.style.zIndex = '999';
+      document.body.appendChild(t);
+      setTimeout(() => {
+        t.style.transition = 'opacity .18s ease';
+        t.style.opacity = '0';
+        setTimeout(() => t.remove(), 220);
+      }, 1400);
+    }
+
+    modalPlay.addEventListener('click', () => {
+      if (!currentModalItem) return;
+      toast(`▶ ${currentModalItem.title} 재생 (데모)`);
+    });
+
+    document.getElementById('playHero').addEventListener('click', () => {
+      toast('▶ Night Shift 재생 (데모)');
+    });
+
+    document.getElementById('addHero').addEventListener('click', () => {
+      addToMyList(DATA.trending[0]);
+      toast('+ 내 리스트에 추가');
+    });
+
+    // CTA
+    startBtn.addEventListener('click', () => {
+      const email = document.getElementById('email').value.trim();
+      if (!email) {
+        toast('이메일을 입력해주세요.');
+        document.getElementById('email').focus();
+        return;
+      }
+      toast('가입 플로우는 데모입니다 🙂');
+    });
+
+    // -------------------------------
+    // Search drawer
+    // -------------------------------
+    function openDrawerFn() {
+      drawer.classList.add('open');
+      drawer.setAttribute('aria-hidden', 'false');
+      setTimeout(() => searchInput.focus(), 0);
+      runSearch(searchInput.value);
+    }
+
+    function closeDrawerFn() {
+      drawer.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+    }
+
+    openSearch.addEventListener('click', openDrawerFn);
+    closeDrawer.addEventListener('click', closeDrawerFn);
+
+    drawer.addEventListener('click', (e) => {
+      if (e.target === drawer) closeDrawerFn();
+    });
+
+    function runSearch(q) {
+      const query = String(q || '').trim().toLowerCase();
+      const hay = [...ALL, ...getMyList()]
+        .reduce((acc, item) => {
+          if (!acc.some(x => x.id === item.id)) acc.push(item);
+          return acc;
+        }, []);
+
+      const list = query
+        ? hay.filter(item => (
+            item.title.toLowerCase().includes(query) ||
+            item.genre.toLowerCase().includes(query) ||
+            item.quality.toLowerCase().includes(query) ||
+            String(item.year).includes(query)
+          ))
+        : hay.slice(0, 10);
+
+      searchResult.innerHTML = list.length
+        ? list.map(item => `
+            <div class="item" data-id="${item.id}">
+              <div class="ph" style="background-image:url('${item.img}')"></div>
+              <div>
+                <p class="name">${escapeHtml(item.title)}</p>
+                <p class="meta">${escapeHtml(item.genre)} · ${item.year} · ${item.quality}</p>
+              </div>
+            </div>
+          `).join('')
+        : `<div style="color: rgba(255,255,255,0.72); line-height:1.6; padding: 10px;">검색 결과가 없어요.</div>`;
+    }
+
+    searchBtn.addEventListener('click', () => runSearch(searchInput.value));
+    searchInput.addEventListener('input', () => runSearch(searchInput.value));
+
+    searchResult.addEventListener('click', (e) => {
+      const item = e.target.closest('.item');
+      if (!item) return;
+      const id = item.dataset.id;
+      const found = ALL.find(x => x.id === id) || getMyList().find(x => x.id === id);
+      if (!found) return;
+      closeDrawerFn();
+      openModal(found);
+      syncModalPoster();
+    });
+
+    // -------------------------------
+    // Hero quick actions
+    // -------------------------------
+    document.getElementById('btnSignIn').addEventListener('click', () => toast('로그인 화면은 데모입니다 🙂'));
+    document.getElementById('btnJoin').addEventListener('click', () => toast('가입 화면은 데모입니다 🙂'));
+
+    // Ensure modal hero background updates when opened
+    const observer = new MutationObserver(() => {
+      if (modal.classList.contains('open')) syncModalPoster();
+    });
+    observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
+
+    // initial search results
+    runSearch('');
+  </script>
+</body>
+</html>
