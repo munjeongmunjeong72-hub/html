@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>객채데이터</title>
+</head>
+<body>
+    <script>
+        let score = [100,90,80,70]
+        document.write(`영어점수=${score[0]}<br> 국어점수=${score[1]}<br> 수학점수=${score[2]}<br> 컴퓨터점수=${score[3]}<br>`)
+
+        let jumsu = { eng:100,kor:90,mat:80,com:70}
+        document.write("<hr>")
+        document.write(`영어점수=${jumsu.eng}<br> 국어점수=${jumsu.kor}<br> 수학점수=${jumsu.mat}<br> 컴퓨터점수=${jumsu.com}<br>`)
+
+        document.write("<hr>")
+        
+        let book = {title:"소년이 온다",st:"한강",dst:13500,day:"2014년 5월 19일",lv:9.8,freevew:"본 콘텐츠는 (사)한국출판인회의에서 배포하는 ‘KoPub 글꼴’을 사용하고 있습니다.본 전자책은 구동되는 단말기나 소프트웨어, 서체 등에 따라 다르게 보일 수 있습니다.이 책 내용의 전부 또는 일부를 재사용하려면 반드시 저작권자와 창비 양측의 동의를 받아야 합니다."}
+    
+        document.write(`책제목:${book.title}<br> 
+        가격:${book.dst}<br> 
+        저자:${book.st}<br> 
+        출간일:${book.day}<br> 
+        평점:${book.lv}<br> 
+        미리보기:${book.freevew}<br>`)
+         document.write("<hr>")
+
+    
+
+      let produit = {제품:"마오",유형:"당절임",성분:"망고,설탕,치자",원산지:"필리핀"}
+    document.write(`제품명: ${produit.제품} <br>
+    유형: ${produit.유형} <br>
+    성분: ${produit.성분} <br>
+    원산지: ${produit.원산지} <br>
+    `)
+
+     let produit2 = ["마오","당절임","망고,설탕,치자","필리핀"]
+
+     document.write(`제품명은 ${produit2[0]}이고 유형은 ${produit2[1]}이며 성분은 ${produit2[2]}이며 원산지는 ${produit2[3]}입니다`)
+    </script>
+</body>
+</html>
