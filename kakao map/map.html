@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kakao Map 검색</title>
+  <style>
+    body { margin:0; padding:20px; font-family: Arial, sans-serif; }
+
+    .topbar{ display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+    .topbar h1{ margin:0; white-space:nowrap; font-size:24px; }
+
+    .search-box{ display:flex; align-items:center; gap:10px; flex:1; min-width:280px; }
+    #keyword{
+      width:min(560px, 100%);
+      padding:14px 16px;
+      font-size:18px;
+      border:1px solid #ccc;
+      border-radius:10px;
+      outline:none;
+    }
+    #keyword:focus{ border-color:#3182f6; }
+
+    #btnSearch{
+      padding:14px 20px;
+      font-size:16px;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      background:#3182f6;
+      color:#fff;
+      white-space:nowrap;
+    }
+
+    #status{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:10px;
+      background:#f5f5f5;
+      font-size:13px;
+      line-height:1.4;
+      white-space:pre-line;
+    }
+
+    #map{
+      width:100%;
+      height:420px;
+      margin-top:14px;
+      border-radius:12px;
+      overflow:hidden;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <h1> Maps 검색</h1>
+    <div class="search-box">
+      <input id="keyword" type="text" placeholder="예) 서울, 강남역, 부산 해운대" />
+      <button id="btnSearch" type="button">검색</button>
+    </div>
+  </div>
+
+  <div id="status">상태: SDK 로딩 대기중...</div>
+  <div id="map"></div>
+
+  <!-- ✅ services 사용 + ✅ autoload=false로 로드 완료 후 kakao.maps.load에서 초기화 -->
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=12bbe0a7710edf7c1ee095813343dd12&libraries=services&autoload=false"></script>
+
+  <script>
+    const statusEl = document.getElementById("status");
+    const keywordEl = document.getElementById("keyword");
+    const btnEl = document.getElementById("btnSearch");
+
+    let map, places, geocoder, infowindow;
+    let markers = [];
+
+    function setStatus(msg, isError=false) {
+      statusEl.textContent = msg;
+      statusEl.style.background = isError ? "#fff1f2" : "#f5f5f5";
+      statusEl.style.color = isError ? "#9f1239" : "#111";
+    }
+
+    function clearMarkers() {
+      markers.forEach(m => m.setMap(null));
+      markers = [];
+      if (infowindow) infowindow.close();
+    }
+
+    function addMarker(pos, title) {
+      const marker = new kakao.maps.Marker({ map, position: pos });
+      markers.push(marker);
+
+      kakao.maps.event.addListener(marker, "click", () => {
+        infowindow.setContent(`<div style="padding:6px 10px;font-size:12px;">${title}</div>`);
+        infowindow.open(map, marker);
+      });
+      return marker;
+    }
+
+    function init() {
+      // SDK/라이브러리가 정말 준비됐는지 1차 체크
+      if (!window.kakao || !kakao.maps) {
+        setStatus("오류: kakao.maps 가 없습니다. SDK 로딩 실패입니다.", true);
+        return;
+      }
+      if (!kakao.maps.services) {
+        setStatus("오류: services 라이브러리가 없습니다. libraries=services 를 확인하세요.", true);
+        return;
+      }
+
+      // 지도 생성
+      map = new kakao.maps.Map(document.getElementById("map"), {
+        center: new kakao.maps.LatLng(37.566826, 126.9786567),
+        level: 5
+      });
+
+      // 서비스 객체
+      places = new kakao.maps.services.Places();
+      geocoder = new kakao.maps.services.Geocoder();
+      infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+      setStatus("상태: 초기화 완료. 검색어를 입력하고 검색하세요.");
+    }
+
+    function search() {
+      const keyword = keywordEl.value.trim();
+      if (!keyword) {
+        alert("검색어를 입력해주세요.");
+        keywordEl.focus();
+        return;
+      }
+      if (!places || !geocoder) {
+        setStatus("오류: 아직 초기화가 끝나지 않았습니다. (kakao.maps.load 확인)", true);
+        return;
+      }
+
+      setStatus(`상태: "${keyword}" 검색 중...`);
+      clearMarkers();
+
+      // 1) 주소로 먼저 시도 (지역/행정구역 검색에 유리)
+      geocoder.addressSearch(keyword, function(result, status) {
+        if (status === kakao.maps.services.Status.OK && result && result.length > 0) {
+          const r = result[0];
+          const pos = new kakao.maps.LatLng(r.y, r.x);
+          addMarker(pos, keyword);
+          map.setCenter(pos);
+          map.setLevel(4);
+          setStatus(`상태: OK (주소)\n"${keyword}" 좌표로 이동 완료`);
+          return;
+        }
+
+        // 2) 주소 실패 시 키워드 장소검색
+        places.keywordSearch(keyword, function(data, status) {
+          if (status === kakao.maps.services.Status.OK && data && data.length > 0) {
+            const bounds = new kakao.maps.LatLngBounds();
+            const limit = Math.min(data.length, 10);
+
+            for (let i = 0; i < limit; i++) {
+              const p = data[i];
+              const pos = new kakao.maps.LatLng(p.y, p.x);
+              addMarker(pos, p.place_name);
+              bounds.extend(pos);
+            }
+
+            map.setBounds(bounds);
+            setStatus(`상태: OK (키워드)\n검색 결과: ${data.length}건\n상위 ${limit}개를 지도에 표시했습니다.`);
+            return;
+          }
+
+          if (status === kakao.maps.services.Status.ZERO_RESULT) {
+            setStatus(`상태: ZERO_RESULT\n"${keyword}" 검색 결과가 없습니다.`, true);
+            return;
+          }
+
+          setStatus(
+            `상태: ERROR\n검색 API 호출 중 오류입니다.\n` +
+            `- JavaScript 키/도메인 등록 문제거나\n` +
+            `- 콘솔에 "Invalid appkey" / "domain" 관련 에러가 있을 수 있습니다.\n` +
+            `브라우저 콘솔(F12) 메시지를 확인해주세요.`,
+            true
+          );
+        });
+      });
+    }
+
+    // 이벤트 연결(초기화가 끝난 뒤에도 동일하게 동작)
+    btnEl.addEventListener("click", search);
+    keywordEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") search();
+    });
+
+    // ✅ 올려주신 SDK 구조에 맞춘 방식: kakao.maps.load로 "로드 완료 후" init 실행
+    try {
+      kakao.maps.load(init);
+      setStatus("상태: SDK 로드 요청 완료. (kakao.maps.load 대기중...)");
+    } catch (e) {
+      setStatus("오류: kakao.maps.load 호출 실패. SDK 스크립트 로딩을 확인하세요.", true);
+    }
+  </script>
+</body>
+</html>
+
+
+
