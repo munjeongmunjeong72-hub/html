@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배열데이터</title>
+</head>
+<body>
+    <script>
+        let fruit = "바나나"
+        let fruit2 = "포도"
+        let fruit3 = "딸기"
+        let fruit4 = "수박"
+
+        document.write("과일의 종류는" + fruit + "," + fruit2 + "," + fruit3 + "," + fruit4 + "입니다<br>")
+
+         document.write(`과일의 종류는  ${fruit}, ${fruit2},  ${fruit3},  ${fruit4}  입니다<br>`)
+
+        //  배열
+         let product =['바나나','포도','딸기','수박','키위']
+
+         document.write(`첫번째 데이터는 ${product[0]}<br>`)
+         document.write(`두번째 데이터는 ${product[1]}<br>`)
+         document.write(`세번째 데이터는 ${product[2]}<br>`)
+         document.write(`네번째 데이터는 ${product[3]}<br>`)
+
+         document.write(`과일의 종류는 ${product} 입니다<br>`)
+         document.write(`오늘의 추천 과일은 ${product[3]}입니다 <br>`)
+         document.write(`올해의 제철 과일은 ${product}입니다 <br>`)
+
+         let day = ['월','화','수','목','금','토','일']
+
+         document.write(`요일은 ${day} (이)가 있습니다<br>`)
+         document.write(`오늘은 ${day[4]}요일 입니다<br>`)
+
+         let gail = new Array('사과','배','토마토','참외')
+
+         document.write(`올해의 제철 과일은 ${gail}입니다 <br>`)
+         document.write(`오늘의 추천 과일은 ${gail[2]}입니다 <br>`)
+
+         let pet =['얼룩말','타조','강아지','고양이','개미','알파카','닭','참새']
+
+         document.write(`오늘 감상 가능한 동물은 ${pet}가 있습니다<br>`)
+         document.write(`오늘 감상 가능한 동물은 ${pet[1]},${pet[6]},${pet[7]}가 있습니다<br>`)
+    </script>
+</body>
+</html>
