@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>코스</title>
+
+  <style>
+    :root{
+      --safe-top: env(safe-area-inset-top);
+      --safe-bottom: env(safe-area-inset-bottom);
+
+      --brand: #11cbbf;
+      --brand-dark: #07b8ae;
+
+      --text: #0f1419;
+      --muted: #7d8a94;
+      --line: rgba(0,0,0,0.08);
+
+      --bg: #ffffff;
+      --card: #ffffff;
+
+      --shadow-soft: 0 8px 18px rgba(0,0,0,0.08);
+      --shadow: 0 10px 24px rgba(0,0,0,0.14);
+
+      --radius: 14px;
+    }
+
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", Roboto, sans-serif;
+      background:#0b0f13;
+      display:grid;
+      place-items:center;
+    }
+
+    .app{
+      width:100%;
+      height:100svh;
+      background:var(--bg);
+      position:relative;
+      overflow:hidden;
+    }
+
+    @media (min-width:720px){
+      .app{
+        width:375px;
+        height:812px;
+        border-radius:28px;
+        box-shadow:0 30px 90px rgba(0,0,0,0.55);
+      }
+    }
+
+    /* 상단 노치 캡슐 */
+    .top-pill{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      top: calc(10px + var(--safe-top));
+      width: 168px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--brand);
+      opacity: 0.95;
+      z-index: 30;
+      pointer-events:none;
+    }
+
+    /* 스크롤 영역 */
+    .scroll{
+      height:100%;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: calc(84px + var(--safe-bottom));
+      background:#fff;
+    }
+
+    /* 상단 헤더 */
+    .header{
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+      padding: calc(18px + var(--safe-top)) 16px 12px;
+    }
+    .header-row{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      min-height: 32px;
+    }
+    .header-title{
+      font-size: 16px;
+      font-weight: 1000;
+      letter-spacing: -0.3px;
+      color: #222;
+    }
+    .header-right{
+      position:absolute;
+      right:0;
+      top:50%;
+      transform:translateY(-50%);
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .profile{
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      overflow:hidden;
+      background:#d9e2e8;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .profile img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    /* 검색바 */
+    .search-wrap{
+      padding: 14px 16px 10px;
+    }
+    .search{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 12px 12px;
+      border-radius: 12px;
+      background: #f3f6f7;
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+    .search svg{
+      width: 18px;
+      height: 18px;
+      fill: #98a6af;
+      flex: 0 0 auto;
+    }
+    .search input{
+      width:100%;
+      border:0;
+      outline:0;
+      background:transparent;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing:-0.2px;
+      color:#222;
+    }
+    .search input::placeholder{
+      color:#98a6af;
+      font-weight: 800;
+    }
+
+    /* 필터 칩 */
+    .chips{
+      display:flex;
+      gap: 8px;
+      padding: 0 16px 12px;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .chip{
+      white-space:nowrap;
+      border: 1px solid rgba(0,0,0,0.08);
+      background:#fff;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 1000;
+      color:#54616a;
+      cursor:pointer;
+    }
+    .chip.active{
+      border-color: rgba(17,203,191,0.25);
+      background: rgba(17,203,191,0.12);
+      color: var(--brand-dark);
+    }
+
+    /* 섹션 타이틀 */
+    .section-title{
+      padding: 4px 16px 10px;
+      font-size: 14px;
+      font-weight: 1000;
+      letter-spacing: -0.3px;
+      color:#111;
+    }
+
+    /* 코스 리스트 */
+    .list{
+      display:grid;
+      gap: 14px;
+      padding: 0 16px 18px;
+    }
+    .course{
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      overflow:hidden;
+      border: 1px solid rgba(0,0,0,0.04);
+    }
+    .thumb{
+      height: 150px;
+      background:#eef3f6;
+    }
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    .body{
+      padding: 12px 12px 12px;
+      display:grid;
+      gap: 10px;
+    }
+
+    .toprow{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+    }
+
+    .title{
+      font-size: 14px;
+      font-weight: 1000;
+      letter-spacing:-0.3px;
+      color:#111;
+      line-height:1.2;
+    }
+    .place{
+      margin-top: 3px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--muted);
+      letter-spacing:-0.2px;
+    }
+
+    .badge{
+      flex: 0 0 auto;
+      font-size: 11px;
+      font-weight: 1000;
+      padding: 5px 10px;
+      border-radius: 999px;
+      letter-spacing:-0.2px;
+      color:#fff;
+      background:#9aa6af;
+    }
+    .badge.easy{ background: #2fc98d; }
+    .badge.mid{ background: #f4b400; }
+    .badge.hard{ background: #ff5c5c; }
+
+    .meta{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      color:#7f8a93;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing:-0.2px;
+    }
+    .meta-left{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+    }
+    .meta-item{
+      display:flex;
+      align-items:center;
+      gap: 6px;
+    }
+    .meta-item svg{
+      width: 16px;
+      height: 16px;
+      fill: var(--brand);
+    }
+
+    .actions{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .btn{
+      border:0;
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: var(--brand);
+      color:#fff;
+      font-size: 12px;
+      font-weight: 1000;
+      letter-spacing:-0.2px;
+      cursor:pointer;
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    .bookmark{
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(0,0,0,0.08);
+      background:#fff;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      color:#7f8a93;
+    }
+    .bookmark svg{ width:18px; height:18px; fill: currentColor; }
+    .bookmark.active{
+      border-color: rgba(17,203,191,0.25);
+      color: var(--brand-dark);
+      background: rgba(17,203,191,0.10);
+    }
+
+    /* 하단 탭바 */
+    .tabbar{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      padding: 10px 10px calc(10px + var(--safe-bottom));
+      background:#fff;
+      border-top: 1px solid var(--line);
+      z-index: 50;
+    }
+    .tabs{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+    }
+    .tab{
+      width: 20%;
+      display:grid;
+      place-items:center;
+      gap: 6px;
+      text-decoration:none;
+      color:#9aa6af;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing:-0.2px;
+      padding: 6px 0;
+    }
+    .tab svg{ width: 22px; height: 22px; fill: currentColor; }
+    .tab.active{ color: var(--brand); }
+
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    
+
+    <div class="scroll" aria-label="코스 목록 스크롤">
+      <!-- 헤더 -->
+      <header class="header" aria-label="상단 헤더">
+        <div class="header-row">
+          <div class="header-title">코스</div>
+          <div class="header-right">
+            <div class="profile" aria-label="프로필">
+              <img src="./img/Frame 30.png" alt="" onerror="this.style.display='none'" />
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- 검색 -->
+      <div class="search-wrap">
+        <div class="search" role="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M10 18a8 8 0 1 1 6.3-3.1l4.4 4.4-1.4 1.4-4.4-4.4A7.9 7.9 0 0 1 10 18zm0-2a6 6 0 1 0-6-6 6 6 0 0 0 6 6z"/>
+          </svg>
+          <input type="text" placeholder="코스 이름, 지역으로 검색" aria-label="코스 검색" />
+        </div>
+      </div>
+
+      <!-- 필터 -->
+      <div class="chips" aria-label="필터">
+        <button class="chip active" type="button">전체</button>
+        <button class="chip" type="button">쉬움</button>
+        <button class="chip" type="button">보통</button>
+        <button class="chip" type="button">어려움</button>
+        <button class="chip" type="button">해안</button>
+        <button class="chip" type="button">숲길</button>
+        <button class="chip" type="button">오름</button>
+      </div>
+
+      <div class="section-title">추천 코스</div>
+
+      <!-- 코스 리스트 -->
+      <section class="list" aria-label="코스 목록">
+
+        <article class="course" data-id="c001">
+          <div class="thumb">
+            <img src="./img/Frame 24.png" alt="제주 해안 환상 라이딩" onerror="this.style.opacity=0" />
+          </div>
+          <div class="body">
+            <div class="toprow">
+              <div>
+                <div class="title">제주 해안 환상 라이딩</div>
+                <div class="place">제주시 · 해안도로</div>
+              </div>
+              <div class="badge easy">쉬움</div>
+            </div>
+
+            <div class="meta">
+              <div class="meta-left">
+                <div class="meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M12 8a4 4 0 1 1-4 4 4 4 0 0 1 4-4zm0-6a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/></svg>
+                  18km
+                </div>
+                <div class="meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M12 7a1 1 0 0 1 1 1v4.6l3 1.7-.9 1.8-3.6-2A1 1 0 0 1 11 13V8a1 1 0 0 1 1-1zM12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/></svg>
+                  1h 10m
+                </div>
+              </div>
+              <div class="meta-left">
+                <div class="meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.6-9.6-8.6C.6 9.4 2.2 6 5.9 6c2 0 3.3 1.1 4.1 2 0 0 1.6-2 4.1-2 3.7 0 5.3 3.4 3.5 6.4C19 16.4 12 21 12 21z"/></svg>
+                  1.2k
+                </div>
+                <div class="meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M12 5c5.5 0 9.6 5.1 9.8 5.3.3.4.3 1 0 1.4C21.6 11.9 17.5 17 12 17S2.4 11.9 2.2 11.7a1.2 1.2 0 0 1 0-1.4C2.4 10.1 6.5 5 12 5z"/></svg>
+                  9.8k
+                </div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn" type="button">자세히 보기</button>
+              <button class="bookmark" type="button" aria-label="북마크">
+                <svg viewBox="0 0 24 24"><path d="M6 2h12a2 2 0 0 1 2 2v18l-8-4-8 4V4a2 2 0 0 1 2-2z"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="course" data-id="c002">
+          <div class="thumb">
+            <img src="./img/Frame 25.png" alt="오름 & 숲길 코스" onerror="this.style.opacity=0" />
+          </div>
+          <div class="body">
+            <div class="toprow">
+              <div>
+                <div class="title">오름 &amp; 숲길 힐링 코스</div>
+                <div class="place">서귀포시 · 숲길</div>
+              </div>
+              <div class="badge mid">보통</div>
+            </div>
+
+            <div class="meta">
+              <div class="meta-left">
+                <div class="meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M12 8a4 4 0 1 1-4 4 4 4 0 0 1 4-4zm0-6a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/></svg>
+                  28km
+                </div>
+                <div class="meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M12 7a1 1 0 0 1 1 1v4.6l3 1.7-.9 1.8-3.6-2A1 1 0 0 1 11 13V8a1 1 0 0 1 1-1zM12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/></svg>
+                  2h 05m
+                </div>
+              </div>
+              <div class="meta-left">
+                <div class="meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.6-9.6-8.6C.6 9.4 2.2 6 5.9 6c2 0 3.3 1.1 4.1 2 0 0 1.6-2 4.1-2 3.7 0 5.3 3.4 3.5 6.4C19 16.4 12 21 12 21z"/></svg>
+                  860
+                </div>
+                <div class="meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M12 5c5.5 0 9.6 5.1 9.8 5.3.3.4.3 1 0 1.4C21.6 11.9 17.5 17 12 17S2.4 11.9 2.2 11.7a1.2 1.2 0 0 1 0-1.4C2.4 10.1 6.5 5 12 5z"/></svg>
+                  6.1k
+                </div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn" type="button">자세히 보기</button>
+              <button class="bookmark" type="button" aria-label="북마크">
+                <svg viewBox="0 0 24 24"><path d="M6 2h12a2 2 0 0 1 2 2v18l-8-4-8 4V4a2 2 0 0 1 2-2z"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="course" data-id="c003">
+          <div class="thumb">
+            <img src="./img/Frame 27.png" alt="완주 도전 코스" onerror="this.style.opacity=0" />
+          </div>
+          <div class="body">
+            <div class="toprow">
+              <div>
+                <div class="title">환상 자전거길 완주 도전</div>
+                <div class="place">제주 전역 · 환상자전거길</div>
+              </div>
+              <div class="badge hard">어려움</div>
+            </div>
+
+            <div class="meta">
+              <div class="meta-left">
+                <div class="meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M12 8a4 4 0 1 1-4 4 4 4 0 0 1 4-4zm0-6a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/></svg>
+                  80km
+                </div>
+                <div class="meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M12 7a1 1 0 0 1 1 1v4.6l3 1.7-.9 1.8-3.6-2A1 1 0 0 1 11 13V8a1 1 0 0 1 1-1zM12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/></svg>
+                  5h 30m
+                </div>
+              </div>
+              <div class="meta-left">
+                <div class="meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.6-9.6-8.6C.6 9.4 2.2 6 5.9 6c2 0 3.3 1.1 4.1 2 0 0 1.6-2 4.1-2 3.7 0 5.3 3.4 3.5 6.4C19 16.4 12 21 12 21z"/></svg>
+                  3.1k
+                </div>
+                <div class="meta-item">
+                  <svg viewBox="0 0 24 24"><path d="M12 5c5.5 0 9.6 5.1 9.8 5.3.3.4.3 1 0 1.4C21.6 11.9 17.5 17 12 17S2.4 11.9 2.2 11.7a1.2 1.2 0 0 1 0-1.4C2.4 10.1 6.5 5 12 5z"/></svg>
+                  15.2k
+                </div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button class="btn" type="button">자세히 보기</button>
+              <button class="bookmark" type="button" aria-label="북마크">
+                <svg viewBox="0 0 24 24"><path d="M6 2h12a2 2 0 0 1 2 2v18l-8-4-8 4V4a2 2 0 0 1 2-2z"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+      </section>
+    </div>
+
+    <!-- 하단 탭바 -->
+    <nav class="tabbar" aria-label="하단 탭">
+      <div class="tabs">
+        <a class="tab" href="./main.html">
+          <svg viewBox="0 0 24 24"><path d="M12 3 3 10v11h6v-7h6v7h6V10z"/></svg>
+          홈
+        </a>
+        <a class="tab" href="./cm.html">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16v12H7l-3 3V4zm3 16h14v-2H7v2z"/></svg>
+          커뮤니티
+        </a>
+        <a class="tab active" href="./coso.html">
+          <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9h-2a7 7 0 1 1-7-7V3z"/></svg>
+          코스
+        </a>
+        <a class="tab" href="#">
+          <svg viewBox="0 0 24 24"><path d="M7 4h10v2H7V4zm-2 4h14v2H5V8zm2 4h10v2H7v-2zm-2 4h14v2H5v-2z"/></svg>
+          랭킹
+        </a>
+        <a class="tab" href="#">
+          <svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4zm0 2c-4.4 0-8 2.2-8 5v2h16v-2c0-2.8-3.6-5-8-5z"/></svg>
+          마이
+        </a>
+      </div>
+    </nav>
+  </div>
+
+  <script>
+    // ✅ 필터 칩 UI 토글
+    document.querySelectorAll(".chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+      });
+    });
+
+    // ✅ 북마크 토글
+    document.querySelectorAll(".bookmark").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        btn.classList.toggle("active");
+      });
+    });
+
+    // ✅ "자세히 보기" 버튼 예시: 코스 상세 페이지로 이동
+    document.querySelectorAll(".course .btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const course = e.target.closest(".course");
+        const id = course?.dataset?.id || "";
+        location.href = `./course-detail.html?id=${encodeURIComponent(id)}`;
+      });
+    });
+  </script>
+</body>
+</html>
