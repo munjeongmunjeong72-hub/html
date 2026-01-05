@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메뉴상세</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 상태바 */
+        .status-bar {
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 15px;
+            font-weight: 600;
+            background: white;
+        }
+
+        .time {
+            color: #FFD700;
+        }
+
+        .status-icons {
+            color: #FFD700;
+        }
+
+        /* 헤더 */
+        .header {
+            background: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+        }
+
+        .back-btn {
+            font-size: 28px;
+            color: #333;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .header-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        /* 메인 컨텐츠 */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 180px;
+        }
+
+        /* 상품 이미지 */
+        .product-image {
+            background: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .product-img {
+            width: 220px;
+            height: 280px;
+            margin: 0 auto;
+            background: #f5f5f5;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 상품 정보 */
+        .product-info {
+            background: white;
+            padding: 24px 20px;
+            text-align: center;
+            border-bottom: 8px solid #f5f5f5;
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .info-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            /* border: 2px solid #ccc; */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .product-price {
+            font-size: 18px;
+            color: #999;
+        }
+
+        /* 옵션 섹션 */
+        .options-section {
+            background: white;
+            margin-top: 8px;
+        }
+
+        .option-header {
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .option-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .option-extra {
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* 옵션 아이템 */
+        .option-item {
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f5f5f5;
+            cursor: pointer;
+        }
+
+        .option-item:active {
+            background: #f9f9f9;
+        }
+
+        .option-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .option-label {
+            font-size: 15px;
+            color: #333;
+        }
+
+        .option-badge {
+            background: #FFD700;
+            color: #333;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+
+        .option-right {
+            font-size: 20px;
+            color: #ddd;
+        }
+
+        /* 수량 선택 */
+        .quantity-section {
+            padding: 20px;
+            background: white;
+            border-bottom: 8px solid #f5f5f5;
+        }
+
+        .quantity-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 14px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .qty-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .qty-btn:active {
+            background: #f5f5f5;
+        }
+
+        .qty-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .qty-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        /* 총 금액 */
+        .total-section {
+            padding: 20px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .total-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        /* 하단 버튼 */
+        .bottom-buttons {
+            position: fixed;
+            bottom: 70px;
+            left: 0;
+            right: 0;
+            padding: 16px 20px;
+            background: white;
+            display: flex;
+            gap: 10px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn {
+            flex: 1;
+            height: 52px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 2px solid #ddd;
+            color: #333;
+        }
+
+        .btn-primary {
+            background: #333;
+            color: white;
+        }
+
+        .btn:active {
+            opacity: 0.8;
+        }
+
+        /* 하단 네비게이션 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+            padding: 8px 0 22px;
+            z-index: 100;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            position: relative;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 6px 14px;
+        }
+
+        .nav-icon {
+            font-size: 26px;
+            color: #d0d0d0;
+        }
+
+        .nav-item.active .nav-icon {
+            color: #FFD700;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            color: #aaa;
+        }
+
+        .nav-item.active .nav-label {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .home-bar {
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 134px;
+            height: 5px;
+            background: #000;
+            border-radius: 3px;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                max-width: 480px;
+                margin: 0 auto;
+                box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 상태바 -->
+    <!-- <div class="status-bar">
+        <div class="time">9:41</div>
+        <div class="status-icons">📶 📡 🔋</div> -->
+    </div>
+
+    <!-- 헤더 -->
+    <div class="header">
+        <button class="back-btn">‹</button>
+        <div class="header-title">메뉴상세</div>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
+        <!-- 상품 이미지 -->
+        <div class="product-image">
+            <div class="product-img">
+                <!-- 실제로는 이미지가 들어감 -->
+                 <img src="./img/aa 21.png" alt="">
+            </div>
+        </div>
+
+        <!-- 상품 정보 -->
+        <div class="product-info">
+            <div class="product-name">
+                <span>(ICE) 카페라떼</span>
+                <div class="info-icon">ⓘ</div>
+            </div>
+            <div class="product-price">3,500원</div>
+        </div>
+
+        <!-- 옵션 섹션 -->
+        <div class="options-section">
+            <div class="option-header">
+                <div class="option-title">퍼스널 옵션</div>
+                <div class="option-extra">추가금</div>
+            </div>
+
+            <div class="option-item">
+                <div class="option-left">
+                    <span class="option-label">샷추가</span>
+                    <span class="option-badge">인기</span>
+                </div>
+                <div class="option-right">›</div>
+            </div>
+
+            <div class="option-item">
+                <div class="option-left">
+                    <span class="option-label">시럽</span>
+                </div>
+                <div class="option-right">›</div>
+            </div>
+        </div>
+
+        <!-- 수량 선택 -->
+        <div class="quantity-section">
+            <div class="quantity-label">수량</div>
+            <div class="quantity-control">
+                <button class="qty-btn" id="minusBtn">
+                    <svg width="16" height="2" viewBox="0 0 16 2" fill="none">
+                        <path d="M0 1H16" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+                <div class="qty-number" id="quantity">1</div>
+                <button class="qty-btn" id="plusBtn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 0V16M0 8H16" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 총 금액 -->
+        <div class="total-section">
+            <div class="total-label">총 금액</div>
+            <div class="total-price" id="totalPrice">3,500원</div>
+        </div>
+    </div>
+
+    <!-- 하단 버튼 -->
+    <div class="bottom-buttons">
+        <button class="btn btn-secondary">장바구니</button>
+        <button class="btn btn-primary">바로결제</button>
+    </div>
+
+    <!-- 하단 네비게이션 -->
+    <div class="bottom-nav">
+        <div class="nav-items">
+            <div class="nav-item">
+                <div class="nav-icon"><img src="./img/mune1png.png" alt=""></div>
+                <div class="nav-label">홈</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"><img src="./img/menu2.png" alt=""></div>
+                <div class="nav-label">메뉴보기</div>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon"><img src="./img/Component 3.png" alt=""></div>
+                <div class="nav-label">메가오더</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"><img src="./img/mune4.png" alt=""></div>
+                <div class="nav-label">메가메이트</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">☰</div>
+                <div class="nav-label">전체</div>
+            </div>
+            <div class="home-bar"></div>
+        </div>
+    </div>
+
+    <script>
+        let quantity = 1;
+        const basePrice = 3500;
+
+        const minusBtn = document.getElementById('minusBtn');
+        const plusBtn = document.getElementById('plusBtn');
+        const quantityEl = document.getElementById('quantity');
+        const totalPriceEl = document.getElementById('totalPrice');
+
+        function updateQuantity() {
+            quantityEl.textContent = quantity;
+            totalPriceEl.textContent = (basePrice * quantity).toLocaleString() + '원';
+            
+            if (quantity <= 1) {
+                minusBtn.classList.add('disabled');
+            } else {
+                minusBtn.classList.remove('disabled');
+            }
+        }
+
+        minusBtn.addEventListener('click', () => {
+            if (quantity > 1) {
+                quantity--;
+                updateQuantity();
+            }
+        });
+
+        plusBtn.addEventListener('click', () => {
+            quantity++;
+            updateQuantity();
+        });
+
+        // 옵션 클릭
+        document.querySelectorAll('.option-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const label = this.querySelector('.option-label').textContent;
+                alert(label + ' 옵션을 선택하세요');
+            });
+        });
+
+        // 버튼 클릭
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.classList.contains('btn-secondary')) {
+                    alert('장바구니에 담았습니다');
+                } else {
+                    alert('주문이 완료되었습니다');
+                }
+            });
+        });
+
+        // 네비게이션
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // 뒤로가기
+        document.querySelector('.back-btn').addEventListener('click', () => {
+            window.history.back();
+        });
+
+        // 상품 정보 아이콘
+        document.querySelector('.info-icon').addEventListener('click', () => {
+            alert('(ICE) 카페라떼\n\n진한 에스프레소와 부드러운 우유가 어우러진 클래식 음료입니다.');
+        });
+
+        // 초기화
+        updateQuantity();
+    </script>
+</body>
+</html>

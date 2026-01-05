@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEGA COFFEE</title>
+  <style>
+    :root{
+      --mega-yellow:#FFD700;
+      --mega-yellow-2:#FFCC00;
+      --ink:#111;
+      --muted:#666;
+      --bg:#f5f5f5;
+      --card:#fff;
+      --shadow: 0 10px 24px rgba(0,0,0,.08);
+      --shadow-soft: 0 2px 10px rgba(0,0,0,.06);
+      --radius:18px;
+      --safeTop: env(safe-area-inset-top, 0px);
+      --safeBottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    *{ margin:0; padding:0; box-sizing:border-box; }
+
+    body{
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+      background: var(--bg);
+      min-height:100vh;
+      color: var(--ink);
+    }
+
+    /* 상태바 */
+    .status-bar{
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: calc(44px + var(--safeTop));
+      padding: calc(var(--safeTop) + 6px) 18px 6px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      font-size: 15px;
+      font-weight: 700;
+      color: #000;
+      z-index: 1000;
+      background: var(--mega-yellow);
+    }
+
+    /* 헤더 */
+    .header{
+      background: url(./img/main.png);
+      padding-top: calc(44px + var(--safeTop));
+      position: relative;
+      overflow:hidden;
+    }
+
+    .header-inner{
+      position: relative;
+      padding: 14px 18px 18px;
+    }
+
+    /* 상단 아이콘 */
+    .header-icons{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom: 18px;
+    }
+
+    .header-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .logo-badge{
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(0,0,0,.9);
+      color: rgba(255,255,255,.95);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      letter-spacing: .02em;
+      font-size: 14px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.16);
+    }
+
+    .header-btn{
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background: rgba(8, 8, 8, 0.7);
+      border: 1px solid rgba(0,0,0,.08);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 20px;
+      cursor:pointer;
+      box-shadow: 0 6px 14px rgba(0,0,0,.08);
+      transition: transform .15s ease;
+    }
+    .header-btn:active{ transform: scale(.97); }
+
+    /* 사용자 정보 */
+    .user-info{
+      color:#000;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .greeting{
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .subline{
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.68);
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    .location-row{
+      background: rgba(255,255,255,.42);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 16px;
+      padding: 12px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+
+    .location-main{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .location-icon{ font-size: 18px; }
+    .store-name{
+      font-size: 15px;
+      font-weight: 900;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 160px;
+    }
+
+    .change-btn{
+      display:flex;
+      align-items:center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      color: rgba(0,0,0,.75);
+      cursor: pointer;
+      user-select:none;
+      white-space: nowrap;
+    }
+
+    .badges{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge{
+      background: rgba(255,255,255,.50);
+      border: 1px solid rgba(0,0,0,.08);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      display:flex;
+      align-items:center;
+      gap: 6px;
+    }
+
+    /* 메인 */
+    .main{
+      padding: 16px 18px calc(120px + var(--safeBottom));
+    }
+
+    /* 퀵 액션 */
+    .quick-actions{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .qa{
+      background: var(--card);
+      border-radius: 16px;
+      padding: 12px 10px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(0,0,0,.06);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 8px;
+      cursor:pointer;
+      transition: transform .15s ease;
+      min-height: 78px;
+    }
+    .qa:active{ transform: scale(.98); }
+    .qa .i{ font-size: 22px; }
+    .qa .t{ font-size: 12px; font-weight: 900; color: #222; }
+
+    /* 배너(프로모션) */
+   /* 배너(프로모션) */
+.promo{
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(0,0,0,.06);
+  overflow: hidden;
+
+  /* ✅ 핵심: 스크롤 중에도 둥근 모서리 밖으로 안 새게 강제 클리핑 */
+  clip-path: inset(0 round var(--radius));
+}
+
+/* ✅ 수정: 프로모션을 "실제 가로 스크롤"로 */
+.promo-viewport{
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  touch-action: pan-x;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior-x: contain; /* ✅ 바운스/튐 완화 */
+}
+.promo-viewport::-webkit-scrollbar{ display:none; }
+
+/* ✅ track 폭을 명확히 고정 (3장 기준) */
+.promo-track{
+  display:flex;
+  width: 300%;
+  transform: none;
+  transition: none;
+}
+
+/* ✅ slide도 정확히 1장=viewport 폭이 되도록 고정 */
+.promo-slide{
+  flex: 0 0 33.3333%;
+  scroll-snap-align: start;
+  padding: 0 14px 14px;
+}
+
+
+    .promo-card{
+      border-radius: 16px;
+      padding: 14px 14px;
+      min-height: 96px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border: 1px solid rgba(0,0,0,.08);
+      background:  rgb(255, 217, 0);
+    }
+
+    .promo-card strong{
+      display:block;
+      font-size: 16px;
+      font-weight: 900;
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+    .promo-card span{
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.65);
+      font-weight: 700;
+    }
+    .promo-emoji{ font-size: 28px; }
+
+    /* 메뉴 슬라이더 */
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      margin: 12px 0 10px;
+    }
+
+    .section-head .h{
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .section-head .more{
+      font-size: 13px;
+      font-weight: 800;
+      color: rgba(0,0,0,.55);
+      cursor:pointer;
+      user-select:none;
+    }
+
+    /* ✅ 수정: 카테고리 좌우 스크롤 안정화 */
+    .menu-slider{
+      display:flex;
+      gap: 10px;
+      overflow-x:auto;
+      overflow-y:hidden;
+      padding: 4px 2px 6px;
+      scrollbar-width:none;
+      -ms-overflow-style:none;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x;
+      cursor: grab;
+    }
+    .menu-slider:active{ cursor: grabbing; }
+    .menu-slider::-webkit-scrollbar{ display:none; }
+
+    .menu-item{
+      scroll-snap-align: start;
+      min-width: 112px;
+      background: var(--card);
+      border-radius: 18px;
+      padding: 14px 12px;
+      text-align:center;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(0,0,0,.06);
+      cursor:pointer;
+      transition: transform .15s ease;
+      flex: 0 0 auto; /* ✅ 중요: 줄바꿈/늘어남 방지 */
+    }
+    .menu-item:active{ transform: scale(.98); }
+
+    .menu-icon{
+      width: 62px;
+      height: 62px;
+      background: #f5f5f5;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 28px;
+      border: 1px solid rgba(0,0,0,.06);
+    }
+
+    .menu-name{
+      font-size: 12px;
+      font-weight: 900;
+      color: #222;
+    }
+
+    /* 카드 2열 */
+    .cards-row{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 14px 0 14px;
+    }
+
+    .card{
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px 14px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(0,0,0,.06);
+      position: relative;
+      min-height: 150px;
+      overflow:hidden;
+    }
+
+    .card.yellow{ background:  #FFD700; }
+
+    .card-tag{
+      font-size: 11px;
+      color: rgba(0,0,0,.55);
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .card-main{
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 6px;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+    }
+
+    .card-sub{
+      font-size: 12px;
+      color: rgba(0,0,0,.55);
+      font-weight: 700;
+    }
+
+    .badge-top{
+      position:absolute;
+      top: 12px;
+      right: 12px;
+      background: #FF4D4D;
+      color:#fff;
+      font-size: 11px;
+      font-weight: 900;
+      padding: 6px 10px;
+      border-radius: 999px;
+      box-shadow: 0 10px 18px rgba(255,77,77,.22);
+    }
+
+    .emoji-large{ font-size: 22px; margin: 10px 0 10px; }
+
+    .card-bottom{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-top: 10px;
+      gap: 10px;
+    }
+
+    .card-info{
+      font-size: 11px;
+      color: rgba(0,0,0,.45);
+      font-weight: 700;
+      min-width:0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn-group{
+      background: rgba(0,0,0,.92);
+      border: none;
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 900;
+      color: #fff;
+      cursor:pointer;
+      white-space: nowrap;
+      transition: transform .15s ease;
+    }
+    .btn-group:active{ transform: scale(.98); }
+
+    /* 매장 카드 */
+    .store-card{
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(0,0,0,.06);
+    }
+
+    .store-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .store-left{ flex:1; min-width:0; }
+
+    .store-label{
+      font-size: 12px;
+      color: rgba(0,0,0,.55);
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .store-title{
+      font-size: 18px;
+      font-weight: 900;
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      min-width:0;
+    }
+    .store-title span:last-child{
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .store-time{
+      font-size: 12px;
+      color: rgba(0,0,0,.55);
+      font-weight: 800;
+      text-align:right;
+      white-space: nowrap;
+    }
+
+    .stats{
+      display:flex;
+      gap: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(0,0,0,.06);
+      flex-wrap: wrap;
+    }
+
+    .stat{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      color: rgba(0,0,0,.75);
+    }
+
+    .stat-val{
+      font-weight: 900;
+      color:#111;
+    }
+
+    .store-link{
+      margin-top: 12px;
+      display:flex;
+      justify-content:flex-end;
+      align-items:center;
+      gap: 6px;
+      font-size: 13px;
+      color: rgba(0,0,0,.65);
+      font-weight: 900;
+      cursor:pointer;
+      user-select:none;
+    }
+
+    /* 하단 네비 */
+    .bottom-nav{
+      position: fixed;
+      left:0; right:0; bottom:0;
+      background: #fff;
+      box-shadow: 0 -10px 22px rgba(0,0,0,.08);
+      padding: 10px 0 calc(18px + var(--safeBottom));
+      z-index: 1000;
+    }
+
+    .nav-items{
+      display:flex;
+      justify-content:space-around;
+      position: relative;
+    }
+
+    .nav-item{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 4px;
+      cursor:pointer;
+      padding: 6px 14px;
+      user-select:none;
+    }
+
+    .nav-icon{
+      font-size: 24px;
+      color: #cfcfcf;
+    }
+
+    .nav-label{
+      font-size: 10px;
+      color: #aaa;
+      font-weight: 800;
+    }
+
+    .nav-item.active .nav-icon{ color: #111; }
+    .nav-item.active .nav-label{ color: #111; }
+
+    .home-bar{
+      position:absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 134px;
+      height: 5px;
+      background: #000;
+      border-radius: 3px;
+      opacity:.92;
+    }
+
+    /* 작은 화면 */
+    @media (max-width: 360px){
+      .greeting{ font-size: 22px; }
+      .quick-actions{ grid-template-columns: repeat(4, 1fr); }
+      .qa{ padding: 10px 8px; }
+      .main{ padding-left: 14px; padding-right: 14px; }
+      .header-inner{ padding-left: 14px; padding-right: 14px; }
+    }
+
+    /* 큰 화면(웹에서 폰 프레임 느낌) */
+    @media (min-width: 768px){
+      body{
+        max-width: 480px;
+        margin: 0 auto;
+        box-shadow: 0 0 40px rgba(0,0,0,.15);
+      }
+      .status-bar, .bottom-nav{
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        width: 480px;
+      }
+      .header{
+        border-radius: 0;
+      }
+    }
+    .promo-title{
+        color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <!-- 상태바 -->
+  <!-- <div class="status-bar">
+    <div id="timeText">9:41</div>
+    <div aria-hidden="true">📶 📡 🔋</div>
+  </div> -->
+
+  <!-- 헤더 -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-icons">
+        <div class="header-left">
+          <div class="logo-badge" aria-label="MEGA"><img src="./img/uil_calendar.png" alt="8"></div>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="header-btn" type="button" aria-label="쿠폰/스탬프"><img src="./img/mingcute_coupon-line.png" alt="v"></button>
+          <button class="header-btn" type="button" aria-label="알림">🔔</button>
+        </div>
+      </div>
+
+      <div class="user-info">
+        <div class="greeting">김뫄뫄 님</div>
+        <div class="subline">지금 가장 가까운 매장에서 빠르게 주문해보세요.</div>
+
+        <div class="location-row" id="storeRow" role="button" tabindex="0" aria-label="매장 선택">
+          <div class="location-main">
+            <span class="location-icon"><img src="./img/Vector.png" alt="f"></span>
+            <span class="store-name" id="storeName">강남중앙점</span>
+            <span style="font-size:13px; font-weight:800; color:rgba(0,0,0,.65);">바로 주문</span>
+          </div>
+          <div class="change-btn">
+            <span>매장 바꾸기</span>
+            <span aria-hidden="true">›</span>
+          </div>
+        </div>
+
+        <div class="badges">
+          <div class="badge"><span aria-hidden="true"><img src="./img/lucide-lab_coffee.png" alt="k"></span><span>스탬프 <b id="stampCount">2</b></span></div>
+          <div class="badge"><span aria-hidden="true"><img src="./img/mingcute_coupon-line.png" alt="v"></span><span>쿠폰 <b id="couponCount">0</b></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 메인 -->
+  <div class="main">
+    <!-- 퀵액션 -->
+    <div class="quick-actions" aria-label="빠른 메뉴">
+      <div class="qa" role="button" tabindex="0"><div class="i"><img src="./img/inbox.png" alt=""></div><div class="t">주문내역</div></div>
+      <div class="qa" role="button" tabindex="0"><div class="i"><img src="./img/el_star-alt.png" alt="e"></div><div class="t">즐겨찾기</div></div>
+      <div class="qa" role="button" tabindex="0"><div class="i"><img src="./img/gift.png" alt=""></div><div class="t">이벤트</div></div>
+      <div class="qa" role="button" tabindex="0"><div class="i"><img src="./img/Vector.png" alt="h"></div><div class="t">매장찾기</div></div>
+    </div>
+
+    <!-- 프로모션 배너 -->
+    <div class="promo" aria-label="프로모션">
+      <div class="promo-top">
+        <div class="promo-title">오늘의 혜택</div>
+        <div class="promo-dots" id="promoDots" aria-label="배너 페이지">
+          <div class="p-dot active"></div>
+          <div class="p-dot"></div>
+          <div class="p-dot"></div>
+        </div>
+      </div>
+
+      <!-- ✅ 수정: promo-viewport가 가로 스크롤 컨테이너 -->
+      <div class="promo-viewport" id="promoViewport">
+        <div class="promo-track" id="promoTrack">
+          <div class="promo-slide">
+            <div class="promo-card">
+              <div>
+                <strong>출근길 픽업 빠르게</strong>
+                <span>미리 주문하고 바로 수령</span>
+              </div>
+              <div class="promo-emoji" aria-hidden="true"></div>
+            </div>
+          </div>
+          <div class="promo-slide">
+            <div class="promo-card">
+              <div>
+                <strong>스탬프 적립 확인</strong>
+                <span>적립/쿠폰을 한눈에</span>
+              </div>
+              <div class="promo-emoji" aria-hidden="true">☕</div>
+            </div>
+          </div>
+          <div class="promo-slide">
+            <div class="promo-card">
+              <div>
+                <strong>신메뉴 & 이벤트</strong>
+                <span>오늘의 추천 메뉴 확인</span>
+              </div>
+              <div class="promo-emoji" aria-hidden="true">🎉</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 카테고리 -->
+    <div class="section-head">
+      <div class="h">카테고리</div>
+      <div class="more" role="button" tabindex="0">전체보기 ›</div>
+    </div>
+
+    <div class="menu-slider" aria-label="카테고리 슬라이더">
+      <div class="menu-item"><div class="menu-icon"><img src="./img/savsa 1.png" alt="1"></div><div class="menu-name">커피</div></div>
+      <div class="menu-item"><div class="menu-icon"><img src="./img/aa 1.png" alt="2"></div><div class="menu-name">라떼/쉐이크</div></div>
+      <div class="menu-item"><div class="menu-icon"><img src="./img/123 1.png" alt="3"></div><div class="menu-name">아이스블렌드</div></div>
+      <div class="menu-item"><div class="menu-icon"><img src="./img/addadddvfcv 1.png" alt="4"></div><div class="menu-name">에이드</div></div>
+      <div class="menu-item"><div class="menu-icon">🍰</div><div class="menu-name">디저트</div></div>
+    </div>
+
+    <!-- 추천/카드 -->
+    <div class="cards-row" aria-label="추천 카드">
+      <div class="card yellow">
+        <div class="card-tag">지금 인기 메뉴</div>
+        <div class="card-main">ICE 카페라떼</div>
+        <div class="card-sub">가볍게 한 잔, 출근길 픽업</div>
+      </div>
+
+      <div class="card">
+        <div class="badge-top">출석 5일</div>
+        <div class="card-tag">메가오더</div>
+        <div class="emoji-large" aria-hidden="true"><img src="./img/mune4.png" alt="v"></div>
+        <div class="card-bottom">
+          <div class="card-info">그룹 주문으로 빠르게</div>
+          <button class="btn-group" type="button">그룹 주문</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 매장 카드 -->
+    <div class="store-card" aria-label="매장 현황">
+      <div class="store-top">
+        <div class="store-left">
+          <div class="store-label">선택 매장 실시간 현황</div>
+          <div class="store-title">
+            <span aria-hidden="true"><img src="./img/Vector.png" alt="f"></span>
+            <span id="storeTitle">강남중앙점</span>
+          </div>
+        </div>
+        <div class="store-time" id="storeTime">오전 08:39</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span aria-hidden="true"><img src="./img/timer-outline.png" alt="g"></span><span>예상 대기</span><span class="stat-val" id="waitTime">12분</span></div>
+        <div class="stat"><span aria-hidden="true"><img src="./img/solar_armchair-2-bold.png" alt="g"></span><span>혼잡도</span><span class="stat-val" id="crowd">보통</span></div>
+      </div>
+
+      <div class="store-link" id="orderNow" role="button" tabindex="0">
+        <span>바로 주문하기</span>
+        <span aria-hidden="true">›</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 하단 네비 -->
+  <div class="bottom-nav" role="navigation" aria-label="하단 네비게이션">
+    <div class="nav-items">
+      <div class="nav-item active" data-tab="home">
+        <div class="nav-icon"><img src="./img/material-symbols_home-rounded.png" alt="1"></div>
+        <div class="nav-label">홈</div>
+      </div>
+      <div class="nav-item" data-tab="menu">
+        <div class="nav-icon"><img src="./img/menu2.png" alt="2"></div>
+        <div class="nav-label">메뉴</div>
+      </div>
+      <div class="nav-item" data-tab="order">
+        <div class="nav-icon"><img src="./img/mune 3.png" alt="3"></div>
+        <div class="nav-label">메가오더</div>
+      </div>
+      <div class="nav-item" data-tab="family">
+        <div class="nav-icon"><img src="./img/mune4.png" alt="4"></div>
+        <div class="nav-label">메가메이트</div>
+      </div>
+      <div class="nav-item" data-tab="more">
+        <div class="nav-icon">☰</div>
+        <div class="nav-label">전체</div>
+      </div>
+      <div class="home-bar" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <script>
+    // 시간 표시(간단)
+    function pad(n){ return String(n).padStart(2,'0'); }
+    function setTime(){
+      const el = document.getElementById('timeText');
+      if(el){
+        const d = new Date();
+        let h = d.getHours();
+        const m = d.getMinutes();
+        const ampm = h < 12 ? '오전' : '오후';
+        h = h % 12; if (h === 0) h = 12;
+        el.textContent = `${h}:${pad(m)}`;
+        document.getElementById('storeTime').textContent = `${ampm} ${pad(d.getHours())}:${pad(m)}`;
+      }else{
+        // status-bar를 주석 처리했으니 storeTime만 업데이트
+        const d = new Date();
+        const m = d.getMinutes();
+        const ampm = d.getHours() < 12 ? '오전' : '오후';
+        document.getElementById('storeTime').textContent = `${ampm} ${pad(d.getHours())}:${pad(m)}`;
+      }
+    }
+    setTime();
+    setInterval(setTime, 30000);
+
+    // 하단 네비 active 토글
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+      });
+    });
+
+    // ✅ 프로모션 배너: "스크롤 기반" 자동 넘김 + 스와이프시 dot 동기화
+    const promoViewport = document.getElementById('promoViewport');
+    const promoDotsWrap = document.getElementById('promoDots');
+    const promoDots = promoDotsWrap ? Array.from(promoDotsWrap.querySelectorAll('.p-dot')) : [];
+    const PROMO_TOTAL = 3;
+    let promoIndex = 0;
+
+    function promoSlideWidth(){
+      return promoViewport ? promoViewport.clientWidth : 0;
+    }
+
+    function setPromoIndex(next){
+      promoIndex = (next + PROMO_TOTAL) % PROMO_TOTAL;
+      const x = promoSlideWidth() * promoIndex;
+      promoViewport.scrollTo({ left: x, behavior: 'smooth' });
+      promoDots.forEach((d,i)=>d.classList.toggle('active', i===promoIndex));
+    }
+
+    // 자동 넘김
+    let promoTimer = setInterval(() => setPromoIndex(promoIndex + 1), 3500);
+
+    // 사용자가 스와이프하면 인덱스 계산해서 dot 반영
+    let scrollEndTimer = null;
+    promoViewport.addEventListener('scroll', () => {
+      // 자동 넘김 중 스와이프하면 잠시 멈춤
+      clearInterval(promoTimer);
+      promoTimer = setInterval(() => setPromoIndex(promoIndex + 1), 3500);
+
+      clearTimeout(scrollEndTimer);
+      scrollEndTimer = setTimeout(() => {
+        const w = promoSlideWidth();
+        if(!w) return;
+        promoIndex = Math.round(promoViewport.scrollLeft / w);
+        promoDots.forEach((d,i)=>d.classList.toggle('active', i===promoIndex));
+      }, 80);
+    }, { passive:true });
+
+    // 점 클릭으로 이동(옵션)
+    promoDots.forEach((dot, i) => {
+      dot.addEventListener('click', () => setPromoIndex(i));
+    });
+
+    // 리사이즈 시 현재 인덱스로 위치 보정
+    window.addEventListener('resize', () => {
+      const x = promoSlideWidth() * promoIndex;
+      promoViewport.scrollTo({ left: x, behavior: 'instant' });
+    });
+
+    // 매장 선택(데모)
+    const storeRow = document.getElementById('storeRow');
+    const storeName = document.getElementById('storeName');
+    const storeTitle = document.getElementById('storeTitle');
+
+    const stores = [
+      { name: '강남중앙점', wait: '12분', crowd: '보통' },
+      { name: '역삼점', wait: '6분', crowd: '여유' },
+      { name: '선릉점', wait: '18분', crowd: '혼잡' },
+    ];
+    let storeIdx = 0;
+
+    function applyStore(i){
+      const s = stores[i];
+      storeName.textContent = s.name;
+      storeTitle.textContent = s.name;
+      document.getElementById('waitTime').textContent = s.wait;
+      document.getElementById('crowd').textContent = s.crowd;
+    }
+
+    function nextStore(){
+      storeIdx = (storeIdx + 1) % stores.length;
+      applyStore(storeIdx);
+    }
+
+    storeRow.addEventListener('click', nextStore);
+    storeRow.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); nextStore(); }
+    });
+
+    // 바로 주문하기(데모)
+    const orderNow = document.getElementById('orderNow');
+    orderNow.addEventListener('click', ()=> alert('바로 주문하기(연결 예정)'));
+    orderNow.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); alert('바로 주문하기(연결 예정)'); }
+    });
+
+    // 초기 매장 적용
+    applyStore(storeIdx);
+  </script>
+</body>
+</html>
+
