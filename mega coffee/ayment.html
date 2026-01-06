@@ -571,11 +571,18 @@
         });
 
         // 결제하기 버튼
-        document.getElementById('payBtn').addEventListener('click', () => {
-            if (confirm('3,150원을 결제하시겠습니까?')) {
-                alert('결제가 완료되었습니다!');
-            }
-        });
+       
+  // ... (위 코드는 그대로)
+
+  // 결제하기 버튼 ✅ complete.html로 이동
+  document.getElementById('payBtn').addEventListener('click', () => {
+    if (confirm('3,150원을 결제하시겠습니까?')) {
+      window.location.href = './complete.html';
+    }
+  });
+
+
+
 
         // 네비게이션
         document.querySelectorAll('.nav-item').forEach(item => {

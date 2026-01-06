@@ -345,11 +345,8 @@
                 <div class="nav-icon">☰</div>
                 <div class="nav-label">전체</div>
             </div>
-           
         </div>
     </div>
-
-    
 
     <script>
         // 메뉴 데이터
@@ -472,6 +469,15 @@
 
         // 초기 렌더링
         renderMenu();
+
+        // ✅ 노란 카트 버튼 클릭 -> detail.html로 이동 (이벤트 위임)
+        const menuListEl = document.getElementById('menuList');
+        menuListEl.addEventListener('click', (e) => {
+          const cartBtn = e.target.closest('.cart-btn');
+          if (!cartBtn) return;
+
+          window.location.href = './detail.html';
+        });
     </script>
 </body>
 </html>

@@ -797,12 +797,30 @@
     setInterval(setTime, 30000);
 
     // 하단 네비 active 토글
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', () => {
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-      });
-    });
+// 하단 네비: active + 페이지 이동
+// 하단 네비: active + 페이지 이동
+const NAV_ROUTES = {
+  home: 'index.html',   // ✅ 메인 파일명이 index.html이 맞으면 그대로
+  menu: 'menu.html',
+  order: 'order.html',  // ✅ 실제 메가오더 파일명
+  family: 'mate.html',
+  more: 'more.html'
+};
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const tab = item.dataset.tab;
+    const target = NAV_ROUTES[tab];
+
+    // active 토글
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+
+    // ✅ 페이지 이동
+    if (target) window.location.href = `./${target}`;
+  });
+});
+
 
     // ✅ 프로모션 배너: "스크롤 기반" 자동 넘김 + 스와이프시 dot 동기화
     const promoViewport = document.getElementById('promoViewport');
@@ -891,6 +909,15 @@
 
     // 초기 매장 적용
     applyStore(storeIdx);
+    
+document.querySelectorAll('.btn-group').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.location.href = './order.html';
+  });
+});
+
+
   </script>
 </body>
 </html>

@@ -389,8 +389,7 @@
         <!-- 상품 이미지 -->
         <div class="product-image">
             <div class="product-img">
-                <!-- 실제로는 이미지가 들어감 -->
-                 <img src="./img/aa 21.png" alt="">
+                <img src="./img/aa 21.png" alt="">
             </div>
         </div>
 
@@ -453,8 +452,9 @@
 
     <!-- 하단 버튼 -->
     <div class="bottom-buttons">
-        <button class="btn btn-secondary">장바구니</button>
-        <button class="btn btn-primary">바로결제</button>
+        <button class="btn btn-secondary" id="addToCartBtn">장바구니</button>
+        <!-- ✅ 바로결제 버튼에 id 추가 -->
+        <button class="btn btn-primary" id="payNowBtn">바로결제</button>
     </div>
 
     <!-- 하단 네비게이션 -->
@@ -480,7 +480,6 @@
                 <div class="nav-icon">☰</div>
                 <div class="nav-label">전체</div>
             </div>
-            
         </div>
     </div>
 
@@ -496,12 +495,9 @@
         function updateQuantity() {
             quantityEl.textContent = quantity;
             totalPriceEl.textContent = (basePrice * quantity).toLocaleString() + '원';
-            
-            if (quantity <= 1) {
-                minusBtn.classList.add('disabled');
-            } else {
-                minusBtn.classList.remove('disabled');
-            }
+
+            if (quantity <= 1) minusBtn.classList.add('disabled');
+            else minusBtn.classList.remove('disabled');
         }
 
         minusBtn.addEventListener('click', () => {
@@ -524,25 +520,6 @@
             });
         });
 
-        // 버튼 클릭
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                if (this.classList.contains('btn-secondary')) {
-                    alert('장바구니에 담았습니다');
-                } else {
-                    alert('주문이 완료되었습니다');
-                }
-            });
-        });
-
-        // 네비게이션
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
         // 뒤로가기
         document.querySelector('.back-btn').addEventListener('click', () => {
             window.history.back();
@@ -552,6 +529,20 @@
         document.querySelector('.info-icon').addEventListener('click', () => {
             alert('(ICE) 카페라떼\n\n진한 에스프레소와 부드러운 우유가 어우러진 클래식 음료입니다.');
         });
+
+        // ✅ 바로결제 -> ayment.html 이동
+        const payNowBtn = document.getElementById('payNowBtn');
+        payNowBtn.addEventListener('click', () => {
+            window.location.href = './ayment.html';
+        });
+
+        // (원래 있던) 버튼 클릭 알림은 원하면 유지/삭제 가능
+        // document.querySelectorAll('.btn').forEach(btn => {
+        //   btn.addEventListener('click', function() {
+        //     if (this.classList.contains('btn-secondary')) alert('장바구니에 담았습니다');
+        //     else alert('주문이 완료되었습니다');
+        //   });
+        // });
 
         // 초기화
         updateQuantity();

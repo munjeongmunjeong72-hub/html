@@ -349,7 +349,8 @@
     <!-- 하단 네비게이션 -->
     <div class="bottom-nav">
         <div class="nav-items">
-            <div class="nav-item">
+            <!-- ✅ 홈 버튼에 id 추가 -->
+            <div class="nav-item" id="navHome">
                 <div class="nav-icon"><img src="./img/mune1png.png" alt=""></div>
                 <div class="nav-label">홈</div>
             </div>
@@ -369,7 +370,6 @@
                 <div class="nav-icon">☰</div>
                 <div class="nav-label">전체</div>
             </div>
-            
         </div>
     </div>
 
@@ -379,6 +379,11 @@
             if (confirm('주문 화면을 닫으시겠습니까?')) {
                 window.location.href = '/';
             }
+        });
+
+        // ✅ 홈 버튼 -> main.html 이동
+        document.getElementById('navHome').addEventListener('click', () => {
+            window.location.href = './main.html';
         });
 
         // 탭 전환
@@ -413,7 +418,7 @@
             alert('주문 상세 정보를 확인합니다');
         });
 
-        // 네비게이션
+        // 네비게이션(기존 active 토글)
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function() {
                 document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
