@@ -534,6 +534,7 @@
       box-shadow: 0 -10px 22px rgba(0,0,0,.08);
       padding: 10px 0 calc(18px + var(--safeBottom));
       z-index: 1000;
+      width: 100%;
     }
 
     .nav-items{
@@ -578,35 +579,13 @@
       opacity:.92;
     }
 
-    /* 작은 화면 */
-    @media (max-width: 360px){
-      .greeting{ font-size: 22px; }
-      .quick-actions{ grid-template-columns: repeat(4, 1fr); }
-      .qa{ padding: 10px 8px; }
-      .main{ padding-left: 14px; padding-right: 14px; }
-      .header-inner{ padding-left: 14px; padding-right: 14px; }
-    }
-
-    /* 큰 화면(웹에서 폰 프레임 느낌) */
-    @media (min-width: 768px){
-      body{
-        max-width: 480px;
-        margin: 0 auto;
-        box-shadow: 0 0 40px rgba(0,0,0,.15);
-      }
-      .status-bar, .bottom-nav{
-        left: 50%;
-        right: auto;
-        transform: translateX(-50%);
-        width: 480px;
-      }
-      .header{
-        border-radius: 0;
-      }
-    }
-    .promo-title{
-        color: #fff;
-    }
+  @media (min-width: 768px) {
+            body {
+                max-width: 480px;
+                margin: 0 auto;
+                box-shadow: 0 0 40px rgba(0,0,0,0.15);
+            }
+        }
   </style>
 </head>
 <body>
@@ -789,7 +768,7 @@
         <div class="nav-icon">☰</div>
         <div class="nav-label">전체</div>
       </div>
-      <div class="home-bar" aria-hidden="true"></div>
+     
     </div>
   </div>
 

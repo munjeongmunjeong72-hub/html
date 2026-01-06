@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결제하기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Malgun Gothic', sans-serif;
+            background: #fafafa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 상태바 */
+        .status-bar {
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 15px;
+            font-weight: 600;
+            background: white;
+        }
+
+        .time {
+            color: #FFD700;
+        }
+
+        .status-icons {
+            color: #FFD700;
+        }
+
+        /* 헤더 */
+        .header {
+            background: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+        }
+
+        .back-btn {
+            font-size: 28px;
+            color: #333;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .header-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        /* 메인 컨텐츠 */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 160px;
+        }
+
+        /* 예약 정보 카드 */
+        .reservation-card {
+            background: white;
+            margin: 12px 20px;
+            padding: 16px 18px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .reservation-info {
+            flex: 1;
+        }
+
+        .reservation-label {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .reservation-time {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .time-highlight {
+            color: #FF6B6B;
+        }
+
+        .reservation-date {
+            font-size: 13px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .date-highlight {
+            color: #FF6B6B;
+        }
+
+        .arrow-icon {
+            font-size: 20px;
+            color: #ddd;
+        }
+
+        /* 섹션 */
+        .section {
+            background: white;
+            margin-top: 8px;
+            padding: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .collapse-btn {
+            font-size: 20px;
+            color: #ddd;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transform: rotate(180deg);
+            transition: transform 0.3s ease;
+        }
+
+        .collapse-btn.collapsed {
+            transform: rotate(0deg);
+        }
+
+        .section-count {
+            font-size: 14px;
+            color: #999;
+        }
+
+        /* 주문 아이템 */
+        .order-item {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .item-image {
+            width: 70px;
+            height: 70px;
+            background: #f5f5f5;
+            border-radius: 12px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+        }
+
+        .item-options {
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+
+        .item-quantity {
+            font-size: 13px;
+            color: #999;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .expand-icon {
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .item-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            text-align: right;
+        }
+
+        /* 옵션 행 */
+        .option-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #f5f5f5;
+            cursor: pointer;
+        }
+
+        .option-row:last-child {
+            border-bottom: none;
+        }
+
+        .option-row:active {
+            background: #f9f9f9;
+        }
+
+        .option-label {
+            font-size: 15px;
+            color: #333;
+        }
+
+        .option-value {
+            font-size: 14px;
+            color: #999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .option-arrow {
+            font-size: 18px;
+            color: #ddd;
+        }
+
+        /* 가격 섹션 */
+        .price-section {
+            background: white;
+            padding: 20px;
+            margin-top: 8px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .price-label {
+            color: #666;
+        }
+
+        .price-value {
+            color: #333;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid #f0f0f0;
+            margin-top: 4px;
+        }
+
+        .total-label {
+            font-size: 17px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .total-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        /* 결제 버튼 */
+        .payment-button {
+            position: fixed;
+            bottom: 70px;
+            left: 0;
+            right: 0;
+            padding: 16px 20px;
+            background: white;
+        }
+
+        .pay-btn {
+            width: 100%;
+            height: 54px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .pay-btn:active {
+            background: #000;
+        }
+
+        /* 하단 네비게이션 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+            padding: 8px 0 22px;
+            z-index: 100;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            position: relative;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 6px 14px;
+        }
+
+        .nav-icon {
+            font-size: 26px;
+            color: #d0d0d0;
+        }
+
+        .nav-item.active .nav-icon {
+            color: #FFD700;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            color: #aaa;
+        }
+
+        .nav-item.active .nav-label {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .home-bar {
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 134px;
+            height: 5px;
+            background: #000;
+            border-radius: 3px;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                max-width: 480px;
+                margin: 0 auto;
+                box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 상태바 -->
+    <!-- <div class="status-bar">
+        <div class="time">9:41</div>
+        <div class="status-icons">📶 📡 🔋</div>
+    </div> -->
+
+    <!-- 헤더 -->
+    <div class="header">
+        <button class="back-btn">‹</button>
+        <div class="header-title">결제하기</div>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
+        <!-- 예약 정보 -->
+        <div class="reservation-card">
+            <div class="reservation-info">
+                <div class="reservation-label">예약정보</div>
+                <div class="reservation-time">
+                    <span>날짜 | </span>
+                    <span class="time-highlight">6·23(월)</span>
+                    <span> 시간 | </span>
+                    <span class="time-highlight">12:35</span>
+                </div>
+                <div class="reservation-date">
+                    <span>매장 | </span>
+                    <span class="date-highlight">이대점</span>
+                </div>
+            </div>
+            <div class="arrow-icon">›</div>
+        </div>
+
+        <!-- 주문내역 섹션 -->
+        <div class="section">
+            <div class="section-header">
+                <div>
+                    <span class="section-title">주문내역</span>
+                    <span class="section-count">(1개)</span>
+                </div>
+                <button class="collapse-btn" id="collapseBtn">^</button>
+            </div>
+
+            <div class="order-content" id="orderContent">
+                <div class="order-item">
+                    <div class="item-image">
+                        <!-- 음료 이미지 -->
+                         <img src="./img/aa 1.png" alt="">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">(ICE) 카페라떼</div>
+                        <div class="item-options">옵션 없음</div>
+                        <div class="item-quantity">
+                            <span>수량 1개</span>
+                            <span class="expand-icon">∨</span>
+                        </div>
+                    </div>
+                    <div class="item-price">3,500원</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 합계 -->
+        <div class="section">
+            <div class="option-row">
+                <div class="option-label">합계</div>
+                <div class="option-value" style="color: #FF6B6B; font-weight: 700; font-size: 16px;">
+                    3,500원
+                </div>
+            </div>
+        </div>
+
+        <!-- 쿠폰 -->
+        <div class="section">
+            <div class="option-row">
+                <div class="option-label">쿠폰</div>
+                <div class="option-value">
+                    <span>메가커피쿠폰 쿠폰</span>
+                    <span class="option-arrow">›</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 포인트 -->
+        <div class="section">
+            <div class="option-row">
+                <div class="option-label">포인트</div>
+                <div class="option-value">
+                    <span class="option-arrow">›</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 결제수단 -->
+        <div class="section">
+            <div class="option-row">
+                <div class="option-label">결제수단</div>
+                <div class="option-value">
+                    <span>신용카드</span>
+                    <span class="option-arrow">›</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 가격 상세 -->
+        <div class="price-section">
+            <div class="price-row">
+                <span class="price-label">주문금액</span>
+                <span class="price-value">3,500원</span>
+            </div>
+            <div class="price-row">
+                <span class="price-label">할인금액</span>
+                <span class="price-value">350원</span>
+            </div>
+            <div class="total-row">
+                <span class="total-label">최종 결제금액</span>
+                <span class="total-price">3,150원</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 결제 버튼 -->
+    <div class="payment-button">
+        <button class="pay-btn" id="payBtn">결제하기</button>
+    </div>
+
+    <!-- 하단 네비게이션 -->
+    <div class="bottom-nav">
+        <div class="nav-items">
+            <div class="nav-item">
+                <div class="nav-icon"><img src="./img/mune1png.png" alt=""></div>
+                <div class="nav-label">홈</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"><img src="./img/menu2.png" alt=""></div>
+                <div class="nav-label">예약오더</div>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon"><img src="./img/Component 3.png" alt=""></div>
+                <div class="nav-label">메가오더</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"><img src="./img/mune4.png" alt=""></div>
+                <div class="nav-label">메가메이트</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">☰</div>
+                <div class="nav-label">전체</div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        // 주문내역 접기/펼치기
+        const collapseBtn = document.getElementById('collapseBtn');
+        const orderContent = document.getElementById('orderContent');
+        let isCollapsed = false;
+
+        collapseBtn.addEventListener('click', () => {
+            isCollapsed = !isCollapsed;
+            if (isCollapsed) {
+                orderContent.style.display = 'none';
+                collapseBtn.classList.add('collapsed');
+            } else {
+                orderContent.style.display = 'block';
+                collapseBtn.classList.remove('collapsed');
+            }
+        });
+
+        // 예약정보 클릭
+        document.querySelector('.reservation-card').addEventListener('click', () => {
+            alert('예약 시간 변경 페이지');
+        });
+
+        // 옵션 클릭
+        document.querySelectorAll('.option-row').forEach(row => {
+            row.addEventListener('click', function() {
+                const label = this.querySelector('.option-label').textContent;
+                if (this.querySelector('.option-arrow')) {
+                    alert(label + ' 선택 페이지로 이동');
+                }
+            });
+        });
+
+        // 결제하기 버튼
+        document.getElementById('payBtn').addEventListener('click', () => {
+            if (confirm('3,150원을 결제하시겠습니까?')) {
+                alert('결제가 완료되었습니다!');
+            }
+        });
+
+        // 네비게이션
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // 뒤로가기
+        document.querySelector('.back-btn').addEventListener('click', () => {
+            window.history.back();
+        });
+    </script>
+</body>
+</html>
