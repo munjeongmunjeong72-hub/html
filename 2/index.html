@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>기상청 7일 중기예보</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container topbar">
+      <div class="brand">
+        <div class="logo">W</div>
+        <div class="brandText">
+          <h1>기상청 중기예보 · 7일 날씨</h1>
+          <p>지역 검색 + 7일 그래프 (HTML/CSS/JS only)</p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <div class="searchBox">
+          <label class="label" for="regionSearch">지역 검색</label>
+          <input
+            id="regionSearch"
+            type="text"
+            placeholder="예: 서울, 부산, 제주, 강원영동…"
+            autocomplete="off"
+          />
+          <div id="suggestions" class="suggestions"></div>
+        </div>
+
+        <button id="btnLoad" class="btn">불러오기</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+
+      <section class="notice">
+        <div class="noticeIcon">ℹ️</div>
+        <div class="noticeText">
+          중기예보는 주로 <strong>날씨/강수확률/기온</strong> 중심이며,
+          <strong>강수량(mm)</strong>은 중기예보에서 제공이 제한적일 수 있어요.
+        </div>
+      </section>
+
+      <section class="status">
+        <div id="loading" class="loading">불러오는 중…</div>
+        <div id="error" class="error"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panelHeader">
+          <h2>7일 기온 그래프</h2>
+          <div id="meta" class="meta"></div>
+        </div>
+
+        <div class="chartWrap">
+          <canvas id="chart" width="1000" height="340" aria-label="7일 기온/강수확률 그래프"></canvas>
+          <div class="chartLegend">
+            <span class="legendItem">
+              <span class="dot dotMin"></span>최저기온
+            </span>
+            <span class="legendItem">
+              <span class="dot dotMax"></span>최고기온
+            </span>
+            <span class="legendItem">
+              <span class="bar"></span>강수확률(%)
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="sectionTitle">7일 예보 카드</h2>
+        <div id="grid" class="grid"></div>
+      </section>
+
+      <footer class="footer">
+        <div>Data: 기상청 MidFcstInfoService (중기육상/중기기온)</div>
+        <div>UI: White + Blue Accent</div>
+      </footer>
+
+    </div>
+  </main>
+
+  <script src="./js/main.js"></script>
+</body>
+</html>
+
+
