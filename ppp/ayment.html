@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>결제하기</title>
+    <link rel="stylesheet" href="./css/style8.css">
+</head>
+<body>
+    <!-- 상태바 -->
+    <!-- <div class="status-bar">
+        <div class="time">9:41</div>
+        <div class="status-icons">📶 📡 🔋</div>
+    </div> -->
+
+    <!-- 헤더 -->
+    <div class="header">
+        <button class="back-btn">‹</button>
+        <div class="header-title">결제하기</div>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
+        <!-- 예약 정보 -->
+        <div class="reservation-card">
+            <div class="reservation-info">
+                <div class="reservation-label">예약정보</div>
+                <div class="reservation-time">
+                    <span>날짜 | </span>
+                    <span class="time-highlight">6·23(월)</span>
+                    <span> 시간 | </span>
+                    <span class="time-highlight">12:35</span>
+                </div>
+                <div class="reservation-date">
+                    <span>매장 | </span>
+                    <span class="date-highlight">이대점</span>
+                </div>
+            </div>
+            <div class="arrow-icon">›</div>
+        </div>
+
+        <!-- 주문내역 섹션 -->
+        <div class="section">
+            <div class="section-header">
+                <div>
+                    <span class="section-title">주문내역</span>
+                    <span class="section-count">(1개)</span>
+                </div>
+                <button class="collapse-btn" id="collapseBtn">^</button>
+            </div>
+
+            <div class="order-content" id="orderContent">
+                <div class="order-item">
+                    <div class="item-image">
+                        <!-- 음료 이미지 -->
+                         <img src="./img/aa 1.png" alt="">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-name">(ICE) 카페라떼</div>
+                        <div class="item-options">옵션 없음</div>
+                        <div class="item-quantity">
+                            <span>수량 1개</span>
+                            <span class="expand-icon">∨</span>
+                        </div>
+                    </div>
+                    <div class="item-price">3,500원</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 합계 -->
+        <div class="section">
+            <div class="option-row">
+                <div class="option-label">합계</div>
+                <div class="option-value" style="color: #FF6B6B; font-weight: 700; font-size: 16px;">
+                    3,500원
+                </div>
+            </div>
+        </div>
+
+        <!-- 쿠폰 -->
+        <div class="section">
+            <div class="option-row">
+                <div class="option-label">쿠폰</div>
+                <div class="option-value">
+                    <span>메가커피쿠폰 쿠폰</span>
+                    <span class="option-arrow">›</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 포인트 -->
+        <div class="section">
+            <div class="option-row">
+                <div class="option-label">포인트</div>
+                <div class="option-value">
+                    <span class="option-arrow">›</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 결제수단 -->
+        <div class="section">
+            <div class="option-row">
+                <div class="option-label">결제수단</div>
+                <div class="option-value">
+                    <span>신용카드</span>
+                    <span class="option-arrow">›</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 가격 상세 -->
+        <div class="price-section">
+            <div class="price-row">
+                <span class="price-label">주문금액</span>
+                <span class="price-value">3,500원</span>
+            </div>
+            <div class="price-row">
+                <span class="price-label">할인금액</span>
+                <span class="price-value">350원</span>
+            </div>
+            <div class="total-row">
+                <span class="total-label">최종 결제금액</span>
+                <span class="total-price">3,150원</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 결제 버튼 -->
+    <div class="payment-button">
+        <button class="pay-btn" id="payBtn">결제하기</button>
+    </div>
+
+    <!-- 하단 네비게이션 -->
+    <div class="bottom-nav">
+        <div class="nav-items">
+            <div class="nav-item">
+                <div class="nav-icon"><img src="./img/mune1png.png" alt=""></div>
+                <div class="nav-label">홈</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"><img src="./img/menu2.png" alt=""></div>
+                <div class="nav-label">예약오더</div>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon"><img src="./img/Component 3.png" alt=""></div>
+                <div class="nav-label">메가오더</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"><img src="./img/mune4.png" alt=""></div>
+                <div class="nav-label">메가메이트</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">☰</div>
+                <div class="nav-label">전체</div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="./js/main8.js"></script>
+</body>
+</html>

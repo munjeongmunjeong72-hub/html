@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메뉴상세</title>
+   <link rel="stylesheet" href="./css/style6.css">
+</head>
+<body>
+    <!-- 상태바 -->
+    <!-- <div class="status-bar">
+        <div class="time">9:41</div>
+        <div class="status-icons">📶 📡 🔋</div> -->
+    </div>
+
+    <!-- 헤더 -->
+    <div class="header">
+        <button class="back-btn">‹</button>
+        <div class="header-title">메뉴상세</div>
+    </div>
+
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
+        <!-- 상품 이미지 -->
+        <div class="product-image">
+            <div class="product-img">
+                <img src="./img/aa 21.png" alt="">
+            </div>
+        </div>
+
+        <!-- 상품 정보 -->
+        <div class="product-info">
+            <div class="product-name">
+                <span>(ICE) 카페라떼</span>
+                <div class="info-icon">ⓘ</div>
+            </div>
+            <div class="product-price">3,500원</div>
+        </div>
+
+        <!-- 옵션 섹션 -->
+        <div class="options-section">
+            <div class="option-header">
+                <div class="option-title">퍼스널 옵션</div>
+                <div class="option-extra">추가금</div>
+            </div>
+
+            <div class="option-item">
+                <div class="option-left">
+                    <span class="option-label">샷추가</span>
+                    <span class="option-badge">인기</span>
+                </div>
+                <div class="option-right">›</div>
+            </div>
+
+            <div class="option-item">
+                <div class="option-left">
+                    <span class="option-label">시럽</span>
+                </div>
+                <div class="option-right">›</div>
+            </div>
+        </div>
+
+        <!-- 수량 선택 -->
+        <div class="quantity-section">
+            <div class="quantity-label">수량</div>
+            <div class="quantity-control">
+                <button class="qty-btn" id="minusBtn">
+                    <svg width="16" height="2" viewBox="0 0 16 2" fill="none">
+                        <path d="M0 1H16" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+                <div class="qty-number" id="quantity">1</div>
+                <button class="qty-btn" id="plusBtn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 0V16M0 8H16" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 총 금액 -->
+        <div class="total-section">
+            <div class="total-label">총 금액</div>
+            <div class="total-price" id="totalPrice">3,500원</div>
+        </div>
+    </div>
+
+    <!-- 하단 버튼 -->
+    <div class="bottom-buttons">
+        <button class="btn btn-secondary" id="addToCartBtn">장바구니</button>
+        <!-- ✅ 바로결제 버튼에 id 추가 -->
+        <button class="btn btn-primary" id="payNowBtn">바로결제</button>
+    </div>
+
+    <!-- 하단 네비게이션 -->
+    <div class="bottom-nav">
+        <div class="nav-items">
+            <div class="nav-item">
+                <div class="nav-icon"><img src="./img/mune1png.png" alt=""></div>
+                <div class="nav-label">홈</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"><img src="./img/menu2.png" alt=""></div>
+                <div class="nav-label">메뉴보기</div>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon"><img src="./img/Component 3.png" alt=""></div>
+                <div class="nav-label">메가오더</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"><img src="./img/mune4.png" alt=""></div>
+                <div class="nav-label">메가메이트</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">☰</div>
+                <div class="nav-label">전체</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/main6.js"></script>
+</body>
+</html>

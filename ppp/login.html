@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEGA COFFEE - 로그인</title>
+  <link rel="stylesheet" href="./css/style5.css">
+</head>
+<body class="pw-hidden">
+  <div class="status-bar">
+    <!-- <div class="time">9:41</div>
+    <div class="status-icons">
+      <span class="icon-signal">📶</span>
+      <span class="icon-wifi">📡</span>
+      <span class="icon-battery">🔋</span> -->
+    </div>
+  </div>
+
+  <div class="login-container">
+    <div class="welcome-text">원활 서비스 이용을 위해 로그인해 주세요</div>
+
+    <div class="input-section">
+      <div class="input-group">
+        <label class="input-label">아이디</label>
+        <div class="input-wrapper">
+          <input
+            type="text"
+            class="input-field"
+            id="userId"
+            placeholder="이메일 주소"
+            autocomplete="username"
+          />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">비밀번호</label>
+        <div class="input-wrapper">
+          <!-- ✅ type은 text 유지 -->
+          <input
+            type="text"
+            class="input-field"
+            id="userPassword"
+            placeholder="비밀번호를 입력해 주세요"
+            maxlength="20"
+            autocomplete="current-password"
+          />
+
+          <!-- ✅ 커스텀 dot -->
+          <div class="password-dots" id="passwordDots" aria-hidden="true">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+
+          <!-- 👁 토글 -->
+          <button class="pw-toggle" id="pwToggle" type="button" aria-label="비밀번호 보기/숨기기">
+            <!-- eye -->
+            <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <!-- eye-off -->
+            <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.8 21.8 0 0 1 5.06-6.94"></path>
+              <path d="M1 1l22 22"></path>
+              <path d="M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.8 21.8 0 0 1-4.1 5.94"></path>
+              <path d="M14.12 14.12A3 3 0 0 1 9.88 9.88"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <button class="login-button" id="loginButton">로그인</button>
+
+      <div class="bottom-links">
+        <a href="#" class="link">아이디찾기</a>
+        <a href="#" class="link">비밀번호찾기</a>
+        <a href="#" class="link">회원가입</a>
+      </div>
+    </div>
+
+    <div class="social-login-section">
+      <p class="social-login-text">다른 방법으로 로그인 하기</p>
+      <div class="social-buttons">
+        <button class="social-btn naver" aria-label="네이버 로그인">N</button>
+
+        <button class="social-btn kakao" aria-label="카카오 로그인">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 3C6.48 3 2 6.58 2 11c0 2.89 1.97 5.43 4.93 6.84-.2.72-.75 2.65-.87 3.07-.14.5.18.5.37.36.15-.11 2.46-1.67 3.45-2.35.7.1 1.42.15 2.15.15 5.52 0 10-3.58 10-8S17.52 3 12 3z"/>
+          </svg>
+        </button>
+
+        <button class="social-btn facebook" aria-label="페이스북 로그인">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+          </svg>
+        </button>
+
+        <button class="social-btn apple" aria-label="애플 로그인">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-indicator">
+    
+  </div>
+
+  <script src="./js/main5.js"></script>
+</body>
+</html>

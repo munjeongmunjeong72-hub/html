@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEGA COFFEE</title>
+  <link rel="stylesheet" href="./css/style4.css">
+</head>
+<body>
+  <!-- 상태바 -->
+  <!-- <div class="status-bar">
+    <div id="timeText">9:41</div>
+    <div aria-hidden="true">📶 📡 🔋</div>
+  </div> -->
+
+  <!-- 헤더 -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-icons">
+        <div class="header-left">
+          <div class="logo-badge" aria-label="MEGA"><img src="./img/uil_calendar.png" alt="8"></div>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="header-btn" type="button" aria-label="쿠폰/스탬프"><img src="./img/mingcute_coupon-line.png" alt="v"></button>
+          <button class="header-btn" type="button" aria-label="알림">🔔</button>
+        </div>
+      </div>
+
+      <div class="user-info">
+        <div class="greeting">김뫄뫄 님</div>
+        <div class="subline">지금 가장 가까운 매장에서 빠르게 주문해보세요.</div>
+
+        <div class="location-row" id="storeRow" role="button" tabindex="0" aria-label="매장 선택">
+          <div class="location-main">
+            <span class="location-icon"><img src="./img/Vector.png" alt="f"></span>
+            <span class="store-name" id="storeName">강남중앙점</span>
+            <span style="font-size:13px; font-weight:800; color:rgba(0,0,0,.65);">바로 주문</span>
+          </div>
+          <div class="change-btn">
+            <span>매장 바꾸기</span>
+            <span aria-hidden="true">›</span>
+          </div>
+        </div>
+
+        <div class="badges">
+          <div class="badge"><span aria-hidden="true"><img src="./img/lucide-lab_coffee.png" alt="k"></span><span>스탬프 <b id="stampCount">2</b></span></div>
+          <div class="badge"><span aria-hidden="true"><img src="./img/mingcute_coupon-line.png" alt="v"></span><span>쿠폰 <b id="couponCount">0</b></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 메인 -->
+  <div class="main">
+    <!-- 퀵액션 -->
+    <div class="quick-actions" aria-label="빠른 메뉴">
+      <div class="qa" role="button" tabindex="0"><div class="i"><img src="./img/inbox.png" alt=""></div><div class="t">주문내역</div></div>
+      <div class="qa" role="button" tabindex="0"><div class="i"><img src="./img/el_star-alt.png" alt="e"></div><div class="t">즐겨찾기</div></div>
+      <div class="qa" role="button" tabindex="0"><div class="i"><img src="./img/gift.png" alt=""></div><div class="t">이벤트</div></div>
+      <div class="qa" role="button" tabindex="0"><div class="i"><img src="./img/Vector.png" alt="h"></div><div class="t">매장찾기</div></div>
+    </div>
+
+    <!-- 프로모션 배너 -->
+    <div class="promo" aria-label="프로모션">
+      <div class="promo-top">
+        <div class="promo-title">오늘의 혜택</div>
+        <div class="promo-dots" id="promoDots" aria-label="배너 페이지">
+          <div class="p-dot active"></div>
+          <div class="p-dot"></div>
+          <div class="p-dot"></div>
+        </div>
+      </div>
+
+      <!-- ✅ 수정: promo-viewport가 가로 스크롤 컨테이너 -->
+      <div class="promo-viewport" id="promoViewport">
+        <div class="promo-track" id="promoTrack">
+          <div class="promo-slide">
+            <div class="promo-card">
+              <div>
+                <strong>출근길 픽업 빠르게</strong>
+                <span>미리 주문하고 바로 수령</span>
+              </div>
+              <div class="promo-emoji" aria-hidden="true"></div>
+            </div>
+          </div>
+          <div class="promo-slide">
+            <div class="promo-card">
+              <div>
+                <strong>스탬프 적립 확인</strong>
+                <span>적립/쿠폰을 한눈에</span>
+              </div>
+              <div class="promo-emoji" aria-hidden="true">☕</div>
+            </div>
+          </div>
+          <div class="promo-slide">
+            <div class="promo-card">
+              <div>
+                <strong>신메뉴 & 이벤트</strong>
+                <span>오늘의 추천 메뉴 확인</span>
+              </div>
+              <div class="promo-emoji" aria-hidden="true">🎉</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 카테고리 -->
+    <div class="section-head">
+      <div class="h">카테고리</div>
+      <div class="more" role="button" tabindex="0">전체보기 ›</div>
+    </div>
+
+    <div class="menu-slider" aria-label="카테고리 슬라이더">
+      <div class="menu-item"><div class="menu-icon"><img src="./img/savsa 1.png" alt="1"></div><div class="menu-name">커피</div></div>
+      <div class="menu-item"><div class="menu-icon"><img src="./img/aa 1.png" alt="2"></div><div class="menu-name">라떼/쉐이크</div></div>
+      <div class="menu-item"><div class="menu-icon"><img src="./img/123 1.png" alt="3"></div><div class="menu-name">아이스블렌드</div></div>
+      <div class="menu-item"><div class="menu-icon"><img src="./img/addadddvfcv 1.png" alt="4"></div><div class="menu-name">에이드</div></div>
+      <div class="menu-item"><div class="menu-icon">🍰</div><div class="menu-name">디저트</div></div>
+    </div>
+
+    <!-- 추천/카드 -->
+    <div class="cards-row" aria-label="추천 카드">
+      <div class="card yellow">
+        <div class="card-tag">지금 인기 메뉴</div>
+        <div class="card-main">ICE 카페라떼</div>
+        <div class="card-sub">가볍게 한 잔, 출근길 픽업</div>
+      </div>
+
+      <div class="card">
+        <div class="badge-top">출석 5일</div>
+        <div class="card-tag">메가오더</div>
+        <div class="emoji-large" aria-hidden="true"><img src="./img/mune4.png" alt="v"></div>
+        <div class="card-bottom">
+          <div class="card-info">그룹 주문으로 빠르게</div>
+          <button class="btn-group" type="button">그룹 주문</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 매장 카드 -->
+    <div class="store-card" aria-label="매장 현황">
+      <div class="store-top">
+        <div class="store-left">
+          <div class="store-label">선택 매장 실시간 현황</div>
+          <div class="store-title">
+            <span aria-hidden="true"><img src="./img/Vector.png" alt="f"></span>
+            <span id="storeTitle">강남중앙점</span>
+          </div>
+        </div>
+        <div class="store-time" id="storeTime">오전 08:39</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span aria-hidden="true"><img src="./img/timer-outline.png" alt="g"></span><span>예상 대기</span><span class="stat-val" id="waitTime">12분</span></div>
+        <div class="stat"><span aria-hidden="true"><img src="./img/solar_armchair-2-bold.png" alt="g"></span><span>혼잡도</span><span class="stat-val" id="crowd">보통</span></div>
+      </div>
+
+      <div class="store-link" id="orderNow" role="button" tabindex="0">
+        <span>바로 주문하기</span>
+        <span aria-hidden="true">›</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 하단 네비 -->
+  <div class="bottom-nav" role="navigation" aria-label="하단 네비게이션">
+    <div class="nav-items">
+      <div class="nav-item active" data-tab="home">
+        <div class="nav-icon"><img src="./img/material-symbols_home-rounded.png" alt="1"></div>
+        <div class="nav-label">홈</div>
+      </div>
+      <div class="nav-item" data-tab="menu">
+        <div class="nav-icon"><img src="./img/menu2.png" alt="2"></div>
+        <div class="nav-label">메뉴</div>
+      </div>
+      <div class="nav-item" data-tab="order">
+        <div class="nav-icon"><img src="./img/mune 3.png" alt="3"></div>
+        <div class="nav-label">메가오더</div>
+      </div>
+      <div class="nav-item" data-tab="family">
+        <div class="nav-icon"><img src="./img/mune4.png" alt="4"></div>
+        <div class="nav-label">메가메이트</div>
+      </div>
+      <div class="nav-item" data-tab="more">
+        <div class="nav-icon">☰</div>
+        <div class="nav-label">전체</div>
+      </div>
+     
+    </div>
+  </div>
+
+<script src="./js/main4.js"></script>
+</body>
+</html>
+

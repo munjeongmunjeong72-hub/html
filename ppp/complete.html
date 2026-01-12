@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문완료</title>
+   <link rel="stylesheet" href="./css/style7.css">
+</head>
+<body>
+    <!-- 상태바 -->
+    <!-- <div class="status-bar">
+        <div>9:41</div>
+        <div>📶 📡 🔋</div> -->
+    </div>
+
+    <!-- 닫기 버튼 -->
+    <button class="close-btn" id="closeBtn">✕</button>
+
+    <!-- 알림 배너 -->
+    <div class="notification-banner">
+        <div class="banner-left">
+            <div class="calendar-icon"><img src="./img/uil_calendar.png" alt=""></div>
+            <div class="banner-text">주문번호</div>
+        </div>
+        <div class="banner-number">21</div>
+    </div>
+
+    <!-- 메인 정보 -->
+    <div class="main-info">
+        <div class="order-date">
+            <span class="date-highlight">6/21 수요일 오후 12시 20분</span>
+            <span> 이대점</span>
+            <span>에서</span>
+        </div>
+        <div class="order-message">예약되어 주문이 완료되었습니다.</div>
+    </div>
+
+    <!-- 탭 메뉴 -->
+    <div class="tab-menu">
+        <button class="tab active" id="tab1">주문목록</button>
+        <button class="tab" id="tab2">준비중</button>
+        <button class="tab" id="tab3">픽업대기</button>
+        <button class="tab" id="tab4">픽업완료</button>
+    </div>
+
+    <!-- 컨텐츠 영역 -->
+    <div class="content-area">
+        <div class="content-header">
+            <div>
+                <span class="content-title">주문내역</span>
+                <span class="item-count"> | 총 1개</span>
+            </div>
+            <button class="clear-all">일괄삭제</button>
+        </div>
+
+        <!-- 주문 아이템 리스트 -->
+        <div class="order-list">
+            <div class="order-item">
+                <div class="item-image">
+                    <!-- 음료 이미지 -->
+                     <img src="./img/aa 1.png" alt="">
+                    <div style="width: 100%; height: 100%; background: to bottom, rgba(161, 161, 161, 0.3) ; border-radius: 16px;"></div>
+                </div>
+                <div class="item-info">
+                    <div class="item-name">(ICE)카페라떼</div>
+                    <div class="item-options">옵션 0개</div>
+                    <div class="item-quantity">1 잔분</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 하단 네비게이션 -->
+    <div class="bottom-nav">
+        <div class="nav-items">
+            <!-- ✅ 홈 버튼에 id 추가 -->
+            <div class="nav-item" id="navHome">
+                <div class="nav-icon"><img src="./img/mune1png.png" alt=""></div>
+                <div class="nav-label">홈</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"><img src="./img/menu2.png" alt=""></div>
+                <div class="nav-label">메뉴보기</div>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon"><img src="./img/Component 3.png" alt=""></div>
+                <div class="nav-label">메가오더</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon"><img src="./img/mune4.png" alt=""></div>
+                <div class="nav-label">메가패밀리</div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">☰</div>
+                <div class="nav-label">전체</div>
+            </div>
+        </div>
+    </div>
+
+<script src="./js/main7.js"></script>
+</body>
+</html>

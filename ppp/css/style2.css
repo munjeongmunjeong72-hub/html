@@ -1,0 +1,489 @@
+
+    *{ margin:0; padding:0; box-sizing:border-box; }
+
+    body{
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      overflow: hidden;
+      background: #FFD700;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .onboarding-container{
+      width: 100%;
+      height: 100dvh;
+      position: relative;
+      overflow: hidden;
+      background: #FFD700;
+    }
+
+    /* ✅ 핵심 수정(재수정): flex 아이템의 %는 '부모(슬라이드 래퍼)' 기준이라,
+       래퍼를 300%로 두면 각 슬라이드가 300%가 되어 깨질 수 있습니다.
+       → 래퍼는 100%, 슬라이드는 flex: 0 0 100%로 고정합니다. */
+    .slides-wrapper{
+      display: flex;
+      height: 100%;
+      width: 100%; /* 래퍼는 컨테이너와 동일 폭 */
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+      touch-action: pan-y; /* 세로 스크롤은 허용, 가로는 JS로 */
+    }
+
+    .slide{
+      flex: 0 0 100%;  /* ✅ 각 슬라이드는 '컨테이너 폭의 100%' */
+      width: 100%;
+      height: 100%;
+      flex-shrink: 0;
+      background: #FFD700;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 30px;
+      position: relative;
+      overflow: visible; /* 내부 일러스트가 잘리지 않게 */
+    }
+
+/* 슬라이드 1 - 커피 컵 */
+    .coffee-cup{
+      width: 200px;
+      height: 280px;
+      position: relative;
+      margin-bottom: 60px;
+      animation: floatAnimation 3s ease-in-out infinite;
+    }
+
+    .cup-body{
+      width: 180px;
+      height: 220px;
+      background: linear-gradient(to bottom, #8B4513 0%, #654321 100%);
+      border-radius: 0 0 30px 30px;
+      position: absolute;
+      bottom: 0;
+      left: 10px;
+      border: 4px solid #000;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .cup-lid{
+      width: 200px;
+      height: 40px;
+      background: #FFD700;
+      border-radius: 20px;
+      position: absolute;
+      top: 195px;
+      border: 4px solid #000;
+      z-index: 2;
+    }
+
+    .whipped-cream{
+      width: 140px;
+      height: 80px;
+      background: white;
+      border-radius: 50% 50% 0 0;
+      position: absolute;
+      top: 150px;
+      left: 30px;
+      border: 3px solid #000;
+      border-bottom: none;
+    }
+
+    .whipped-cream::after{
+      content: '';
+      width: 100px;
+      height: 60px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      top: -30px;
+      left: 20px;
+      border: 3px solid #000;
+    }
+
+    .cherry{
+      width: 25px;
+      height: 25px;
+      background: #ff0000;
+      border-radius: 50%;
+      position: absolute;
+      top: 135px;
+      left: 75px;
+      border: 3px solid #000;
+      z-index: 3;
+    }
+
+    .cherry::before{
+      content: '';
+      width: 3px;
+      height: 15px;
+      background: #8B4513;
+      position: absolute;
+      top: -12px;
+      left: 8px;
+      border-radius: 2px;
+    }
+
+    .straw{
+      width: 12px;
+      height: 120px;
+      background: linear-gradient(to bottom, #FFF9C4, #FFEB3B);
+      position: absolute;
+      top: 100px;
+      right: 30px;
+      transform: rotate(-10deg);
+      border: 3px solid #000;
+      border-radius: 6px;
+      z-index: 4;
+    }
+
+    .memo-icon{
+      width: 60px;
+      height: 60px;
+      background: #FFE135;
+      border: 3px solid #000;
+      border-radius: 8px;
+      position: absolute;
+      bottom: 40px;
+      left: 20px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      padding: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .check-mark{
+      font-size: 28px;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 2px;
+    }
+
+    .memo-lines{ width: 30px; height: 2px; background: #000; margin: 2px 0; }
+
+    /* 슬라이드 2 - 지도와 매장 */
+    .map-container{
+      width: 280px;
+      height: 180px;
+      background: linear-gradient(135deg, #FFF9C4 0%, #FFE082 100%);
+      border: 4px solid #000;
+      border-radius: 20px;
+      position: relative;
+      margin-bottom: 40px;
+      overflow: hidden;
+    }
+
+    .map-grid{
+      width: 100%;
+      height: 100%;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 35px, rgba(0,0,0,0.1) 35px, rgba(0,0,0,0.1) 36px),
+        repeating-linear-gradient(90deg, transparent, transparent 35px, rgba(0,0,0,0.1) 35px, rgba(0,0,0,0.1) 36px);
+    }
+
+    .location-pin{
+      width: 60px;
+      height: 80px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      animation: pinDrop 1s ease-out 0.5s backwards, pinBounce 2s ease-in-out 1.5s infinite;
+    }
+
+    .pin-circle{
+      width: 60px;
+      height: 60px;
+      background: #FF6B6B;
+      border: 4px solid #000;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      position: relative;
+    }
+
+    .pin-inner{
+      width: 25px;
+      height: 25px;
+      background: #FFD700;
+      border: 3px solid #000;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .process-icons{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+
+    .store-icon{ width: 80px; height: 80px; position: relative; flex-shrink: 0; }
+
+    .store-building{
+      width: 70px;
+      height: 60px;
+      background: white;
+      border: 4px solid #000;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .store-awning{
+      width: 80px;
+      height: 20px;
+      background: repeating-linear-gradient(90deg, #FF6B6B 0px, #FF6B6B 10px, white 10px, white 20px);
+      border: 3px solid #000;
+      border-radius: 8px 8px 0 0;
+      position: absolute;
+      top: -5px;
+      left: -5px;
+    }
+
+    .store-door{
+      width: 20px;
+      height: 30px;
+      background: #8B4513;
+      border: 2px solid #000;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .phone-icon{
+      width: 60px;
+      height: 90px;
+      background: white;
+      border: 4px solid #000;
+      border-radius: 12px;
+      position: relative;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-shrink: 0;
+    }
+
+    .phone-check{ font-size: 36px; color: #FFD700; }
+
+    .cup-icon{
+      width: 60px;
+      height: 80px;
+      background: linear-gradient(to bottom, #8B4513 0%, #654321 100%);
+      border: 4px solid #000;
+      border-radius: 0 0 15px 15px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .cup-icon::before{
+      content: '';
+      width: 68px;
+      height: 15px;
+      background: #FFD700;
+      border: 3px solid #000;
+      border-radius: 10px;
+      position: absolute;
+      top: -8px;
+      left: -6px;
+    }
+
+    .arrow-icon{ font-size: 32px; color: #000; font-weight: bold; flex-shrink: 0; }
+
+    /* 슬라이드 3 - 쿠폰 */
+    .coupon-container{ width: 280px; margin-bottom: 60px; position: relative; }
+
+    .coupon-card{
+      width: 200px;
+      height: 120px;
+      background: #FFE135;
+      border: 4px solid #000;
+      border-radius: 16px;
+      position: relative;
+      margin: 0 auto 30px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      animation: couponFloat 3s ease-in-out infinite;
+    }
+
+    .coupon-card::before,
+    .coupon-card::after{
+      content: '';
+      width: 20px;
+      height: 20px;
+      background: #FFD700;
+      border: 3px solid #000;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .coupon-card::before{ left: -12px; }
+    .coupon-card::after{ right: -12px; }
+
+    .percent-sign{ font-size: 56px; font-weight: bold; color: white; text-shadow: 3px 3px 0 #000; }
+
+    .stamp-card{
+      width: 220px;
+      height: 100px;
+      background: white;
+      border: 4px solid #000;
+      border-radius: 12px;
+      padding: 15px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    .stamp{ width: 100%; aspect-ratio: 1; background: #FFD700; border: 3px solid #000; border-radius: 50%; }
+
+    .bell-icon{
+      width: 60px;
+      height: 60px;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      animation: bellRing 2s ease-in-out infinite;
+    }
+
+    .bell-body{
+      width: 50px;
+      height: 45px;
+      background: #FFD700;
+      border: 4px solid #000;
+      border-radius: 50% 50% 0 0;
+      position: relative;
+    }
+
+    .bell-clapper{
+      width: 10px;
+      height: 15px;
+      background: #000;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    /* 텍스트 스타일 */
+    .slide-title{
+      font-size: 24px;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 15px;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .slide-description{
+      font-size: 15px;
+      color: #333;
+      text-align: center;
+      line-height: 1.6;
+      max-width: 280px;
+    }
+
+    /* 인디케이터 */
+    .indicators{
+      position: absolute;
+      bottom: 140px;
+      left: 50%;
+      transform: translateX(-50%);
+      display:flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .indicator{
+      width: 40px;
+      height: 6px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 3px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .indicator.active{
+      background: #000;
+      width: 50px;
+    }
+
+    /* 버튼 */
+    .action-button{
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 60px);
+      max-width: 320px;
+      height: 56px;
+      background: #000;
+      color: white;
+      border: none;
+      border-radius: 28px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+
+    .action-button.show{ opacity: 1; visibility: visible; }
+
+    .action-button:active{ transform: translateX(-50%) scale(0.98); }
+
+    /* 애니메이션 */
+    @keyframes floatAnimation{
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes pinDrop{
+      from { transform: translate(-50%, -200%); opacity: 0; }
+      to { transform: translate(-50%, -60%); opacity: 1; }
+    }
+
+    @keyframes pinBounce{
+      0%, 100% { transform: translate(-50%, -60%); }
+      50% { transform: translate(-50%, -70%); }
+    }
+
+    @keyframes couponFloat{
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(2deg); }
+    }
+
+    @keyframes bellRing{
+      0%, 100% { transform: translateY(-50%) rotate(0deg); }
+      10%, 30% { transform: translateY(-50%) rotate(-15deg); }
+      20%, 40% { transform: translateY(-50%) rotate(15deg); }
+    }
+
+    /* 반응형 */
+    @media (max-width: 480px){
+      .coffee-cup { width: 160px; height: 240px; }
+      .cup-body { width: 140px; height: 180px; }
+      .slide-title { font-size: 20px; }
+      .slide-description { font-size: 14px; }
+    }
+
+    @media (min-width: 768px){
+      .onboarding-container{
+        max-width: 480px;
+        margin: 0 auto;
+        box-shadow: 0 0 50px rgba(0,0,0,0.3);
+      }
+    }
+  

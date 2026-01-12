@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEGA COFFEE - 온보딩</title>
+  <link rel="stylesheet" href="./css/style2.css">
+</head>
+<body>
+  <div class="onboarding-container" id="onboarding">
+    <div class="slides-wrapper" id="slidesWrapper">
+      <!-- 슬라이드 1 -->
+      <div class="slide">
+        <div class="coffee-cup">
+          <div class="straw"></div>
+          <div class="whipped-cream"></div>
+          <div class="cherry"></div>
+          <div class="cup-lid"></div>
+          <div class="cup-body"></div>
+          <div class="memo-icon">
+            <div class="check-mark">✓</div>
+            <div class="memo-lines"></div>
+          </div>
+        </div>
+        <h2 class="slide-title">메가사이즈의 만족, 더 빠르게</h2>
+        <p class="slide-description">취향을 반영한 추천 메뉴로 더 편하게 주문할 수 있습니다</p>
+      </div>
+
+      <!-- 슬라이드 2 -->
+      <div class="slide">
+        <div class="map-container">
+          <div class="map-grid"></div>
+          <div class="location-pin">
+            <div class="pin-circle">
+              <div class="pin-inner"></div>
+            </div>
+          </div>
+        </div>
+        <div class="process-icons">
+          <div class="store-icon">
+            <div class="store-awning"></div>
+            <div class="store-building">
+              <div class="store-door"></div>
+            </div>
+          </div>
+          <div class="arrow-icon">→</div>
+          <div class="phone-icon">
+            <div class="phone-check">✓</div>
+          </div>
+          <div class="arrow-icon">→</div>
+          <div class="cup-icon"></div>
+        </div>
+        <h2 class="slide-title">원하는 매장, 한 번에 주문</h2>
+        <p class="slide-description">지금 이용하는 매장은 자동으로 저장됩니다</p>
+      </div>
+
+      <!-- 슬라이드 3 -->
+      <div class="slide">
+        <div class="coupon-container">
+          <div class="coupon-card">
+            <div class="percent-sign">%</div>
+          </div>
+          <div class="stamp-card">
+            <div class="stamp"></div>
+            <div class="stamp"></div>
+            <div class="stamp"></div>
+            <div class="stamp"></div>
+            <div class="stamp"></div>
+            <div class="stamp"></div>
+          </div>
+          <div class="bell-icon">
+            <div class="bell-body">
+              <div class="bell-clapper"></div>
+            </div>
+          </div>
+        </div>
+        <h2 class="slide-title">쿠폰 스탬프, 자동 적립</h2>
+        <p class="slide-description">메뉴를 놓치지 않고 더 즐겁게 메가커피를 이용하세요</p>
+      </div>
+    </div>
+
+    <!-- 인디케이터 -->
+    <div class="indicators">
+      <div class="indicator active" data-index="0" role="button" aria-label="1번째 슬라이드"></div>
+      <div class="indicator" data-index="1" role="button" aria-label="2번째 슬라이드"></div>
+      <div class="indicator" data-index="2" role="button" aria-label="3번째 슬라이드"></div>
+    </div>
+
+    <!-- 버튼 (마지막 슬라이드에서만 표시) -->
+    <button class="action-button" id="actionButton" type="button">시작하기</button>
+  </div>
+
+  <script src="./js/main2.js"></script>
+</body>
+</html>
