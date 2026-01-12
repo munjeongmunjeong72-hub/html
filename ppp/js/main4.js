@@ -25,17 +25,78 @@
     // 하단 네비 active 토글
 // 하단 네비: active + 페이지 이동
 // 하단 네비: active + 페이지 이동
+// 하단 네비: active + 페이지 이동 / 전체(☰)는 풀메뉴 오픈
 const NAV_ROUTES = {
-  home: 'index.html',   // ✅ 메인 파일명이 index.html이 맞으면 그대로
+  home: 'index.html',
   menu: 'menu.html',
-  order: 'order.html',  // ✅ 실제 메가오더 파일명
+  order: 'order.html',
   family: 'mate.html',
-  more: 'more.html'
+  // more: 'more.html'  // ✅ '전체'는 오버레이 메뉴로 처리
 };
+
+// ✅ 전체(풀메뉴) 오픈/클로즈
+const fullMenu = document.getElementById('fullMenu');
+const closeMenuBtn = document.getElementById('closeMenuBtn');
+let lastFocusedEl = null;
+
+function openFullMenu() {
+  if (!fullMenu) return;
+  lastFocusedEl = document.activeElement;
+
+  fullMenu.classList.add('is-open');
+  fullMenu.setAttribute('aria-hidden', 'false');
+
+  // 배경 스크롤 방지
+  document.body.style.overflow = 'hidden';
+
+  // 포커스 이동(접근성)
+  if (closeMenuBtn) closeMenuBtn.focus();
+}
+
+function closeFullMenu() {
+  if (!fullMenu) return;
+
+  fullMenu.classList.remove('is-open');
+  fullMenu.setAttribute('aria-hidden', 'true');
+
+  document.body.style.overflow = '';
+
+  if (lastFocusedEl && typeof lastFocusedEl.focus === 'function') {
+    lastFocusedEl.focus();
+  }
+}
+
+// 닫기 버튼
+if (closeMenuBtn) {
+  closeMenuBtn.addEventListener('click', closeFullMenu);
+}
+
+// ESC로 닫기
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && fullMenu && fullMenu.classList.contains('is-open')) {
+    closeFullMenu();
+  }
+});
+
+// 메뉴 안의 링크 클릭 시 닫기(원하면 제거 가능)
+if (fullMenu) {
+  fullMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', closeFullMenu);
+  });
+}
 
 document.querySelectorAll('.nav-item').forEach(item => {
   item.addEventListener('click', () => {
     const tab = item.dataset.tab;
+
+    // ✅ '전체' 버튼이면 오버레이 메뉴 열기
+    if (tab === 'more' && fullMenu) {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      openFullMenu();
+      return;
+    }
+
     const target = NAV_ROUTES[tab];
 
     // active 토글
@@ -48,7 +109,7 @@ document.querySelectorAll('.nav-item').forEach(item => {
 });
 
 
-    // ✅ 프로모션 배너: "스크롤 기반" 자동 넘김 + 스와이프시 dot 동기화
+// 프로모션 배너: "스크롤 기반" 자동 넘김 + 스와이프시 dot 동기화
     const promoViewport = document.getElementById('promoViewport');
     const promoDotsWrap = document.getElementById('promoDots');
     const promoDots = promoDotsWrap ? Array.from(promoDotsWrap.querySelectorAll('.p-dot')) : [];
