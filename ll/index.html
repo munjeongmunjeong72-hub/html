@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Workspace Landing</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.10);
+      --text:#e9edf7;
+      --muted:rgba(233,237,247,.75);
+      --line:rgba(255,255,255,.14);
+      --shadow: 0 14px 40px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(124,92,255,.35), transparent 60%),
+        radial-gradient(900px 500px at 80% 20%, rgba(0,220,255,.25), transparent 55%),
+        radial-gradient(900px 600px at 50% 100%, rgba(255,86,130,.22), transparent 60%),
+        var(--bg);
+      overflow-x:hidden;
+    }
+    a{color:inherit; text-decoration:none}
+    .container{max-width:1100px; margin:0 auto; padding:0 20px}
+    .nav{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(14px);
+      background: rgba(11,16,32,.55);
+      border-bottom:1px solid var(--line);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+    }
+    .brand{display:flex; gap:10px; align-items:center; font-weight:800; letter-spacing:.2px}
+    .logo{
+      width:34px; height:34px; border-radius:12px;
+      background: linear-gradient(135deg, rgba(124,92,255,1), rgba(0,220,255,1));
+      box-shadow: 0 10px 28px rgba(0,0,0,.25);
+    }
+    .nav-links{display:flex; gap:18px; align-items:center; color:var(--muted); font-weight:600}
+    .nav-links a{padding:8px 10px; border-radius:12px}
+    .nav-links a:hover{background:var(--panel)}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.08);
+      color:var(--text);
+      font-weight:700;
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease;
+      user-select:none;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.12)}
+    .btn.primary{
+      border: none;
+      background: linear-gradient(135deg, rgba(124,92,255,1), rgba(0,220,255,1));
+      color:#091022;
+      box-shadow: 0 16px 40px rgba(0,0,0,.35);
+    }
+    .btn.primary:hover{transform: translateY(-1px) scale(1.01)}
+    .hero{
+      padding:70px 0 30px;
+    }
+    .grid-hero{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:26px;
+      align-items:stretch;
+    }
+    .badge{
+      display:inline-flex; gap:8px; align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      font-weight:700;
+      width: fit-content;
+    }
+    .dot{
+      width:8px; height:8px; border-radius:50%;
+      background: rgba(0,220,255,1);
+      box-shadow: 0 0 0 6px rgba(0,220,255,.12);
+    }
+    h1{
+      margin:14px 0 10px;
+      font-size: clamp(30px, 4.2vw, 54px);
+      line-height:1.05;
+      letter-spacing:-.6px;
+    }
+    .sub{
+      color: var(--muted);
+      font-size: 16px;
+      line-height:1.7;
+      max-width: 56ch;
+    }
+    .hero-cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+    .mini{
+      display:flex; gap:14px; flex-wrap:wrap; margin-top:18px; color:var(--muted); font-weight:600; font-size:13px
+    }
+    .mini span{display:flex; gap:8px; align-items:center; padding:8px 10px; border-radius:999px; background: rgba(255,255,255,.05); border:1px solid var(--line)}
+    .mini i{width:10px; height:10px; border-radius:3px; background: rgba(124,92,255,1)}
+    .panel{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .mock{
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+      min-height: 320px;
+    }
+    .mock::before{
+      content:"";
+      position:absolute; inset:-60px -60px auto auto;
+      width:240px; height:240px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,86,130,.55), transparent 60%);
+      filter: blur(2px);
+      transform: rotate(20deg);
+      opacity:.8;
+    }
+    .mock-top{
+      display:flex; justify-content:space-between; align-items:center;
+      color:var(--muted); font-weight:700; font-size:13px;
+      padding:12px 12px 0;
+    }
+    .mock-card{
+      margin:14px 12px 12px;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(11,16,32,.45);
+      padding:14px;
+    }
+    .kpi{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+    .kpi .cell{
+      padding:12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+    }
+    .kpi .num{font-size:20px; font-weight:900}
+    .kpi .lbl{color:var(--muted); font-weight:700; font-size:12px; margin-top:4px}
+    .bar{
+      margin-top:12px;
+      height:10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.08);
+      overflow:hidden;
+      border:1px solid var(--line);
+    }
+    .bar > div{
+      height:100%;
+      width: 62%;
+      border-radius:999px;
+      background: linear-gradient(90deg, rgba(124,92,255,1), rgba(0,220,255,1));
+    }
+
+    section{padding:46px 0}
+    .section-head{
+      display:flex; justify-content:space-between; align-items:flex-end; gap:18px;
+      margin-bottom:16px;
+    }
+    .section-head h2{margin:0; font-size:26px; letter-spacing:-.3px}
+    .section-head p{margin:0; color:var(--muted); line-height:1.7; max-width:60ch}
+
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    .card{
+      padding:18px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      border-radius: var(--radius);
+    }
+    .icon{
+      width:40px; height:40px; border-radius:14px;
+      display:grid; place-items:center;
+      background: rgba(255,255,255,.08);
+      border:1px solid var(--line);
+      margin-bottom:12px;
+      font-weight:900;
+    }
+    .card h3{margin:0 0 8px; font-size:16px}
+    .card p{margin:0; color:var(--muted); line-height:1.65; font-size:14px}
+
+    .pricing{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    .price{
+      padding:18px;
+      border-radius: var(--radius);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      display:flex; flex-direction:column; gap:12px;
+    }
+    .price .top{display:flex; justify-content:space-between; align-items:center}
+    .tag{
+      font-size:12px; font-weight:800; color:#091022;
+      padding:6px 10px; border-radius:999px;
+      background: linear-gradient(135deg, rgba(124,92,255,1), rgba(0,220,255,1));
+    }
+    .money{font-size:30px; font-weight:950; letter-spacing:-.6px}
+    .money small{font-size:14px; color:var(--muted); font-weight:700}
+    ul{margin:0; padding-left: 18px; color:var(--muted); line-height:1.8}
+    .price .btn{margin-top:auto}
+
+    .two{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    .quote{
+      padding:18px;
+    }
+    .quote p{color:var(--muted); line-height:1.75; margin:10px 0 0}
+    .who{margin-top:12px; color:var(--text); font-weight:900}
+    .who span{color:var(--muted); font-weight:700}
+
+    details{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.06);
+      padding:14px 16px;
+    }
+    details + details{margin-top:10px}
+    summary{cursor:pointer; font-weight:800}
+    details p{margin:10px 0 0; color:var(--muted); line-height:1.7}
+
+    .cta{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    .cta .left{padding:20px}
+    .cta .left h2{margin:0 0 10px; font-size:26px}
+    .cta .left p{margin:0; color:var(--muted); line-height:1.7}
+    .form{
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .form label{font-weight:800; font-size:13px; color: var(--muted)}
+    .input, .textarea{
+      width:100%;
+      padding:11px 12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(11,16,32,.35);
+      color: var(--text);
+      outline:none;
+    }
+    .textarea{min-height:100px; resize:vertical}
+    .hint{font-size:12px; color: rgba(233,237,247,.65)}
+    .msg{padding:10px 12px; border-radius:14px; border:1px solid var(--line); background: rgba(255,255,255,.06)}
+    .ok{border-color: rgba(0,220,255,.35)}
+    .err{border-color: rgba(255,86,130,.45)}
+    footer{padding:26px 0 40px; color: var(--muted); text-align:center}
+
+    @media (max-width: 920px){
+      .grid-hero{grid-template-columns: 1fr}
+      .cards{grid-template-columns: 1fr}
+      .pricing{grid-template-columns: 1fr}
+      .two{grid-template-columns: 1fr}
+      .cta{grid-template-columns: 1fr}
+      .nav-links{display:none}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <span>Workspace</span>
+        </div>
+        <div class="nav-links">
+          <a href="#features">기능</a>
+          <a href="#pricing">가격</a>
+          <a href="#reviews">후기</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <a class="btn primary" href="#cta">데모 요청</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="container">
+      <div class="grid-hero">
+        <div>
+          <div class="badge"><span class="dot"></span>UI 테스트 → API 연동까지 빠르게</div>
+          <h1>심플한 랜딩, <br/>빠른 전환, <br/>테스트 친화적인 폼</h1>
+          <p class="sub">
+            랜딩 페이지에서 가장 중요한 건 “메시지 → 신뢰 → 행동” 흐름이에요.
+            아래 구성은 UI 테스트(성공/실패/유효성)까지 바로 확인할 수 있게 만들었어요.
+          </p>
+          <div class="hero-cta">
+            <a class="btn primary" href="#cta">지금 시작하기</a>
+            <a class="btn" href="#features">기능 보기</a>
+          </div>
+          <div class="mini">
+            <span><i></i>한 파일로 배포</span>
+            <span><i></i>폼/검증/토스트 포함</span>
+            <span><i></i>mock 전송 기본</span>
+          </div>
+        </div>
+
+        <div class="panel mock" aria-label="preview card">
+          <div class="mock-top">
+            <span>Live Preview</span>
+            <span id="clock">--:--</span>
+          </div>
+          <div class="mock-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+              <div style="font-weight:950;letter-spacing:-.2px">전환 대시보드</div>
+              <div style="color:var(--muted);font-weight:800;font-size:12px">last 7 days</div>
+            </div>
+            <div class="kpi">
+              <div class="cell">
+                <div class="num" id="kpi1">1,248</div>
+                <div class="lbl">방문자</div>
+              </div>
+              <div class="cell">
+                <div class="num" id="kpi2">5.2%</div>
+                <div class="lbl">전환율</div>
+              </div>
+            </div>
+            <div class="bar" aria-label="progress"><div id="barFill"></div></div>
+            <div style="margin-top:10px;color:var(--muted);font-size:12px;line-height:1.6">
+              폼 제출은 기본 mock 처리되어 UI 테스트에 적합합니다.<br/>
+              이메일에 <b>fail</b> 포함 시 실패 케이스를 재현할 수 있어요.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="features">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>핵심 기능</h2>
+            <p>설명은 짧게, 장점은 명확하게. 랜딩에서 바로 설득되는 구조로 구성했습니다.</p>
+          </div>
+          <a class="btn" href="#pricing">가격 보기</a>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="icon">⚡</div>
+            <h3>빠른 로딩</h3>
+            <p>이미지 없이도 분위기와 계층을 만들고, 핵심 CTA를 상단에 배치했습니다.</p>
+          </div>
+          <div class="card">
+            <div class="icon">🧪</div>
+            <h3>테스트 친화</h3>
+            <p>폼 유효성, 성공/실패 메시지, 로딩 상태를 기본 제공해서 E2E 테스트가 쉬워요.</p>
+          </div>
+          <div class="card">
+            <div class="icon">🔒</div>
+            <h3>안전한 흐름</h3>
+            <p>실제 DB는 프론트가 직접 접근하지 않고, API를 통해 서버에서 처리하는 구조로 확장 가능합니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>가격</h2>
+            <p>테스트 목적이라면 Free로도 충분하고, 확장 시 팀 플랜으로 옮기면 됩니다.</p>
+          </div>
+        </div>
+
+        <div class="pricing">
+          <div class="price">
+            <div class="top">
+              <div style="font-weight:950">Free</div>
+              <div style="color:var(--muted); font-weight:800; font-size:12px">개인/테스트</div>
+            </div>
+            <div class="money">₩0 <small>/ 월</small></div>
+            <ul>
+              <li>랜딩 기본 섹션</li>
+              <li>mock 폼 전송</li>
+              <li>유효성 + 메시지</li>
+            </ul>
+            <a class="btn" href="#cta">시작하기</a>
+          </div>
+
+          <div class="price" style="background: rgba(255,255,255,.09); border-color: rgba(0,220,255,.28)">
+            <div class="top">
+              <div style="font-weight:950">Pro</div>
+              <div class="tag">추천</div>
+            </div>
+            <div class="money">₩19,000 <small>/ 월</small></div>
+            <ul>
+              <li>API 연동 가이드</li>
+              <li>테스트 DB 초기화 패턴</li>
+              <li>간단 대시보드 섹션</li>
+            </ul>
+            <a class="btn primary" href="#cta">데모 요청</a>
+          </div>
+
+          <div class="price">
+            <div class="top">
+              <div style="font-weight:950">Team</div>
+              <div style="color:var(--muted); font-weight:800; font-size:12px">조직/운영</div>
+            </div>
+            <div class="money">문의 <small>/ 월</small></div>
+            <ul>
+              <li>권한/역할 관리</li>
+              <li>감사 로그</li>
+              <li>SLA 옵션</li>
+            </ul>
+            <a class="btn" href="#cta">상담하기</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="reviews">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>후기</h2>
+            <p>짧은 인용문 2개 정도면 충분히 신뢰가 올라갑니다.</p>
+          </div>
+        </div>
+
+        <div class="two">
+          <div class="panel quote">
+            <div style="font-weight:950">“UI 테스트 케이스가 깔끔하게 나와요.”</div>
+            <p>유효성/로딩/에러 처리까지 기본으로 있어서, Playwright/Cypress에서 안정적으로 돌릴 수 있었습니다.</p>
+            <div class="who">edu <span>· QA</span></div>
+          </div>
+          <div class="panel quote">
+            <div style="font-weight:950">“랜딩 구조가 단순해서 커스터마이징이 빨라요.”</div>
+            <p>섹션이 과하지 않고, CTA 위치가 명확해서 실제 전환 흐름 실험하기 좋았습니다.</p>
+            <div class="who">팀 리드 <span>· Product</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>FAQ</h2>
+            <p>UI 테스트에서 가장 자주 묻는 포인트를 간단히 정리했습니다.</p>
+          </div>
+        </div>
+
+        <details>
+          <summary>폼 제출은 어디로 전송되나요?</summary>
+          <p>현재는 mock 전송입니다. JS 상단의 <b>USE_MOCK</b>를 false로 바꾸고 API_URL을 지정하면 실제 서버로 전송할 수 있어요.</p>
+        </details>
+        <details>
+          <summary>실패 케이스는 어떻게 재현하나요?</summary>
+          <p>이메일 입력값에 <b>fail</b>이 포함되면 실패 응답을 반환하도록 해두었습니다. 예: fail@test.com</p>
+        </details>
+        <details>
+          <summary>DB는 프론트에서 직접 연결하면 안 되나요?</summary>
+          <p>일반적으로는 권장되지 않습니다. DB 자격증명 노출 위험이 크고, 권한/검증/로깅을 서버에서 관리하는 게 안전합니다.</p>
+        </details>
+      </div>
+    </section>
+
+    <section id="cta">
+      <div class="container">
+        <div class="cta panel">
+          <div class="left">
+            <h2>데모/상담 요청</h2>
+            <!-- <p>
+              이 폼은 UI 테스트를 위한 예시입니다. 실제로 DB에 저장하려면
+              서버 API를 만들고, 서버에서 DB에 쓰도록 연결하세요.
+            </p>
+            <p style="margin-top:10px;color:var(--muted);font-weight:700">
+              팁: 테스트용으로는 <b>테스트 DB 초기화</b>나 <b>리셋 API</b> 패턴을 같이 쓰면 안정적입니다.
+            </p> -->
+          </div>
+
+          <form class="form" id="leadForm" novalidate>
+            <div>
+              <label for="company">회사/팀</label>
+              <input class="input" id="company" name="company" placeholder="예: Workspace QA" />
+              <div class="hint" id="companyHint"></div>
+            </div>
+
+            <div>
+              <label for="email">이메일</label>
+              <input class="input" id="leadEmail" name="email" placeholder="예: you@company.com" />
+              <div class="hint" id="leadEmailHint"></div>
+            </div>
+
+            <div>
+              <label for="goal">요청 내용</label>
+              <textarea class="textarea" id="goal" name="goal" placeholder="원하는 기능/연동/테스트 시나리오를 적어주세요"></textarea>
+              <div class="hint" id="goalHint"></div>
+            </div>
+
+            <button class="btn primary" id="leadBtn" type="submit">제출하기</button>
+            <div id="leadResult"></div>
+
+            
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Workspace · All rights reserved
+  </footer>
+
+  <script>
+    // ====== 설정 ======
+    const USE_MOCK = true;
+    const API_URL = "/api/lead";
+
+    // ====== 미니 애니메이션(가벼운 데모) ======
+    const $ = (id) => document.getElementById(id);
+    $("year").textContent = new Date().getFullYear();
+
+    function tickClock(){
+      const d = new Date();
+      const hh = String(d.getHours()).padStart(2,"0");
+      const mm = String(d.getMinutes()).padStart(2,"0");
+      $("clock").textContent = `${hh}:${mm}`;
+    }
+    tickClock(); setInterval(tickClock, 1000);
+
+    // KPI 숫자 살짝 흔들기(데모)
+    let baseVisitors = 1248;
+    let baseConv = 5.2;
+    setInterval(() => {
+      const v = baseVisitors + Math.floor(Math.random()*18 - 6);
+      const c = (baseConv + (Math.random()*0.18 - 0.06)).toFixed(1);
+      $("kpi1").textContent = v.toLocaleString("ko-KR");
+      $("kpi2").textContent = `${c}%`;
+      $("barFill").style.width = `${Math.max(40, Math.min(85, c*12))}%`;
+    }, 1600);
+
+    // ====== 폼 처리 ======
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    function setHint(id, text){ $(id).textContent = text || ""; }
+    function setResult(type, text){
+      const box = $("leadResult");
+      if (!text) { box.innerHTML = ""; return; }
+      box.innerHTML = `<div class="msg ${type}">${text}</div>`;
+    }
+
+    function validateLead({ company, email, goal }) {
+      let ok = true;
+      setHint("companyHint", "");
+      setHint("leadEmailHint", "");
+      setHint("goalHint", "");
+      setResult("", "");
+
+      if (!company || company.trim().length < 1) {
+        setHint("companyHint", "회사/팀명을 입력하세요.");
+        ok = false;
+      } else if (company.trim().length > 60) {
+        setHint("companyHint", "60자 이하여야 합니다.");
+        ok = false;
+      }
+
+      if (!email || !emailRe.test(email.trim())) {
+        setHint("leadEmailHint", "올바른 이메일 형식이 아닙니다.");
+        ok = false;
+      } else if (email.trim().length > 255) {
+        setHint("leadEmailHint", "255자 이하여야 합니다.");
+        ok = false;
+      }
+
+      if (!goal || goal.trim().length < 1) {
+        setHint("goalHint", "요청 내용을 입력하세요.");
+        ok = false;
+      } else if (goal.trim().length > 2000) {
+        setHint("goalHint", "2000자 이하여야 합니다.");
+        ok = false;
+      }
+
+      return ok;
+    }
+
+    async function mockSubmit(payload){
+      await new Promise(r => setTimeout(r, 350));
+      if (payload.email.includes("fail")) {
+        return { ok:false, status:400, json: async () => ({ error:"" }) };
+      }
+      return { ok:true, status:201, json: async () => ({ id: Math.floor(Math.random()*100000) }) };
+    }
+
+    async function realSubmit(payload){
+      return fetch(API_URL, {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify(payload)
+      });
+    }
+
+    $("leadForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = {
+        company: $("company").value,
+        email: $("leadEmail").value,
+        goal: $("goal").value
+      };
+
+      if (!validateLead(payload)) return;
+
+      const btn = $("leadBtn");
+      btn.disabled = true;
+      btn.textContent = "전송 중...";
+
+      try{
+        const res = USE_MOCK ? await mockSubmit(payload) : await realSubmit(payload);
+        const data = await res.json().catch(() => ({}));
+
+        if (res.ok) {
+          setResult("ok", `접수 완료! : ${data.id ?? "-"})`);
+          e.target.reset();
+        } else {
+          setResult("err", data.error ?? `실패: ${res.status}`);
+        }
+      } catch (err) {
+        setResult("err", "네트워크 오류가 발생했습니다.");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "제출하기";
+      }
+    });
+
+    // 부드러운 스크롤
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener("click", (e) => {
+        const id = a.getAttribute("href");
+        const el = document.querySelector(id);
+        if (!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior:"smooth", block:"start" });
+      });
+    });
+  </script>
+</body>
+</html>
