@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HIOM - Floral Echoes Portfolio</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div id="particle-container"></div>
+
+    <div id="container"> 
+        <header class="dark-header">
+            <div class="header-inner inner">
+                <h1 class="logo"><img src="./img/logo.gif" alt=logo""></h1>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="#profile" class="nav-link">PROFILE</a></li>
+                        <li><a href="#skills" class="nav-link">SKILLS</a></li>
+                        <li><a href="#portfolio" class="nav-link">PORTFOLIO</a></li>
+                        <li><a href="#contact" class="nav-link">CONTACT</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main id="main_content">
+            <section class="intro-wrap wrap">
+                <div class="intro-inner inner">
+                    <h2 class="intro-title">ABOUT ME</h2>
+                    <p class="intro-subtitle">Interactive Web Portfolio</p>
+                </div>
+            </section>
+
+            <section id="profile" class="profile-wrap wrap">
+                <div class="inner">
+                    <div class="section-header">
+                        <h3>PROFILE</h3>
+                    </div>
+                    <div class="profile-inner">
+                        <div class="profile-text-box">
+                            <div class="profile-meta">
+                                <h4>min jooeun</h4>
+                                <p class="meta-detail">UI/UX Designer</p>
+                            </div>
+                            <p class="profile-bio">
+                                안녕하세요. 숲의 고요함과 싱그러운 분위기를 사랑하는 개발자입니다. 
+                                저는 사용자에게 시각적으로 안정감을 주면서도 강렬한 인상을 남기는 웹사이트를 만듭니다.
+                            </p>
+                            <p class="profile-bio">
+                               논리적인 코드와 감각적인 디자인의 조화를 추구합니다.(띨롱)
+                            </p>
+                        </div>
+                        <div class="profile-image-wrap">
+                            <div class="profile-image">
+                                <img src="./img/Untitled-1.gif" alt="Profile">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="skills" class="skills-wrap wrap">
+                <div class="inner">
+                    <div class="section-header">
+                        <h3>SKILLS</h3>
+                    </div>
+                    <div class="skills-grid">
+                        <div class="skill-item">
+                            <div class="skill-info"><span>HTML / CSS</span><span>95%</span></div>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 95%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info"><span>JAVASCRIPT</span><span>85%</span></div>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 85%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info"><span>PHOTOSHOP</span><span>80%</span></div>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 80%;"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info"><span>UI/UX DESIGN</span><span>90%</span></div>
+                            <div class="skill-bar"><div class="skill-progress" style="width: 90%;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="portfolio" class="portfolio-wrap wrap">
+                <div class="inner">
+                    <div class="section-header">
+                        <h3>PORTFOLIO</h3>
+                    </div>
+                    <div class="filter-btn-group">
+                        <button class="filter-btn active" data-filter="all">ALL</button>
+                        <button class="filter-btn" data-filter="web">WEB</button>
+                        <button class="filter-btn" data-filter="design">DESIGN</button>
+                        <button class="filter-btn" data-filter="etc">ETC</button>
+                    </div>
+                    <div class="portfolio-inner" id="portfolio-grid">
+                        <div class="grid-item portfolio-item" data-category="web" data-image-url="./img/desktop.png">
+                            <span class="project-title">PROJECT 01 (WEB)</span><span class="view-hint">CLICK TO VIEW</span>
+                        </div>
+                        <div class="grid-item portfolio-item" data-category="design" data-image-url="./img/subway.png">
+                            <span class="project-title">PROJECT 02 (DESIGN)</span><span class="view-hint">CLICK TO VIEW</span>
+                        </div>
+                        <div class="grid-item portfolio-item" data-category="web" data-image-url="./img/5p.png">
+                            <span class="project-title">PROJECT 03 (WEB)</span><span class="view-hint">CLICK TO VIEW</span>
+                        </div>
+                        <div class="grid-item portfolio-item" data-category="etc" data-image-url="./img/4p.png">
+                            <span class="project-title">PROJECT 04 (ETC)</span><span class="view-hint">CLICK TO VIEW</span>
+                        </div>
+                        <div class="grid-item portfolio-item" data-category="design" data-image-url="./img/3p.png">
+                            <span class="project-title">PROJECT 05 (DESIGN)</span><span class="view-hint">CLICK TO VIEW</span>
+                        </div>
+                        <div class="grid-item portfolio-item" data-category="web" data-image-url="./img/1p.png">
+                            <span class="project-title">PROJECT 06 (WEB)</span><span class="view-hint">CLICK TO VIEW</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" class="contact-wrap wrap">
+                <div class="inner">
+                    <div class="section-header">
+                        <h3>CONTACT</h3>
+                    </div>
+                    <div class="contact-inner">
+                        <div class="contact-box">
+                            <h4>Email</h4><p class="contact-value">munjeongmunjeong72@gmail.com</p>
+                        </div>
+                        <div class="contact-box">
+                            <h4>Social</h4><p class="contact-value">GitHub / LinkedIn</p>
+                        </div>
+                        <div class="contact-box">
+                            <h4>Location</h4><p class="contact-value">South Korea</p>
+                        </div>
+                        <div class="contact-box">
+                            <h4>Phone</h4><p class="contact-value">010-5338-2532</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <div class="inner">
+                <p>&copy; 2026 HIOM. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div id="caption" class="modal-caption"></div>
+    </div>
+
+    <script src="./js/main.js"></script>
+</body>
+</html>

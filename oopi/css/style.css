@@ -1,0 +1,122 @@
+:root {
+    --color-bg-dark: #1A2624; 
+    --color-bg-medium: #223531; 
+    --color-primary: #334D49; 
+    --color-accent-light: #C4FFE8; 
+    --color-text-dim: #708A85; 
+    --color-text-main: #FFFFFF;
+    --color-text-title: #7DEEAA; 
+    --font-serif: 'Cormorant Garamond', serif;
+    --max-width: 1200px;
+    /* 꽃 모양 SVG 데이터 URI */
+    --flower-shape: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M12,2.5C10.5,2.5 9.2,3.4 8.6,4.6C7.4,3.7 5.7,3.8 4.6,4.9C3.5,6 3.4,7.7 4.3,8.9C3.1,9.5 2.2,10.8 2.2,12.3C2.2,14.3 3.8,15.9 5.8,15.9C5.8,17.6 6.8,19 8.2,19.7C8.3,21.4 9.7,22.8 11.5,22.8C13.3,22.8 14.7,21.4 14.8,19.7C16.2,19 17.2,17.6 17.2,15.9C19.2,15.9 20.8,14.3 20.8,12.3C20.8,10.8 19.9,9.5 18.7,8.9C19.6,7.7 19.5,6 18.4,4.9C17.3,3.8 15.6,3.7 14.4,4.6C13.8,3.4 12.5,2.5 11,2.5H12V2.5Z"/></svg>');
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { cursor: none; overflow-x: hidden; background: var(--color-bg-dark); color: var(--color-text-main); font-family: Arial, sans-serif; line-height: 1.6; scroll-behavior: smooth; }
+a, button, .portfolio-item { cursor: none; }
+
+/* --- [수정됨] 커스텀 커서 스타일 (꽃 모양) --- */
+.cursor-dot, .cursor-outline {
+    pointer-events: none; position: fixed; top: 0; left: 0;
+    transform: translate(-50%, -50%); z-index: 9999;
+    background-color: var(--color-text-title);
+    /* 마스크를 이용해 꽃 모양 적용 */
+    -webkit-mask-image: var(--flower-shape);
+    mask-image: var(--flower-shape);
+    -webkit-mask-size: contain; mask-size: contain;
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    -webkit-mask-position: center; mask-position: center;
+}
+.cursor-dot { width: 15px; height: 15px; }
+.cursor-outline {
+    width: 40px; height: 40px; opacity: 0.3;
+    transition: all 0.15s ease-out;
+}
+/* 호버 시 아웃라인 커서 변화 */
+.cursor-hover .cursor-outline {
+    width: 70px; height: 70px; opacity: 0.15;
+    transform: translate(-50%, -50%) rotate(45deg); /* 살짝 회전 */
+}
+
+/* --- [수정됨] 배경 입자 스타일 (꽃 모양 + 회전) --- */
+#particle-container {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1; pointer-events: none; overflow: hidden;
+}
+.particle {
+    position: absolute; background: var(--color-text-title);
+    opacity: 0.2;
+    /* 마스크를 이용해 꽃 모양 적용 */
+    -webkit-mask-image: var(--flower-shape);
+    mask-image: var(--flower-shape);
+    -webkit-mask-size: contain; mask-size: contain;
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    animation: floatAndRotate linear infinite;
+}
+@keyframes floatAndRotate {
+    from { transform: translateY(100vh) rotate(0deg); }
+    to { transform: translateY(-10vh) rotate(360deg); }
+}
+
+/* --- 기존 스타일 유지 --- */
+.inner { max-width: var(--max-width); margin: 0 auto; padding: 0 40px; }
+.wrap { padding: 80px 0; border-bottom: 1px solid var(--color-bg-medium); }
+
+/* Header */
+.dark-header { background: var(--color-bg-dark); padding: 20px 0; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--color-primary); }
+.header-inner { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-family: var(--font-serif); color: var(--color-text-title); font-size: 28px; }
+.main-nav ul { display: flex; gap: 30px; list-style: none; }
+.nav-link { color: var(--color-text-dim); text-decoration: none; font-weight: bold; font-size: 13px; letter-spacing: 1px; }
+.nav-link.active, .nav-link:hover { color: var(--color-accent-light); border-bottom: 1px solid var(--color-accent-light); }
+
+/* Hero */
+.intro-wrap { background: var(--color-bg-medium); text-align: center; }
+.intro-title { font-family: var(--font-serif); font-size: 80px; -webkit-text-stroke: 1px var(--color-text-title); color: transparent; margin-bottom: 10px; }
+.intro-subtitle { color: var(--color-text-dim); letter-spacing: 5px; font-size: 14px; font-weight: bold; }
+
+/* Section Header */
+.section-header h3 { font-family: var(--font-serif); font-size: 36px; color: var(--color-text-title); margin-bottom: 50px; border-bottom: 1px solid var(--color-primary); padding-bottom: 10px; }
+
+/* Profile */
+.profile-inner { display: grid; grid-template-columns: 1.5fr 1fr; gap: 60px; align-items: center; }
+.profile-meta h4 { font-family: var(--font-serif); font-size: 32px; color: var(--color-accent-light); margin-bottom: 5px; }
+.meta-detail { color: var(--color-text-dim); font-weight: bold; margin-bottom: 25px; }
+.profile-bio { margin-bottom: 15px; color: var(--color-text-main); font-size: 15px; }
+.profile-image img { width: 100%; border: 1px solid var(--color-text-title); padding: 10px; background: var(--color-primary); filter: grayscale(50%); transition: 0.5s; }
+.profile-image img:hover { filter: grayscale(0%); }
+
+/* Skills (시각화) */
+.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 20px; }
+.skill-item { margin-bottom: 20px; }
+.skill-info { display: flex; justify-content: space-between; margin-bottom: 8px; font-family: var(--font-serif); color: var(--color-accent-light); }
+.skill-bar { width: 100%; height: 6px; background: var(--color-bg-medium); position: relative; overflow: hidden; }
+.skill-progress { height: 100%; background: var(--color-text-title); box-shadow: 0 0 10px var(--color-text-title); width: 0; transition: width 1.5s ease-in-out; }
+
+/* Portfolio Grid */
+.filter-btn-group { display: flex; justify-content: center; gap: 10px; margin-bottom: 40px; }
+.filter-btn { background: transparent; border: 1px solid var(--color-primary); color: var(--color-text-dim); padding: 8px 20px; cursor: pointer; transition: 0.3s; }
+.filter-btn.active, .filter-btn:hover { border-color: var(--color-text-title); color: var(--color-text-title); }
+.portfolio-inner { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.portfolio-item { aspect-ratio: 16 / 9; background-color: var(--color-primary); position: relative; cursor: pointer; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; background-size: cover; background-position: center; transition: transform 0.4s ease, opacity 0.4s ease; }
+.portfolio-item.hidden { display: none; }
+.portfolio-item:hover { transform: scale(1.03); }
+.project-title { color: var(--color-accent-light); font-weight: bold; z-index: 2; background: rgba(0,0,0,0.6); padding: 5px 10px; margin-bottom: 5px; }
+.view-hint { color: var(--color-text-title); font-size: 11px; z-index: 2; background: rgba(0,0,0,0.6); padding: 2px 10px; }
+
+/* Contact */
+.contact-inner { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+.contact-box { background: var(--color-primary); padding: 30px; border-left: 5px solid var(--color-text-title); }
+.contact-box h4 { font-family: var(--font-serif); color: var(--color-text-title); margin-bottom: 10px; font-size: 20px; }
+.contact-value { font-size: 18px; color: var(--color-accent-light); font-weight: bold; }
+
+/* Footer */
+footer { padding: 50px 0; text-align: center; color: var(--color-text-dim); font-size: 12px; }
+
+/* Modal */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); padding-top: 100px; }
+.modal-content { margin: auto; display: block; width: 80%; max-width: 1000px; border: 2px solid var(--color-text-title); animation: zoom 0.3s; }
+.modal-close { position: absolute; top: 30px; right: 50px; color: #fff; font-size: 60px; cursor: pointer; }
+.modal-caption { text-align: center; color: var(--color-text-title); padding: 20px; font-size: 24px; font-family: var(--font-serif); }
+@keyframes zoom { from {transform:scale(0)} to {transform:scale(1)} }
