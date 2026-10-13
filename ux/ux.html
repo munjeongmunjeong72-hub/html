@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>다이아테크</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, "Noto Sans KR", sans-serif;
+            color: #333;
+            background: #fff;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            width: 100%;
+            height: 70px;
+            background: #fff;
+        }
+
+        .header-inner {
+            width: 1100px;
+            height: 70px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 22px;
+            font-weight: bold;
+            color: #1580ba;
+        }
+
+        .logo-box {
+            width: 45px;
+            height: 30px;
+            background: #1687c8;
+            position: relative;
+        }
+
+        .logo-box::after {
+            content: "";
+            position: absolute;
+
+            width: 15px;
+            height: 8px;
+
+            background: #f5a623;
+
+            left: 5px;
+            bottom: 2px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 55px;
+        }
+
+        nav li {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        nav li:hover {
+            color: #1687c8;
+        }
+
+
+        /* =========================
+           MAIN VISUAL
+        ========================= */
+
+        .visual {
+            height: 360px;
+
+            background:
+                linear-gradient(
+                    rgba(0,0,0,0.15),
+                    rgba(0,0,0,0.15)
+                ),
+                url("images/factory.jpg");
+
+            background-size: cover;
+            background-position: center;
+
+            position: relative;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .visual-title {
+            width: 500px;
+            padding: 20px;
+
+            text-align: center;
+
+            background: rgba(0, 110, 170, 0.55);
+
+            color: white;
+
+            position: relative;
+        }
+
+        .visual-title::before,
+        .visual-title::after {
+            content: "";
+
+            position: absolute;
+
+            width: 20px;
+            height: 55px;
+
+            border-top: 6px solid white;
+            border-bottom: 6px solid white;
+
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .visual-title::before {
+            left: -20px;
+            border-left: 6px solid white;
+        }
+
+        .visual-title::after {
+            right: -20px;
+            border-right: 6px solid white;
+        }
+
+        .visual-title span {
+            font-size: 14px;
+        }
+
+        .visual-title h1 {
+            margin-top: 5px;
+            font-size: 25px;
+        }
+
+        .dots {
+            position: absolute;
+
+            bottom: 15px;
+
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+
+            border-radius: 50%;
+
+            background: #aaa;
+        }
+
+        .dot.active {
+            background: white;
+        }
+
+
+        /* =========================
+           INFORMATION
+        ========================= */
+
+        .info {
+            width: 1100px;
+
+            margin: 40px auto;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr 1fr;
+
+            gap: 40px;
+        }
+
+        .info-title {
+            font-size: 16px;
+            font-weight: bold;
+
+            margin-bottom: 15px;
+
+            border-bottom: 1px solid #ddd;
+
+            padding-bottom: 10px;
+        }
+
+        .company img {
+            width: 100%;
+            height: 110px;
+
+            object-fit: cover;
+        }
+
+        .company p {
+            margin-top: 10px;
+
+            font-size: 12px;
+            line-height: 1.7;
+
+            color: #777;
+        }
+
+
+        /* gallery */
+
+        .mini-gallery {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 5px;
+        }
+
+        .mini-gallery img {
+            width: 100%;
+            height: 70px;
+
+            object-fit: cover;
+        }
+
+
+        /* business */
+
+        .business-image {
+            width: 100%;
+            height: 100px;
+
+            object-fit: cover;
+
+            margin-bottom: 15px;
+        }
+
+        .business-icons {
+            display: flex;
+
+            justify-content: space-around;
+
+            text-align: center;
+        }
+
+        .business-icons div {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .business-icons span {
+            display: block;
+
+            font-size: 30px;
+
+            margin-bottom: 5px;
+
+            color: #aaa;
+        }
+
+
+        /* =========================
+           QUICK MENU
+        ========================= */
+
+        .quick {
+            width: 100%;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            margin-top: 30px;
+        }
+
+        .quick-photo {
+            height: 230px;
+
+            background: url("images/planner.jpg");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .quick-menu {
+            height: 230px;
+
+            background: #2588df;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            gap: 35px;
+        }
+
+        .quick-item {
+            text-align: center;
+
+            color: white;
+
+            font-size: 18px;
+
+            font-weight: bold;
+        }
+
+        .quick-icon {
+            width: 100px;
+            height: 100px;
+
+            background: white;
+
+            margin-bottom: 10px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            font-size: 55px;
+
+            color: #2c4596;
+
+            box-shadow: 0 0 5px rgba(0,0,0,.2);
+        }
+
+
+        /* =========================
+           PHOTO GALLERY
+        ========================= */
+
+        .photo-section {
+            background: #f0f4f8;
+
+            padding: 40px 0 60px;
+        }
+
+        .photo-section h2 {
+            text-align: center;
+
+            font-size: 22px;
+
+            margin-bottom: 25px;
+        }
+
+        .photo-list {
+            width: 1000px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 15px;
+        }
+
+        .photo-card {
+            background: white;
+
+            padding-bottom: 15px;
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 130px;
+
+            object-fit: cover;
+        }
+
+        .photo-card h3 {
+            font-size: 13px;
+
+            margin: 12px 12px 8px;
+        }
+
+        .photo-card p {
+            font-size: 11px;
+
+            line-height: 1.6;
+
+            color: #777;
+
+            margin: 0 12px;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            height: 90px;
+
+            background: #e6eaee;
+
+            display: flex;
+
+            align-items: center;
+        }
+
+        .footer-inner {
+            width: 1000px;
+
+            margin: auto;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            color: #999;
+
+            font-size: 11px;
+        }
+
+        .footer-logo {
+            font-size: 17px;
+
+            font-weight: bold;
+
+            color: #999;
+        }
+
+
+        /* =========================
+           반응형
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .header-inner,
+            .info,
+            .photo-list,
+            .footer-inner {
+                width: 90%;
+            }
+
+        }
+
+        @media (max-width: 768px) {
+
+            nav {
+                display: none;
+            }
+
+            .info {
+                grid-template-columns: 1fr;
+            }
+
+            .quick {
+                grid-template-columns: 1fr;
+            }
+
+            .photo-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-menu {
+                gap: 15px;
+            }
+
+            .quick-icon {
+                width: 80px;
+                height: 80px;
+
+                font-size: 40px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+<header>
+
+    <div class="header-inner">
+
+        <a href="#" class="logo">
+
+            <div class="logo-box"></div>
+
+            <span>(주)다이아테크</span>
+
+        </a>
+
+
+        <nav>
+
+            <ul>
+                <li><a href="#">다이아테크</a></li>
+                <li><a href="#">다이아테크 갤러리</a></li>
+                <li><a href="#">주요 실적</a></li>
+                <li><a href="#">고객센터</a></li>
+            </ul>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+
+<!-- MAIN VISUAL -->
+<section class="visual">
+
+    <div class="visual-title">
+
+        <span>DIATECH Engineering & Water treatment</span>
+
+        <h1>We Challenge!</h1>
+
+    </div>
+
+
+    <div class="dots">
+
+        <div class="dot"></div>
+
+        <div class="dot active"></div>
+
+    </div>
+
+</section>
+
+
+
+<!-- INFORMATION -->
+<section class="info">
+
+
+    <!-- 회사소개 -->
+
+    <div class="company">
+
+        <div class="info-title">
+            회사소개
+        </div>
+
+        <img src="images/company.jpg" alt="회사 전경">
+
+        <p>
+            최고의 기술력과 전문성을 바탕으로 고객의 가치를
+            창출하는 기업입니다. 끊임없는 기술개발과 도전으로
+            더욱 성장하는 기업이 되겠습니다.
+        </p>
+
+    </div>
+
+
+
+    <!-- 갤러리 -->
+
+    <div>
+
+        <div class="info-title">
+            다이아테크 갤러리
+        </div>
+
+
+        <div class="mini-gallery">
+
+            <img src="images/gallery1.jpg" alt="">
+            <img src="images/gallery2.jpg" alt="">
+            <img src="images/gallery3.jpg" alt="">
+
+            <img src="images/gallery4.jpg" alt="">
+            <img src="images/gallery5.jpg" alt="">
+            <img src="images/gallery6.jpg" alt="">
+
+        </div>
+
+    </div>
+
+
+
+    <!-- 주요업무 -->
+
+    <div>
+
+        <div class="info-title">
+            주요업무
+        </div>
+
+
+        <img
+            src="images/business.jpg"
+            class="business-image"
+            alt="주요업무"
+        >
+
+
+        <div class="business-icons">
+
+            <div>
+                <span>◇</span>
+                ENGINEERING
+            </div>
+
+            <div>
+                <span>◎</span>
+                SYSTEM
+            </div>
+
+            <div>
+                <span>♢</span>
+                SERVICE
+            </div>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- QUICK MENU -->
+
+<section class="quick">
+
+
+    <div class="quick-photo"></div>
+
+
+    <div class="quick-menu">
+
+
+        <a href="#" class="quick-item">
+
+            <div class="quick-icon">
+                ♟
+            </div>
+
+            회사소개
+
+        </a>
+
+
+
+        <a href="#" class="quick-item">
+
+            <div class="quick-icon">
+                ♟
+            </div>
+
+            인재채용
+
+        </a>
+
+
+
+        <a href="#" class="quick-item">
+
+            <div class="quick-icon">
+                ✎
+            </div>
+
+            제품소개
+
+        </a>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- PHOTO GALLERY -->
+
+<section class="photo-section">
+
+
+    <h2>사진갤러리</h2>
+
+
+    <div class="photo-list">
+
+
+        <div class="photo-card">
+
+            <img src="images/photo1.jpg" alt="">
+
+            <h3>국내외 산업현장 기술지원</h3>
+
+            <p>
+                고객에게 최적화된 기술과
+                전문적인 서비스를 제공합니다.
+            </p>
+
+        </div>
+
+
+
+        <div class="photo-card">
+
+            <img src="images/photo2.jpg" alt="">
+
+            <h3>지역사회 봉사활동</h3>
+
+            <p>
+                지역사회와 함께 성장하는
+                기업을 만들어가고 있습니다.
+            </p>
+
+        </div>
+
+
+
+        <div class="photo-card">
+
+            <img src="images/photo3.jpg" alt="">
+
+            <h3>산업현장 기술교육</h3>
+
+            <p>
+                체계적인 교육과 전문성을 통해
+                기술 경쟁력을 높이고 있습니다.
+            </p>
+
+        </div>
+
+
+
+        <div class="photo-card">
+
+            <img src="images/photo4.jpg" alt="">
+
+            <h3>환경보호 활동</h3>
+
+            <p>
+                지속 가능한 환경과 미래를 위한
+                다양한 활동을 진행합니다.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="footer-inner">
+
+        <div>
+
+            <strong>Company</strong>
+
+            <br><br>
+
+            경기도 ○○시 ○○로 123
+
+            <br>
+
+            TEL 031-000-0000 / FAX 031-000-0001
+
+            <br>
+
+            Copyright © DIATECH. All Rights Reserved.
+
+        </div>
+
+
+        <div class="footer-logo">
+
+            DT (주)다이아테크
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+</body>
+</html>
